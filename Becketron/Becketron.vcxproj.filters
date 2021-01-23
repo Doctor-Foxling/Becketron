@@ -1,36 +1,75 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Source Files">
-      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
-      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    <Filter Include="Becketron">
+      <UniqueIdentifier>{225EEDF5-8EC8-A16C-D706-531243B07FC1}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files">
-      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hh;hpp;hxx;hm;inl;inc;ipp;xsd</Extensions>
+    <Filter Include="Becketron\Events">
+      <UniqueIdentifier>{C68FABC1-B288-CA13-DBBA-AF98C712AA1F}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Resource Files">
-      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
-      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    <Filter Include="Platform">
+      <UniqueIdentifier>{2AC788B4-1694-E3BF-3FAD-D1672BD9184E}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Platform\Windows">
+      <UniqueIdentifier>{64FBD71A-50F4-F66C-7926-DCF1657ED678}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\Becketron\Core.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
+    <ClInclude Include="src\Becketron.h" />
     <ClInclude Include="src\Becketron\Application.h">
-      <Filter>Header Files</Filter>
+      <Filter>Becketron</Filter>
     </ClInclude>
-    <ClInclude Include="src\Becketron.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="src\Becketron\Core.h">
+      <Filter>Becketron</Filter>
     </ClInclude>
     <ClInclude Include="src\Becketron\EntryPoint.h">
-      <Filter>Header Files</Filter>
+      <Filter>Becketron</Filter>
     </ClInclude>
+    <ClInclude Include="src\Becketron\Events\ApplicationEvent.h">
+      <Filter>Becketron\Events</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Becketron\Events\Event.h">
+      <Filter>Becketron\Events</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Becketron\Events\KeyEvent.h">
+      <Filter>Becketron\Events</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Becketron\Events\MouseEvent.h">
+      <Filter>Becketron\Events</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Becketron\Layer.h">
+      <Filter>Becketron</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Becketron\LayerStack.h">
+      <Filter>Becketron</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Becketron\Log.h">
+      <Filter>Becketron</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Becketron\Window.h">
+      <Filter>Becketron</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Platform\Windows\WindowsWindow.h">
+      <Filter>Platform\Windows</Filter>
+    </ClInclude>
+    <ClInclude Include="src\btpch.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Becketron\Application.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Becketron</Filter>
     </ClCompile>
+    <ClCompile Include="src\Becketron\Layer.cpp">
+      <Filter>Becketron</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Becketron\LayerStack.cpp">
+      <Filter>Becketron</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Becketron\Log.cpp">
+      <Filter>Becketron</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Platform\Windows\WindowsWindow.cpp">
+      <Filter>Platform\Windows</Filter>
+    </ClCompile>
+    <ClCompile Include="src\btpch.cpp" />
   </ItemGroup>
 </Project>

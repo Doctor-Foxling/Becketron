@@ -1,11 +1,30 @@
 #include <Becketron.h>
 
+class ExampleLayer : public Becketron::Layer
+{
+public:
+	ExampleLayer()
+		: Layer("Example")
+	{
+	}
+
+	void OnUpdate() override
+	{
+		BT_INFO("ExampleLayer::Update");
+	}
+
+	void OnEvent(Becketron::Event& event) override
+	{
+		BT_TRACE("{0}", event);
+	}
+};
+
 class Sandbox : public Becketron::Application
 {
 public:
 	Sandbox()
 	{
-
+		PushLayer(new ExampleLayer());
 	}
 
 	~Sandbox()

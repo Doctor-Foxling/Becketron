@@ -1,0 +1,6 @@
+[submodule "Becketron/vendor/spdlog"]
+	path = Becketron/vendor/spdlog
+	url = https://github.com/gabime/spdlog
+[submodule "Becketron/vendor/GLFW"]
+	path = Becketron/vendor/GLFW
+	url = https://github.com/Doctor-Foxling/glfw
