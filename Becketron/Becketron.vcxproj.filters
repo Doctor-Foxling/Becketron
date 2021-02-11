@@ -7,8 +7,14 @@
     <Filter Include="Becketron\Events">
       <UniqueIdentifier>{C68FABC1-B288-CA13-DBBA-AF98C712AA1F}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Becketron\ImGui">
+      <UniqueIdentifier>{CC644082-38F0-AD46-4101-313BAD0B0A47}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Platform">
       <UniqueIdentifier>{2AC788B4-1694-E3BF-3FAD-D1672BD9184E}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Platform\OpenGL">
+      <UniqueIdentifier>{1E7D2C1D-8A08-9AE1-9319-1DD6FF23F6E1}</UniqueIdentifier>
     </Filter>
     <Filter Include="Platform\Windows">
       <UniqueIdentifier>{64FBD71A-50F4-F66C-7926-DCF1657ED678}</UniqueIdentifier>
@@ -37,6 +43,9 @@
     <ClInclude Include="src\Becketron\Events\MouseEvent.h">
       <Filter>Becketron\Events</Filter>
     </ClInclude>
+    <ClInclude Include="src\Becketron\ImGui\ImGuiLayer.h">
+      <Filter>Becketron\ImGui</Filter>
+    </ClInclude>
     <ClInclude Include="src\Becketron\Layer.h">
       <Filter>Becketron</Filter>
     </ClInclude>
@@ -49,6 +58,9 @@
     <ClInclude Include="src\Becketron\Window.h">
       <Filter>Becketron</Filter>
     </ClInclude>
+    <ClInclude Include="src\Platform\OpenGL\OpenGLRenderer.h">
+      <Filter>Platform\OpenGL</Filter>
+    </ClInclude>
     <ClInclude Include="src\Platform\Windows\WindowsWindow.h">
       <Filter>Platform\Windows</Filter>
     </ClInclude>
@@ -58,6 +70,9 @@
     <ClCompile Include="src\Becketron\Application.cpp">
       <Filter>Becketron</Filter>
     </ClCompile>
+    <ClCompile Include="src\Becketron\ImGui\ImGuiLayer.cpp">
+      <Filter>Becketron\ImGui</Filter>
+    </ClCompile>
     <ClCompile Include="src\Becketron\Layer.cpp">
       <Filter>Becketron</Filter>
     </ClCompile>
@@ -66,6 +81,9 @@
     </ClCompile>
     <ClCompile Include="src\Becketron\Log.cpp">
       <Filter>Becketron</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Platform\OpenGL\OpenGLRenderer.cpp">
+      <Filter>Platform\OpenGL</Filter>
     </ClCompile>
     <ClCompile Include="src\Platform\Windows\WindowsWindow.cpp">
       <Filter>Platform\Windows</Filter>

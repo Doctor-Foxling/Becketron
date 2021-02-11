@@ -25,6 +25,7 @@ public:
 	Sandbox()
 	{
 		PushLayer(new ExampleLayer());
+		PushOverlay(new Becketron::ImGuiLayer());
 	}
 
 	~Sandbox()

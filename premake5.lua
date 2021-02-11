@@ -13,10 +13,12 @@ outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 -- Include directories relative to root folder (solution directory)
 IncludeDir = {}
 IncludeDir["GLFW"] = "Becketron/vendor/GLFW/include"
-IncludeDir["GLAD"] = "BEcketron/vendor/GLAD/include"
+IncludeDir["Glad"] = "Becketron/vendor/Glad/include"
+IncludeDir["ImGui"] = "Becketron/vendor/imgui"
 
 include "Becketron/vendor/GLFW"
-include "Becketron/vendor/GLFW"
+include "Becketron/vendor/Glad"
+include "Becketron/vendor/imgui"
 
 project "Becketron"
 	location "Becketron"
@@ -39,12 +41,16 @@ project "Becketron"
 	{
 		"%{prj.name}/src",
 		"%{prj.name}/vendor/spdlog/include",
-		"%{IncludeDir.GLFW}"
+		"%{IncludeDir.GLFW}",
+		"%{IncludeDir.Glad}",
+		"%{IncludeDir.ImGui}"
 	}
 
 	links
 	{
 		"GLFW",
+		"Glad",
+		"ImGui",
 		"opengl32.lib"
 	}
 
@@ -56,7 +62,8 @@ project "Becketron"
 		defines
 		{
 			"BT_PLATFORM_WINDOWS",
-			"BTRON_BUILD_DLL"
+			"BTRON_BUILD_DLL",
+			"GLFW_INCLUDE_NONE"
 		}
 
 		postbuildcommands

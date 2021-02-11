@@ -5,7 +5,9 @@
 #include "Becketron/Events/MouseEvent.h"
 #include "Becketron/Events/ApplicationEvent.h"
 
-namespace Becketron {
+#include <glad/glad.h>
+
+namespace Becketron { 
 
 	static void GLFWErrorCallback(int error, const char* description)
 	{
@@ -59,6 +61,7 @@ namespace Becketron {
 		}
 
 		glfwMakeContextCurrent(m_Window);
+		int status = gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
 		glfwSetWindowUserPointer(m_Window, &m_Data);
 		SetVSync(true);
 
