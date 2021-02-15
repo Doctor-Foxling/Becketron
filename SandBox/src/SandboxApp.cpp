@@ -10,7 +10,7 @@ public:
 
 	void OnUpdate() override
 	{
-		BT_INFO("ExampleLayer::Update");
+		//BT_INFO("ExampleLayer::Update");
 	}
 
 	void OnEvent(Becketron::Event& event) override
