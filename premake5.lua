@@ -1,6 +1,7 @@
 workspace "Becketron"
 	architecture "x64"
-	 
+	startproject "Sandbox"
+
 	configurations
 	{
 		"Debug",
@@ -16,14 +17,17 @@ IncludeDir["GLFW"] = "Becketron/vendor/GLFW/include"
 IncludeDir["Glad"] = "Becketron/vendor/Glad/include"
 IncludeDir["ImGui"] = "Becketron/vendor/imgui"
 
-include "Becketron/vendor/GLFW"
-include "Becketron/vendor/Glad"
-include "Becketron/vendor/imgui"
+group "Dependencies"
+	include "Becketron/vendor/GLFW"
+	include "Becketron/vendor/Glad"
+	include "Becketron/vendor/imgui"
+group ""
 
 project "Becketron"
 	location "Becketron"
 	kind "SharedLib"
 	language "C++"
+	staticruntime "off"
 
 	targetdir ("bin/" .. outputdir .. "/%{prj.name}")
 	objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
@@ -56,7 +60,6 @@ project "Becketron"
 
 	filter "system:windows"
 		cppdialect "C++latest"
-		staticruntime "On"
 		systemversion "latest"
 
 		defines
@@ -68,28 +71,30 @@ project "Becketron"
 
 		postbuildcommands
 		{
+			("IF NOT EXIST ../bin/" .. outputdir .. "/Sandbox mkdir .. /bin/" .. outputdir .. "/Sandbox"),
 			("{COPY} %{cfg.buildtarget.relpath} ../bin/" .. outputdir .. "/Sandbox")
 		}
 
 	filter "configurations:Debug"
 		defines "BT_DEBUG"
-		buildoptions "/MDd"
+		runtime "Debug"
 		symbols "On"
 
 	filter "configurations:Release"
 		defines "BT_RELEASE"
-		buildoptions "/MD"
+		runtime "Release"
 		optimize "On"
 
 	filter "configurations:Dist"
 		defines "BT_DIST"
-		buildoptions "/MD"
+		runtime "Release"
 		optimize "On"
 
 project "Sandbox"
 	location "Sandbox"
 	kind "ConsoleApp"
 	language "C++"
+	staticruntime "off"
 
 	targetdir ("bin/" .. outputdir .. "/%{prj.name}")
 	objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
@@ -113,7 +118,6 @@ project "Sandbox"
 
 	filter "system:windows"
 		cppdialect "C++latest"
-		staticruntime "On"
 		systemversion "latest"
 
 		defines
@@ -123,15 +127,15 @@ project "Sandbox"
 
 	filter "configurations:Debug"
 		defines "BT_DEBUG"
-		buildoptions "/MDd"
+		runtime "Debug"
 		symbols "On"
 
 	filter "configurations:Release"
 		defines "BT_RELEASE"
-		buildoptions "/MD"
+		runtime "Release"
 		optimize "On"
 
 	filter "configurations:Dist"
 		defines "BT_DIST"
-		buildoptions "/MD"
+		runtime "Release"
 		optimize "On"

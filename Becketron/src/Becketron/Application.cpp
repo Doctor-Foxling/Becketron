@@ -4,6 +4,7 @@
 #include "Becketron/Log.h"
 
 #include <glad/glad.h>
+#include "Becketron/Input.h"
 
 namespace Becketron {
 
@@ -60,6 +61,7 @@ namespace Becketron {
 			for (Layer* layer : m_LayerStack)
 				layer->OnUpdate();
 			m_Window->OnUpdate();
+
 		}
 
 		//glfwTerminate();

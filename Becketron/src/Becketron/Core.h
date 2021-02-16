@@ -10,6 +10,10 @@
 	#error Becketron only supports Windows
 #endif
 
+#ifdef HZ_DEBUG
+	#define HZ_ENABLE_ASSERTS
+#endif
+
 #ifdef BT_ENABLE_ASSERTS
 	#define BT_ASSERT(x, ...) { if(!(x)) {BT_ERROR("Assertion Failed: {0}", __VA_ARGS__); __debugbreak();}}
 	#define BT_CORE_ASSERT(x, ...) { if(!(x)) {BT_CORE_ERROR("Assertion Failed: {0}", __VA_ARGS__); __debugbreak();}}

@@ -11,11 +11,13 @@ public:
 	void OnUpdate() override
 	{
 		//BT_INFO("ExampleLayer::Update");
+		if (Becketron::Input::IsKeyPressed(BT_KEY_TAB))
+			BT_WARN("Tab key is pressed");
 	}
 
 	void OnEvent(Becketron::Event& event) override
 	{
-		BT_TRACE("{0}", event);
+		//BT_TRACE("{0}", event);
 	}
 };
 
