@@ -7,6 +7,8 @@
 #include "Becketron/Events/Event.h"
 #include "Becketron/Events/ApplicationEvent.h"
 
+#include "Becketron/ImGui/ImGuiLayer.h"
+
 namespace Becketron
 {
 	class BTRON_API Application
@@ -28,6 +30,7 @@ namespace Becketron
 		bool OnWindowClose(WindowCloseEvent& e);
 
 		std::unique_ptr<Window> m_Window;
+		ImGuiLayer* m_ImGuiLayer;
 		bool m_Running = true;
 		LayerStack m_LayerStack;
 	private:

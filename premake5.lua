@@ -16,6 +16,7 @@ IncludeDir = {}
 IncludeDir["GLFW"] = "Becketron/vendor/GLFW/include"
 IncludeDir["Glad"] = "Becketron/vendor/Glad/include"
 IncludeDir["ImGui"] = "Becketron/vendor/imgui"
+IncludeDir["glm"] = "Becketron/vendor/glm"
 
 group "Dependencies"
 	include "Becketron/vendor/GLFW"
@@ -25,9 +26,10 @@ group ""
 
 project "Becketron"
 	location "Becketron"
-	kind "SharedLib"
+	kind "StaticLib"
 	language "C++"
-	staticruntime "off"
+	cppdialect "C++latest"
+	staticruntime "on"
 
 	targetdir ("bin/" .. outputdir .. "/%{prj.name}")
 	objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
@@ -38,7 +40,14 @@ project "Becketron"
 	files
 	{
 		"%{prj.name}/src/**.h",
-		"%{prj.name}/src/**.cpp"
+		"%{prj.name}/src/**.cpp",
+		"%{prj.name}/vendor/glm/glm/**.hpp",
+		"%{prj.name}/vendor/glm/glm/**.inl",
+	}
+
+	defines
+	{
+		"_CRT_SECURE_NO_WARNINGS"
 	}
 
 	includedirs
@@ -47,7 +56,8 @@ project "Becketron"
 		"%{prj.name}/vendor/spdlog/include",
 		"%{IncludeDir.GLFW}",
 		"%{IncludeDir.Glad}",
-		"%{IncludeDir.ImGui}"
+		"%{IncludeDir.ImGui}",
+		"%{IncludeDir.glm}"
 	}
 
 	links
@@ -59,7 +69,6 @@ project "Becketron"
 	}
 
 	filter "system:windows"
-		cppdialect "C++latest"
 		systemversion "latest"
 
 		defines
@@ -69,46 +78,44 @@ project "Becketron"
 			"GLFW_INCLUDE_NONE"
 		}
 
-		postbuildcommands
-		{
-			("IF NOT EXIST ../bin/" .. outputdir .. "/Sandbox mkdir .. /bin/" .. outputdir .. "/Sandbox"),
-			("{COPY} %{cfg.buildtarget.relpath} ../bin/" .. outputdir .. "/Sandbox")
-		}
 
 	filter "configurations:Debug"
 		defines "BT_DEBUG"
 		runtime "Debug"
-		symbols "On"
+		symbols "on"
 
 	filter "configurations:Release"
 		defines "BT_RELEASE"
 		runtime "Release"
-		optimize "On"
+		optimize "on"
 
 	filter "configurations:Dist"
 		defines "BT_DIST"
 		runtime "Release"
-		optimize "On"
+		optimize "on"
 
 project "Sandbox"
 	location "Sandbox"
 	kind "ConsoleApp"
 	language "C++"
-	staticruntime "off"
-
+	cppdialect "C++latest"
+	staticruntime "on"
+	
 	targetdir ("bin/" .. outputdir .. "/%{prj.name}")
 	objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
 
 	files
 	{
 		"%{prj.name}/src/**.h",
-		"%{prj.name}/src/**.cpp"
+		"%{prj.name}/src/**.cpp",
 	}
 
 	includedirs
 	{
 		"Becketron/vendor/spdlog/include",
-		"Becketron/src"
+		"Becketron/src",
+		"Becketron/vendor",
+		"%{IncludeDir.glm}"
 	}
 
 	links
@@ -117,7 +124,6 @@ project "Sandbox"
 	}
 
 	filter "system:windows"
-		cppdialect "C++latest"
 		systemversion "latest"
 
 		defines
@@ -128,14 +134,14 @@ project "Sandbox"
 	filter "configurations:Debug"
 		defines "BT_DEBUG"
 		runtime "Debug"
-		symbols "On"
+		symbols "on"
 
 	filter "configurations:Release"
 		defines "BT_RELEASE"
 		runtime "Release"
-		optimize "On"
+		optimize "on"
 
 	filter "configurations:Dist"
 		defines "BT_DIST"
 		runtime "Release"
-		optimize "On"
+		optimize "on"

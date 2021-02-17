@@ -1,11 +1,18 @@
 #pragma once
 
 #ifdef BT_PLATFORM_WINDOWS
+
+#if BT_DYNAMIC_LINK
 	#ifdef BTRON_BUILD_DLL
 		#define BTRON_API __declspec(dllexport)
 	#else
 		#define BTRON_API __declspec(dllimport)
 	#endif
+#else
+	// If not making the engine as a dll then define BTRON_API as nothing
+	#define BTRON_API
+#endif
+
 #else
 	#error Becketron only supports Windows
 #endif

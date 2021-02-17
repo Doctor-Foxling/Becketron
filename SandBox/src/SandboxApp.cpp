@@ -1,5 +1,7 @@
 #include <Becketron.h>
 
+#include "imgui/imgui.h"
+
 class ExampleLayer : public Becketron::Layer
 {
 public:
@@ -15,6 +17,13 @@ public:
 			BT_WARN("Tab key is pressed");
 	}
 
+	virtual void OnImGuiRender() override
+	{
+		ImGui::Begin("Test");
+		ImGui::Text("Hello World");
+		ImGui::End();
+	}
+
 	void OnEvent(Becketron::Event& event) override
 	{
 		//BT_TRACE("{0}", event);
@@ -27,7 +36,6 @@ public:
 	Sandbox()
 	{
 		PushLayer(new ExampleLayer());
-		PushOverlay(new Becketron::ImGuiLayer());
 	}
 
 	~Sandbox()
