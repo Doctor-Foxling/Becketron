@@ -93,9 +93,6 @@
     <ClInclude Include="src\Becketron\Window.h">
       <Filter>src\Becketron</Filter>
     </ClInclude>
-    <ClInclude Include="src\Platform\OpenGL\OpenGLRenderer.h">
-      <Filter>src\Platform\OpenGL</Filter>
-    </ClInclude>
     <ClInclude Include="src\Platform\Windows\WindowsInput.h">
       <Filter>src\Platform\Windows</Filter>
     </ClInclude>
@@ -1344,6 +1341,9 @@
     <ClInclude Include="vendor\glm\glm\vector_relational.hpp">
       <Filter>vendor\glm\glm</Filter>
     </ClInclude>
+    <ClInclude Include="src\Becketron\Renderer\GraphicsContext.h" />
+    <ClInclude Include="src\Platform\OpenGL\OpenGLContext.h" />
+    <ClInclude Include="src\Becketron\Renderer\Shader.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Becketron\Application.cpp">
@@ -1364,9 +1364,6 @@
     <ClCompile Include="src\Becketron\Log.cpp">
       <Filter>src\Becketron</Filter>
     </ClCompile>
-    <ClCompile Include="src\Platform\OpenGL\OpenGLRenderer.cpp">
-      <Filter>src\Platform\OpenGL</Filter>
-    </ClCompile>
     <ClCompile Include="src\Platform\Windows\WindowsInput.cpp">
       <Filter>src\Platform\Windows</Filter>
     </ClCompile>
@@ -1376,5 +1373,7 @@
     <ClCompile Include="src\btpch.cpp">
       <Filter>src</Filter>
     </ClCompile>
+    <ClCompile Include="src\Platform\OpenGL\OpenGLContext.cpp" />
+    <ClCompile Include="src\Becketron\Renderer\Shader.cpp" />
   </ItemGroup>
 </Project>

@@ -9,6 +9,8 @@
 
 #include "Becketron/ImGui/ImGuiLayer.h"
 
+#include "Becketron/Renderer/Shader.h"
+
 namespace Becketron
 {
 	class BTRON_API Application
@@ -33,6 +35,10 @@ namespace Becketron
 		ImGuiLayer* m_ImGuiLayer;
 		bool m_Running = true;
 		LayerStack m_LayerStack;
+
+		unsigned int m_VertexArray, m_VertexBuffer, m_IndexBuffer;
+		std::unique_ptr<Shader> m_Shader;
+		
 	private:
 		static Application* s_Instance;
 	};

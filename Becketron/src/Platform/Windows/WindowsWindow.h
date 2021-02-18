@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Becketron/Window.h"
-#include "Becketron/Log.h"
+#include "Becketron/Renderer/GraphicsContext.h"
 
 #include <GLFW/glfw3.h>
 
@@ -33,6 +33,7 @@ namespace Becketron {
 		virtual void Shutdown();
 	private:
 		GLFWwindow* m_Window;
+		GraphicsContext* m_Context;
 
 		struct WindowData
 		{
