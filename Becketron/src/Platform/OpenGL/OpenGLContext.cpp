@@ -22,6 +22,8 @@ namespace Becketron {
 		BT_CORE_INFO("  Vendor: {0}", glGetString(GL_VENDOR));
 		BT_CORE_INFO("  Renderer: {0}", glGetString(GL_RENDERER));
 		BT_CORE_TRACE("  Version: {0}", glGetString(GL_VERSION));
+		BT_CORE_TRACE(" Shading lang: {0}", glGetString(GL_SHADING_LANGUAGE_VERSION));
+		BT_CORE_TRACE(" Extension: {0}", glGetStringi(GL_EXTENSIONS, 1));
 	}
 	void OpenGLContext::SwapBuffers()
 	{

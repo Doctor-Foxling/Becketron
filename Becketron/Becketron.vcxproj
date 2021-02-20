@@ -155,9 +155,12 @@
     <ClInclude Include="src\Becketron\LayerStack.h" />
     <ClInclude Include="src\Becketron\Log.h" />
     <ClInclude Include="src\Becketron\MouseButtonCodes.h" />
+    <ClInclude Include="src\Becketron\Renderer\Buffer.h" />
     <ClInclude Include="src\Becketron\Renderer\GraphicsContext.h" />
+    <ClInclude Include="src\Becketron\Renderer\Renderer.h" />
     <ClInclude Include="src\Becketron\Renderer\Shader.h" />
     <ClInclude Include="src\Becketron\Window.h" />
+    <ClInclude Include="src\Platform\OpenGL\OpenGLBuffer.h" />
     <ClInclude Include="src\Platform\OpenGL\OpenGLContext.h" />
     <ClInclude Include="src\Platform\Windows\WindowsInput.h" />
     <ClInclude Include="src\Platform\Windows\WindowsWindow.h" />
@@ -583,7 +586,10 @@
     <ClCompile Include="src\Becketron\Layer.cpp" />
     <ClCompile Include="src\Becketron\LayerStack.cpp" />
     <ClCompile Include="src\Becketron\Log.cpp" />
+    <ClCompile Include="src\Becketron\Renderer\Buffer.cpp" />
+    <ClCompile Include="src\Becketron\Renderer\Renderer.cpp" />
     <ClCompile Include="src\Becketron\Renderer\Shader.cpp" />
+    <ClCompile Include="src\Platform\OpenGL\OpenGLBuffer.cpp" />
     <ClCompile Include="src\Platform\OpenGL\OpenGLContext.cpp" />
     <ClCompile Include="src\Platform\Windows\WindowsInput.cpp" />
     <ClCompile Include="src\Platform\Windows\WindowsWindow.cpp" />

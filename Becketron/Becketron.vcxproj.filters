@@ -13,6 +13,9 @@
     <Filter Include="src\Becketron\ImGui">
       <UniqueIdentifier>{E38BA89C-4FED-85AA-D85A-CC5C44BBBC69}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\Becketron\Renderer">
+      <UniqueIdentifier>{BF0BA1C8-AB05-CA1A-9472-602B800B3087}</UniqueIdentifier>
+    </Filter>
     <Filter Include="src\Platform">
       <UniqueIdentifier>{21CA02E5-0D2D-9289-B6B2-CA3FA2F45D0C}</UniqueIdentifier>
     </Filter>
@@ -90,8 +93,26 @@
     <ClInclude Include="src\Becketron\MouseButtonCodes.h">
       <Filter>src\Becketron</Filter>
     </ClInclude>
+    <ClInclude Include="src\Becketron\Renderer\Buffer.h">
+      <Filter>src\Becketron\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Becketron\Renderer\GraphicsContext.h">
+      <Filter>src\Becketron\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Becketron\Renderer\Renderer.h">
+      <Filter>src\Becketron\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Becketron\Renderer\Shader.h">
+      <Filter>src\Becketron\Renderer</Filter>
+    </ClInclude>
     <ClInclude Include="src\Becketron\Window.h">
       <Filter>src\Becketron</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Platform\OpenGL\OpenGLBuffer.h">
+      <Filter>src\Platform\OpenGL</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Platform\OpenGL\OpenGLContext.h">
+      <Filter>src\Platform\OpenGL</Filter>
     </ClInclude>
     <ClInclude Include="src\Platform\Windows\WindowsInput.h">
       <Filter>src\Platform\Windows</Filter>
@@ -1341,9 +1362,6 @@
     <ClInclude Include="vendor\glm\glm\vector_relational.hpp">
       <Filter>vendor\glm\glm</Filter>
     </ClInclude>
-    <ClInclude Include="src\Becketron\Renderer\GraphicsContext.h" />
-    <ClInclude Include="src\Platform\OpenGL\OpenGLContext.h" />
-    <ClInclude Include="src\Becketron\Renderer\Shader.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Becketron\Application.cpp">
@@ -1364,6 +1382,21 @@
     <ClCompile Include="src\Becketron\Log.cpp">
       <Filter>src\Becketron</Filter>
     </ClCompile>
+    <ClCompile Include="src\Becketron\Renderer\Buffer.cpp">
+      <Filter>src\Becketron\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Becketron\Renderer\Renderer.cpp">
+      <Filter>src\Becketron\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Becketron\Renderer\Shader.cpp">
+      <Filter>src\Becketron\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Platform\OpenGL\OpenGLBuffer.cpp">
+      <Filter>src\Platform\OpenGL</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Platform\OpenGL\OpenGLContext.cpp">
+      <Filter>src\Platform\OpenGL</Filter>
+    </ClCompile>
     <ClCompile Include="src\Platform\Windows\WindowsInput.cpp">
       <Filter>src\Platform\Windows</Filter>
     </ClCompile>
@@ -1373,7 +1406,5 @@
     <ClCompile Include="src\btpch.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="src\Platform\OpenGL\OpenGLContext.cpp" />
-    <ClCompile Include="src\Becketron\Renderer\Shader.cpp" />
   </ItemGroup>
 </Project>

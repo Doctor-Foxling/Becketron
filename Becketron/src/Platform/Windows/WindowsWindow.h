@@ -13,7 +13,7 @@ namespace Becketron {
 		WindowsWindow(const WindowProps& props);
 		virtual ~WindowsWindow();
 
-		void OnUpdate() override;
+		virtual void OnUpdate() override;
 
 		int a=0;
 
