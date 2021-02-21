@@ -5,6 +5,7 @@
 
 namespace Becketron
 {
+
 	// ----------------- VERTEX BUFFER -------
 
 	OpenGLVertexBuffer::OpenGLVertexBuffer(float* vertices, uint32_t size)

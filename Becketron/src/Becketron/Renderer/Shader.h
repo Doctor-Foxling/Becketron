@@ -7,12 +7,10 @@ namespace Becketron {
 	class Shader
 	{
 	public:
-		Shader(const std::string& vertexSrc, const std::string& fragmentSrc);
-		~Shader();
+		static Shader* CreateShader(const std::string& vertexSrc, const std::string& fragmentSrc);
+		virtual ~Shader() {};
 
-		void Bind() const;
-		void Unbind() const;
-	private:
-		uint32_t m_RendererID;
+		virtual void Bind() const {};
+		virtual void Unbind() const {};
 	};
 }
