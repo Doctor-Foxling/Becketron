@@ -13,8 +13,8 @@ namespace Becketron {
 		// derived class, which is what we want
 		switch (Renderer::GetAPI())
 		{
-		case RendererAPI::None:		BT_CORE_ASSERT(false, "RendererAPI::None is currently not supported!"); return nullptr;
-		case RendererAPI::OpenGL:	return new OpenGLVertexBuffer(vertices, size);
+		case RendererAPI::API::None:		BT_CORE_ASSERT(false, "RendererAPI::None is currently not supported!"); return nullptr;
+		case RendererAPI::API::OpenGL:	return new OpenGLVertexBuffer(vertices, size);
 		}
 
 		BT_CORE_ASSERT(false, "Unknown RendererAPI!");
@@ -24,8 +24,8 @@ namespace Becketron {
 	{
 		switch (Renderer::GetAPI())
 		{
-		case RendererAPI::None:		BT_CORE_ASSERT(false, "RendererAPI::None is current not supported!"); return nullptr;
-		case RendererAPI::OpenGL:	return new OpenGLIndexBuffer(indices, size);
+		case RendererAPI::API::None:		BT_CORE_ASSERT(false, "RendererAPI::None is current not supported!"); return nullptr;
+		case RendererAPI::API::OpenGL:	return new OpenGLIndexBuffer(indices, size);
 		}
 
 		BT_CORE_ASSERT(false, "Unknown RendererAPI!");
