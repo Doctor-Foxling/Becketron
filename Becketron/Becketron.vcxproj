@@ -143,6 +143,7 @@
     <ClInclude Include="src\Becketron.h" />
     <ClInclude Include="src\Becketron\Application.h" />
     <ClInclude Include="src\Becketron\Core.h" />
+    <ClInclude Include="src\Becketron\Core\Timestep.h" />
     <ClInclude Include="src\Becketron\EntryPoint.h" />
     <ClInclude Include="src\Becketron\Events\ApplicationEvent.h" />
     <ClInclude Include="src\Becketron\Events\Event.h" />
@@ -156,6 +157,7 @@
     <ClInclude Include="src\Becketron\Log.h" />
     <ClInclude Include="src\Becketron\MouseButtonCodes.h" />
     <ClInclude Include="src\Becketron\Renderer\Buffer.h" />
+    <ClInclude Include="src\Becketron\Renderer\Camera.h" />
     <ClInclude Include="src\Becketron\Renderer\GraphicsContext.h" />
     <ClInclude Include="src\Becketron\Renderer\RenderCommand.h" />
     <ClInclude Include="src\Becketron\Renderer\Renderer.h" />
@@ -597,6 +599,7 @@
     <ClCompile Include="src\Becketron\Renderer\RendererAPI.cpp" />
     <ClCompile Include="src\Becketron\Renderer\RenderCommand.cpp" />
     <ClCompile Include="src\Becketron\Renderer\Shader.cpp" />
+    <ClCompile Include="src\Becketron\Renderer\Camera.cpp" />
     <ClCompile Include="src\Becketron\Renderer\VertexArray.cpp" />
     <ClCompile Include="src\Platform\OpenGL\OpenGLBuffer.cpp" />
     <ClCompile Include="src\Platform\OpenGL\OpenGLContext.cpp" />

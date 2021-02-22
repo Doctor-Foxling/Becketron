@@ -1368,6 +1368,8 @@
     <ClInclude Include="src\Becketron\Renderer\RendererAPI.h" />
     <ClInclude Include="src\Becketron\Renderer\RenderCommand.h" />
     <ClInclude Include="src\Platform\OpenGL\OpenGLRendererAPI.h" />
+    <ClInclude Include="src\Becketron\Renderer\Camera.h" />
+    <ClInclude Include="src\Becketron\Core\Timestep.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Becketron\Application.cpp">
@@ -1418,5 +1420,6 @@
     <ClCompile Include="src\Becketron\Renderer\RendererAPI.cpp" />
     <ClCompile Include="src\Becketron\Renderer\RenderCommand.cpp" />
     <ClCompile Include="src\Platform\OpenGL\OpenGLRendererAPI.cpp" />
+    <ClCompile Include="src\Becketron\Renderer\Camera.cpp" />
   </ItemGroup>
 </Project>

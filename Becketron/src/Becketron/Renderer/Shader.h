@@ -1,6 +1,7 @@
 #pragma once
 
 #include <string>
+#include <glm/glm.hpp>
 
 namespace Becketron {
 
@@ -12,5 +13,7 @@ namespace Becketron {
 
 		virtual void Bind() const {};
 		virtual void Unbind() const {};
+
+		virtual void UploadUniformMat4(const std::string& name, const glm::mat4& matrix) {};
 	};
 }

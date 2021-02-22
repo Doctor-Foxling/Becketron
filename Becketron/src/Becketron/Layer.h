@@ -2,6 +2,7 @@
 
 #include "Becketron/Core.h"
 #include "Becketron/Events/Event.h"
+#include "Becketron/Core/Timestep.h"
 
 namespace Becketron {
 
@@ -13,7 +14,7 @@ namespace Becketron {
 
 		virtual void OnAttach() {}
 		virtual void OnDetach() {}
-		virtual void OnUpdate() {}
+		virtual void OnUpdate(Timestep ts) {}
 		virtual void OnImGuiRender() {}
 		virtual void OnEvent(Event& event) {}
 
