@@ -168,6 +168,7 @@ public:
 		m_TextureShader.reset(Becketron::Shader::CreateShader(textureShader_vertexSrc, textureShader_fragmentSrc));
 
 		m_Texture = Becketron::Texture2D::Create("assets/textures/paint_splash.jpg");
+		m_MoonTexture = Becketron::Texture2D::Create("assets/textures/moon.png");
 
 		std::dynamic_pointer_cast<Becketron::OpenGLShader>(m_TextureShader)->Bind();
 		std::dynamic_pointer_cast<Becketron::OpenGLShader>(m_TextureShader)->UploadUniformInt(
@@ -229,6 +230,8 @@ public:
 		m_Texture->Bind();
 		glm::mat4 scale2 = glm::scale(glm::mat4(1.0f), glm::vec3(1.5f));
 		Becketron::Renderer::Submit(m_TextureShader, m_SquareVA, scale2);
+		m_MoonTexture->Bind();
+		Becketron::Renderer::Submit(m_TextureShader, m_SquareVA, scale2);
 
 		//Becketron::Renderer::Submit(m_Shader, m_VertexArray);
 		Becketron::Renderer::EndScene();
@@ -268,7 +271,7 @@ private:
 
 	Becketron::Ref<Becketron::VertexArray> m_SquareVA;
 
-	Becketron::Ref<Becketron::Texture2D> m_Texture;
+	Becketron::Ref<Becketron::Texture2D> m_Texture, m_MoonTexture;
 
 	Becketron::OrthographicCamera m_Camera;
 	glm::vec3 m_camPos = { 0.0f, 0.0f, 0.0f };
