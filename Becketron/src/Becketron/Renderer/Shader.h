@@ -1,7 +1,6 @@
 #pragma once
 
 #include <string>
-#include <glm/glm.hpp>
 
 namespace Becketron {
 
@@ -9,11 +8,9 @@ namespace Becketron {
 	{
 	public:
 		static Shader* CreateShader(const std::string& vertexSrc, const std::string& fragmentSrc);
-		virtual ~Shader() {};
+		virtual ~Shader() {} ;
 
-		virtual void Bind() const {};
-		virtual void Unbind() const {};
-
-		virtual void UploadUniformMat4(const std::string& name, const glm::mat4& matrix) {};
+		virtual void Bind() const = 0;
+		virtual void Unbind() const = 0;
 	};
 }

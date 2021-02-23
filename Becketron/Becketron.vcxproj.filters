@@ -7,6 +7,9 @@
     <Filter Include="src\Becketron">
       <UniqueIdentifier>{F9BFA735-6580-236C-2EBB-6CE99A3A6848}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\Becketron\Core">
+      <UniqueIdentifier>{F1C7A4A7-DDAB-65FD-460C-6050320F507F}</UniqueIdentifier>
+    </Filter>
     <Filter Include="src\Becketron\Events">
       <UniqueIdentifier>{BD991829-A928-A2F2-5247-B6ED3EB5B298}</UniqueIdentifier>
     </Filter>
@@ -46,6 +49,9 @@
     <Filter Include="vendor\glm\glm\gtx">
       <UniqueIdentifier>{B3A6A76B-9F8A-68C1-08EB-6214F4ED5243}</UniqueIdentifier>
     </Filter>
+    <Filter Include="vendor\stb_image">
+      <UniqueIdentifier>{0DA0BA59-F998-D9AB-22CB-BE300E23B9B7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Becketron.h">
@@ -56,6 +62,9 @@
     </ClInclude>
     <ClInclude Include="src\Becketron\Core.h">
       <Filter>src\Becketron</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Becketron\Core\Timestep.h">
+      <Filter>src\Becketron\Core</Filter>
     </ClInclude>
     <ClInclude Include="src\Becketron\EntryPoint.h">
       <Filter>src\Becketron</Filter>
@@ -96,13 +105,28 @@
     <ClInclude Include="src\Becketron\Renderer\Buffer.h">
       <Filter>src\Becketron\Renderer</Filter>
     </ClInclude>
+    <ClInclude Include="src\Becketron\Renderer\Camera.h">
+      <Filter>src\Becketron\Renderer</Filter>
+    </ClInclude>
     <ClInclude Include="src\Becketron\Renderer\GraphicsContext.h">
+      <Filter>src\Becketron\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Becketron\Renderer\RenderCommand.h">
       <Filter>src\Becketron\Renderer</Filter>
     </ClInclude>
     <ClInclude Include="src\Becketron\Renderer\Renderer.h">
       <Filter>src\Becketron\Renderer</Filter>
     </ClInclude>
+    <ClInclude Include="src\Becketron\Renderer\RendererAPI.h">
+      <Filter>src\Becketron\Renderer</Filter>
+    </ClInclude>
     <ClInclude Include="src\Becketron\Renderer\Shader.h">
+      <Filter>src\Becketron\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Becketron\Renderer\Texture.h">
+      <Filter>src\Becketron\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Becketron\Renderer\VertexArray.h">
       <Filter>src\Becketron\Renderer</Filter>
     </ClInclude>
     <ClInclude Include="src\Becketron\Window.h">
@@ -112,6 +136,18 @@
       <Filter>src\Platform\OpenGL</Filter>
     </ClInclude>
     <ClInclude Include="src\Platform\OpenGL\OpenGLContext.h">
+      <Filter>src\Platform\OpenGL</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Platform\OpenGL\OpenGLRendererAPI.h">
+      <Filter>src\Platform\OpenGL</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Platform\OpenGL\OpenGLShader.h">
+      <Filter>src\Platform\OpenGL</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Platform\OpenGL\OpenGLTexture.h">
+      <Filter>src\Platform\OpenGL</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Platform\OpenGL\OpenGLVertexArray.h">
       <Filter>src\Platform\OpenGL</Filter>
     </ClInclude>
     <ClInclude Include="src\Platform\Windows\WindowsInput.h">
@@ -1362,14 +1398,9 @@
     <ClInclude Include="vendor\glm\glm\vector_relational.hpp">
       <Filter>vendor\glm\glm</Filter>
     </ClInclude>
-    <ClInclude Include="src\Platform\OpenGL\OpenGLShader.h" />
-    <ClInclude Include="src\Becketron\Renderer\VertexArray.h" />
-    <ClInclude Include="src\Platform\OpenGL\OpenGLVertexArray.h" />
-    <ClInclude Include="src\Becketron\Renderer\RendererAPI.h" />
-    <ClInclude Include="src\Becketron\Renderer\RenderCommand.h" />
-    <ClInclude Include="src\Platform\OpenGL\OpenGLRendererAPI.h" />
-    <ClInclude Include="src\Becketron\Renderer\Camera.h" />
-    <ClInclude Include="src\Becketron\Core\Timestep.h" />
+    <ClInclude Include="vendor\stb_image\stb_image.h">
+      <Filter>vendor\stb_image</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Becketron\Application.cpp">
@@ -1393,16 +1424,43 @@
     <ClCompile Include="src\Becketron\Renderer\Buffer.cpp">
       <Filter>src\Becketron\Renderer</Filter>
     </ClCompile>
+    <ClCompile Include="src\Becketron\Renderer\Camera.cpp">
+      <Filter>src\Becketron\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Becketron\Renderer\RenderCommand.cpp">
+      <Filter>src\Becketron\Renderer</Filter>
+    </ClCompile>
     <ClCompile Include="src\Becketron\Renderer\Renderer.cpp">
       <Filter>src\Becketron\Renderer</Filter>
     </ClCompile>
+    <ClCompile Include="src\Becketron\Renderer\RendererAPI.cpp">
+      <Filter>src\Becketron\Renderer</Filter>
+    </ClCompile>
     <ClCompile Include="src\Becketron\Renderer\Shader.cpp">
+      <Filter>src\Becketron\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Becketron\Renderer\Texture.cpp">
+      <Filter>src\Becketron\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Becketron\Renderer\VertexArray.cpp">
       <Filter>src\Becketron\Renderer</Filter>
     </ClCompile>
     <ClCompile Include="src\Platform\OpenGL\OpenGLBuffer.cpp">
       <Filter>src\Platform\OpenGL</Filter>
     </ClCompile>
     <ClCompile Include="src\Platform\OpenGL\OpenGLContext.cpp">
+      <Filter>src\Platform\OpenGL</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Platform\OpenGL\OpenGLRendererAPI.cpp">
+      <Filter>src\Platform\OpenGL</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Platform\OpenGL\OpenGLShader.cpp">
+      <Filter>src\Platform\OpenGL</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Platform\OpenGL\OpenGLTexture.cpp">
+      <Filter>src\Platform\OpenGL</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Platform\OpenGL\OpenGLVertexArray.cpp">
       <Filter>src\Platform\OpenGL</Filter>
     </ClCompile>
     <ClCompile Include="src\Platform\Windows\WindowsInput.cpp">
@@ -1414,12 +1472,8 @@
     <ClCompile Include="src\btpch.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="src\Platform\OpenGL\OpenGLShader.cpp" />
-    <ClCompile Include="src\Becketron\Renderer\VertexArray.cpp" />
-    <ClCompile Include="src\Platform\OpenGL\OpenGLVertexArray.cpp" />
-    <ClCompile Include="src\Becketron\Renderer\RendererAPI.cpp" />
-    <ClCompile Include="src\Becketron\Renderer\RenderCommand.cpp" />
-    <ClCompile Include="src\Platform\OpenGL\OpenGLRendererAPI.cpp" />
-    <ClCompile Include="src\Becketron\Renderer\Camera.cpp" />
+    <ClCompile Include="vendor\stb_image\stb_image.cpp">
+      <Filter>vendor\stb_image</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

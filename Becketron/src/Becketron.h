@@ -17,6 +17,7 @@
 #include "Becketron/Renderer/Buffer.h"
 #include "Becketron/Renderer/Shader.h"
 #include "Becketron/Renderer/VertexArray.h"
+#include "Becketron/Renderer/Texture.h"
 
 #include "Becketron/Renderer/Camera.h"
 
