@@ -1,18 +1,19 @@
 #include <Becketron.h>
 
+#include "Platform/OpenGL/OpenGLShader.h"
+
 #include "imgui/imgui.h"
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
-
-#include "Platform/OpenGL/OpenGLShader.h"
+#include "Becketron/Renderer/Shader.h"
 
 class ExampleLayer : public Becketron::Layer
 {
 public:
 	ExampleLayer()
-		: Layer("Example"), m_Camera(-1.6, 1.6f, -0.9f, 0.9f)
+		: Layer("Example"), m_CameraController(1280.0f / 720.0f, true)
 	{
-		m_VertexArray.reset(Becketron::VertexArray::Create());
+		m_VertexArray = Becketron::VertexArray::Create();
 
 		float vertices[3 * 7] = {
 			-0.5f, -0.5f, 0.0f, 0.0f, 0.5f, 0.8f, 1.0f,
@@ -22,7 +23,7 @@ public:
 
 		Becketron::Ref<Becketron::VertexBuffer> vertexBuffer;
 		// -- reset is kinda like an alternative to make_unique (lookitup)
-		vertexBuffer.reset(Becketron::VertexBuffer::Create(vertices, sizeof(vertices)));
+		vertexBuffer = Becketron::VertexBuffer::Create(vertices, sizeof(vertices));
 
 		Becketron::BufferLayout layout = {
 			{ Becketron::ShaderDataType::Float3, "a_Position" },
@@ -34,10 +35,10 @@ public:
 
 		unsigned int indices[3] = { 0, 1, 2 };
 		Becketron::Ref<Becketron::IndexBuffer> indexBuffer;
-		indexBuffer.reset(Becketron::IndexBuffer::Create(indices, sizeof(indices) / sizeof(uint32_t)));
+		indexBuffer = Becketron::IndexBuffer::Create(indices, sizeof(indices) / sizeof(uint32_t));
 		m_VertexArray->SetIndexBuffer(indexBuffer);
 
-		m_SquareVA.reset(Becketron::VertexArray::Create());
+		m_SquareVA = Becketron::VertexArray::Create();
 
 		float squareVertices[5 * 4] = {
 			-0.5f, -0.5f, 0.0f, 0.0f, 0.0f,
@@ -47,7 +48,7 @@ public:
 		};
 
 		Becketron::Ref<Becketron::VertexBuffer> squareVB;
-		squareVB.reset(Becketron::VertexBuffer::Create(squareVertices, sizeof(squareVertices)));
+		squareVB = Becketron::VertexBuffer::Create(squareVertices, sizeof(squareVertices));
 
 		Becketron::BufferLayout squareVBLayout = {
 			{ Becketron::ShaderDataType::Float3, "a_Position" },
@@ -58,7 +59,7 @@ public:
 
 		unsigned int squareIndices[6] = { 0, 1, 2, 2, 3, 0 };
 		Becketron::Ref<Becketron::IndexBuffer> squareIB;
-		squareIB.reset(Becketron::IndexBuffer::Create(squareIndices, sizeof(squareIndices) / sizeof(uint32_t)));
+		squareIB = Becketron::IndexBuffer::Create(squareIndices, sizeof(squareIndices) / sizeof(uint32_t));
 		m_SquareVA->SetIndexBuffer(squareIB);
 
 		std::string vertexSrc = R"(
@@ -96,7 +97,7 @@ public:
 			}		
 		)";
 
-		m_Shader.reset(Becketron::Shader::CreateShader(vertexSrc, fragmentSrc));
+		m_Shader = Becketron::Shader::Create("Shader_1",vertexSrc, fragmentSrc);
 
 		std::string flatShader_vertexSrc = R"(
 			#version 330 core
@@ -120,95 +121,41 @@ public:
 			
 			layout(location = 0) out vec4 color;
 			
-			in vec3 v_Position;			
+			in vec3 v_Position;
 
 			uniform vec3 u_Color;
 
 			void main()
 			{
 				color = vec4(u_Color, 1.0);
-			}		
+			}
 		)";
 
-		m_FlatShader.reset(Becketron::Shader::CreateShader(flatShader_vertexSrc, flatShader_fragmentSrc));
+		m_FlatShader = Becketron::Shader::Create("flat_Shader", flatShader_vertexSrc, flatShader_fragmentSrc);
 
-		std::string textureShader_vertexSrc = R"(
-			#version 330 core
-			
-			layout(location = 0) in vec3 a_Position;
-			layout(location = 1) in vec2 a_TexCoord;			
-
-			uniform mat4 u_ViewProjection;
-			uniform mat4 u_Transform;
-
-			out vec2 v_TexCoord;
-
-			void main()
-			{
-				v_TexCoord = a_TexCoord;
-				gl_Position = u_ViewProjection * u_Transform * vec4(a_Position, 1.0);
-			}		
-		)";
-
-		std::string textureShader_fragmentSrc = R"(
-			#version 330 core
-			
-			layout(location = 0) out vec4 color;
-			
-			in vec2 v_TexCoord;			
-
-			uniform sampler2D u_Texture;
-
-			void main()
-			{
-				color = texture(u_Texture, v_TexCoord); 
-			}		
-		)";
-
-		m_TextureShader.reset(Becketron::Shader::CreateShader(textureShader_vertexSrc, textureShader_fragmentSrc));
+		auto textureShader = m_ShaderLibrary.Load("assets/shaders/Texture.glsl");
 
 		m_Texture = Becketron::Texture2D::Create("assets/textures/paint_splash.jpg");
 		m_MoonTexture = Becketron::Texture2D::Create("assets/textures/moon.png");
 
-		std::dynamic_pointer_cast<Becketron::OpenGLShader>(m_TextureShader)->Bind();
-		std::dynamic_pointer_cast<Becketron::OpenGLShader>(m_TextureShader)->UploadUniformInt(
+		std::dynamic_pointer_cast<Becketron::OpenGLShader>(textureShader)->Bind();
+		std::dynamic_pointer_cast<Becketron::OpenGLShader>(textureShader)->UploadUniformInt(
 			"u_Texture", 0);
 
 	}
 
 	void OnUpdate(Becketron::Timestep ts) override
 	{
-		BT_TRACE("Delta time: {0}s ({1}ms)", ts.GetSeconds(), ts.GetMilliseconds());
+		//BT_TRACE("Delta time: {0}s ({1}ms)", ts.GetSeconds(), ts.GetMilliseconds());
 
+		//Update
+		m_CameraController.OnUpdate(ts);
+
+		// REnder
 		Becketron::RenderCommand::SetClearColor({ 0.2f, 0.2f, 0.2f, 1.0f });
 		Becketron::RenderCommand::Clear();
 
-		if (Becketron::Input::IsKeyPressed(BT_KEY_UP))
-		{
-			m_camPos.y += m_camMovSpeed * ts; 
-		}
-		else if (Becketron::Input::IsKeyPressed(BT_KEY_DOWN))
-		{
-			m_camPos.y -= m_camMovSpeed * ts;
-		}
-		if (Becketron::Input::IsKeyPressed(BT_KEY_LEFT))
-		{
-			m_camPos.x -= m_camMovSpeed * ts;
-		}
-		else if (Becketron::Input::IsKeyPressed(BT_KEY_RIGHT))
-		{
-			m_camPos.x += m_camMovSpeed * ts;
-		}
-
-		if (Becketron::Input::IsKeyPressed(BT_KEY_A))
-			m_camRotation += m_camRotSpeed * ts;
-		else if (Becketron::Input::IsKeyPressed(BT_KEY_D))
-			m_camRotation -= m_camRotSpeed * ts;
-
-		m_Camera.SetPosition(m_camPos);
-		m_Camera.SetRotation(m_camRotation);
-
-		Becketron::Renderer::BeginScene(m_Camera);
+		Becketron::Renderer::BeginScene(m_CameraController.GetCamera());
 
 		//making scale static since we don't need to calculate it all the time
 		static glm::mat4 scale = glm::scale(glm::mat4(1.0f), glm::vec3(0.1f));
@@ -227,11 +174,13 @@ public:
 			}
 		}
 
+		auto textureShader = m_ShaderLibrary.Get("Texture");
+
 		m_Texture->Bind();
 		glm::mat4 scale2 = glm::scale(glm::mat4(1.0f), glm::vec3(1.5f));
-		Becketron::Renderer::Submit(m_TextureShader, m_SquareVA, scale2);
+		Becketron::Renderer::Submit(textureShader, m_SquareVA, scale2);
 		m_MoonTexture->Bind();
-		Becketron::Renderer::Submit(m_TextureShader, m_SquareVA, scale2);
+		Becketron::Renderer::Submit(textureShader, m_SquareVA, scale2);
 
 		//Becketron::Renderer::Submit(m_Shader, m_VertexArray);
 		Becketron::Renderer::EndScene();
@@ -245,41 +194,22 @@ public:
 		ImGui::End();
 	}
 
-	void OnEvent(Becketron::Event& event) override
+	void OnEvent(Becketron::Event& e) override
 	{
-		//Becketron::EventDispatcher dispatcher(event);
-		//dispatcher.Dispatch<Becketron::KeyPressedEvent>(BT_BIND_EVENT_FN(ExampleLayer::OnKeyPressedEvent));
+		m_CameraController.OnEvent(e);
 	}
-
-	bool OnKeyPressedEvent(Becketron::KeyPressedEvent& event)
-	{
-		switch (event.GetKeyCode())
-		{
-			case BT_KEY_UP: m_camPos.y += 0.1f; return false;
-			case BT_KEY_DOWN: m_camPos.y -= 0.1f; return false;
-			case BT_KEY_RIGHT: m_camPos.x += 0.1f; return false;
-			case BT_KEY_LEFT: m_camPos.x -= 0.1f; return false; 
-		}
-		return false;
-	}
-
 
 private:
+	Becketron::ShaderLibrary m_ShaderLibrary;
 	Becketron::Ref<Becketron::Shader> m_Shader;
-	Becketron::Ref<Becketron::Shader> m_FlatShader, m_TextureShader;
+	Becketron::Ref<Becketron::Shader> m_FlatShader;
 	Becketron::Ref<Becketron::VertexArray> m_VertexArray;
 
 	Becketron::Ref<Becketron::VertexArray> m_SquareVA;
 
 	Becketron::Ref<Becketron::Texture2D> m_Texture, m_MoonTexture;
 
-	Becketron::OrthographicCamera m_Camera;
-	glm::vec3 m_camPos = { 0.0f, 0.0f, 0.0f };
-	float m_camMovSpeed = 5.0f;
-
-	float m_camRotSpeed = 180.0f;
-	float m_camRotation = 0.0f;
-
+	Becketron::OrthographicCameraController m_CameraController;
 	glm::vec3 m_SquareColor = { 0.2f, 0.3f, 0.8f };
 };
 

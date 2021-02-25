@@ -142,6 +142,7 @@
   <ItemGroup>
     <ClInclude Include="src\Becketron.h" />
     <ClInclude Include="src\Becketron\Application.h" />
+    <ClInclude Include="src\Becketron\cameraController.h" />
     <ClInclude Include="src\Becketron\Core.h" />
     <ClInclude Include="src\Becketron\Core\Timestep.h" />
     <ClInclude Include="src\Becketron\EntryPoint.h" />
@@ -592,6 +593,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Becketron\Application.cpp" />
+    <ClCompile Include="src\Becketron\cameraController.cpp" />
     <ClCompile Include="src\Becketron\ImGui\ImGuiBuild.cpp" />
     <ClCompile Include="src\Becketron\ImGui\ImGuiLayer.cpp" />
     <ClCompile Include="src\Becketron\Layer.cpp" />

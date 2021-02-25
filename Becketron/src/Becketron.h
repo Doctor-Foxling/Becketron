@@ -27,6 +27,8 @@
 #include "Becketron/KeyCodes.h"
 #include "Becketron/MouseButtonCodes.h"
 
+#include "Becketron/CameraController.h"
+
 // --Entry Point----
 #include "Becketron/EntryPoint.h"
 //-------------------------------------------------
