@@ -605,6 +605,7 @@
     <ClCompile Include="src\Becketron\Core\Log.cpp" />
     <ClCompile Include="src\Becketron\Renderer\Buffer.cpp" />
     <ClCompile Include="src\Becketron\Renderer\Camera.cpp" />
+    <ClCompile Include="src\Becketron\Renderer\GraphicsContext.cpp" />
     <ClCompile Include="src\Becketron\Renderer\RenderCommand.cpp" />
     <ClCompile Include="src\Becketron\Renderer\Renderer.cpp" />
     <ClCompile Include="src\Becketron\Renderer\Renderer2D.cpp" />

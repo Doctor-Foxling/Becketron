@@ -1483,5 +1483,6 @@
       <Filter>src\Becketron</Filter>
     </ClCompile>
     <ClCompile Include="src\Becketron\Renderer\Renderer2D.cpp" />
+    <ClCompile Include="src\Becketron\Renderer\GraphicsContext.cpp" />
   </ItemGroup>
 </Project>
