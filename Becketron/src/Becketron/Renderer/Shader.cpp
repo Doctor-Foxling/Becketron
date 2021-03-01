@@ -14,7 +14,7 @@ namespace Becketron
 		switch (Renderer::GetAPI())
 		{
 		case RendererAPI::API::None: BT_CORE_ASSERT(false, "RendererAPI::None is not currently supported"); return nullptr;
-		case RendererAPI::API::OpenGL: return std::make_shared<OpenGLShader>(filepath);
+		case RendererAPI::API::OpenGL: return CreateRef<OpenGLShader>(filepath);
 		}
 
 		BT_CORE_ASSERT(false, "Unknown Renderer API");
@@ -25,7 +25,7 @@ namespace Becketron
 		switch (Renderer::GetAPI())
 		{
 		case RendererAPI::API::None: BT_CORE_ASSERT(false, "RendererAPI::None is not currently supported"); return nullptr;
-		case RendererAPI::API::OpenGL: return std::make_shared<OpenGLShader>(name, vertexSrc, fragmentSrc);
+		case RendererAPI::API::OpenGL: return CreateRef<OpenGLShader>(name, vertexSrc, fragmentSrc);
 		}
 
 		BT_CORE_ASSERT(false, "Unknown Renderer API");

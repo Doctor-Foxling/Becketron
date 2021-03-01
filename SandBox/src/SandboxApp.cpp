@@ -1,11 +1,11 @@
 #include <Becketron.h>
 #include <Becketron/Core/EntryPoint.h>
 
-#include "Platform/OpenGL/OpenGLShader.h"
+#include <imgui/imgui.h>
 
-#include "imgui/imgui.h"
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
+
 #include "Sandbox2D.h"
 
 #include "Becketron/Renderer/Shader.h"
@@ -141,10 +141,8 @@ public:
 		m_Texture = Becketron::Texture2D::Create("assets/textures/paint_splash.jpg");
 		m_MoonTexture = Becketron::Texture2D::Create("assets/textures/moon.png");
 
-		std::dynamic_pointer_cast<Becketron::OpenGLShader>(textureShader)->Bind();
-		std::dynamic_pointer_cast<Becketron::OpenGLShader>(textureShader)->UploadUniformInt(
-			"u_Texture", 0);
-
+		textureShader->Bind();
+		textureShader->SetInt("u_Texture", 0);
 	}
 
 	void OnUpdate(Becketron::Timestep ts) override
@@ -163,9 +161,8 @@ public:
 		//making scale static since we don't need to calculate it all the time
 		static glm::mat4 scale = glm::scale(glm::mat4(1.0f), glm::vec3(0.1f));
 
-		std::dynamic_pointer_cast<Becketron::OpenGLShader>(m_FlatShader)->Bind();
-		std::dynamic_pointer_cast<Becketron::OpenGLShader>(m_FlatShader)->UploadUniformFloat3(
-			"u_Color", m_SquareColor);
+		m_FlatShader->Bind();
+		m_FlatShader->SetInt("u_Texture", 0);
 
 		for (int y = 0; y < 20; y++)
 		{

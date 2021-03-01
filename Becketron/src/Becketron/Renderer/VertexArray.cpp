@@ -11,7 +11,7 @@ namespace Becketron {
 		switch(Renderer::GetAPI())
 		{
 			case RendererAPI::API::None:	BT_CORE_ASSERT(false, "RendererAPI::None Currently not supported!"); return nullptr;
-			case RendererAPI::API::OpenGL:	return std::make_shared<OpenGLVertexArray>();
+			case RendererAPI::API::OpenGL:	return CreateRef<OpenGLVertexArray>();
 		}
 
 		BT_CORE_ASSERT(false, "Unknown RendererAPI!");
