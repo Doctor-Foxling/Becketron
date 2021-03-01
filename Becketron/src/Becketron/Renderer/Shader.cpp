@@ -6,6 +6,9 @@
 
 namespace Becketron
 {
+
+	// ---------------- Shader ----------------
+
 	Ref<Shader> Shader::Create(const std::string& filepath)
 	{
 		switch (Renderer::GetAPI())
@@ -28,6 +31,10 @@ namespace Becketron
 		BT_CORE_ASSERT(false, "Unknown Renderer API");
 		return nullptr;
 	}
+
+
+	// ------------------- Shader Library ------
+
 	void ShaderLibrary::Add(const std::string& name, const Ref<Shader>& shader)
 	{
 		BT_CORE_ASSERT(!Exists(name), "Shader already exists!");

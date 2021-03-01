@@ -1,12 +1,16 @@
 [submodule "Becketron/vendor/spdlog"]
 	path = Becketron/vendor/spdlog
 	url = https://github.com/gabime/spdlog
+	branch = v1.x
 [submodule "Becketron/vendor/GLFW"]
 	path = Becketron/vendor/GLFW
 	url = https://github.com/Doctor-Foxling/glfw
+	branch = master
 [submodule "Becketron/vendor/imgui"]
 	path = Becketron/vendor/imgui
 	url = https://github.com/Doctor-Foxling/imgui
+	branch = docking
 [submodule "Becketron/vendor/glm"]
 	path = Becketron/vendor/glm
 	url = https://github.com/g-truc/glm
+	branch = master

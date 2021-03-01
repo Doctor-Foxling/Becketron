@@ -80,7 +80,9 @@
       <AdditionalIncludeDirectories>src;vendor\spdlog\include;vendor\GLFW\include;vendor\Glad\include;vendor\imgui;vendor\glm;vendor\stb_image;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
+      <MinimalRebuild>false</MinimalRebuild>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <LanguageStandard>stdcpplatest</LanguageStandard>
     </ClCompile>
     <Link>
@@ -104,6 +106,7 @@
       <MinimalRebuild>false</MinimalRebuild>
       <StringPooling>true</StringPooling>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <LanguageStandard>stdcpplatest</LanguageStandard>
     </ClCompile>
     <Link>
@@ -128,6 +131,7 @@
       <MinimalRebuild>false</MinimalRebuild>
       <StringPooling>true</StringPooling>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <LanguageStandard>stdcpplatest</LanguageStandard>
     </ClCompile>
     <Link>
@@ -141,32 +145,33 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="src\Becketron.h" />
-    <ClInclude Include="src\Becketron\Application.h" />
-    <ClInclude Include="src\Becketron\cameraController.h" />
-    <ClInclude Include="src\Becketron\Core.h" />
+    <ClInclude Include="src\Becketron\Core\Application.h" />
+    <ClInclude Include="src\Becketron\Core\Core.h" />
     <ClInclude Include="src\Becketron\Core\Timestep.h" />
-    <ClInclude Include="src\Becketron\EntryPoint.h" />
+    <ClInclude Include="src\Becketron\Core\EntryPoint.h" />
     <ClInclude Include="src\Becketron\Events\ApplicationEvent.h" />
     <ClInclude Include="src\Becketron\Events\Event.h" />
     <ClInclude Include="src\Becketron\Events\KeyEvent.h" />
     <ClInclude Include="src\Becketron\Events\MouseEvent.h" />
     <ClInclude Include="src\Becketron\ImGui\ImGuiLayer.h" />
-    <ClInclude Include="src\Becketron\Input.h" />
-    <ClInclude Include="src\Becketron\KeyCodes.h" />
-    <ClInclude Include="src\Becketron\Layer.h" />
-    <ClInclude Include="src\Becketron\LayerStack.h" />
-    <ClInclude Include="src\Becketron\Log.h" />
-    <ClInclude Include="src\Becketron\MouseButtonCodes.h" />
+    <ClInclude Include="src\Becketron\Core\Input.h" />
+    <ClInclude Include="src\Becketron\Core\KeyCodes.h" />
+    <ClInclude Include="src\Becketron\Core\Layer.h" />
+    <ClInclude Include="src\Becketron\Core\LayerStack.h" />
+    <ClInclude Include="src\Becketron\Core\Log.h" />
+    <ClInclude Include="src\Becketron\Core\MouseButtonCodes.h" />
     <ClInclude Include="src\Becketron\Renderer\Buffer.h" />
     <ClInclude Include="src\Becketron\Renderer\Camera.h" />
     <ClInclude Include="src\Becketron\Renderer\GraphicsContext.h" />
     <ClInclude Include="src\Becketron\Renderer\RenderCommand.h" />
     <ClInclude Include="src\Becketron\Renderer\Renderer.h" />
+    <ClInclude Include="src\Becketron\Renderer\Renderer2D.h" />
     <ClInclude Include="src\Becketron\Renderer\RendererAPI.h" />
     <ClInclude Include="src\Becketron\Renderer\Shader.h" />
     <ClInclude Include="src\Becketron\Renderer\Texture.h" />
     <ClInclude Include="src\Becketron\Renderer\VertexArray.h" />
-    <ClInclude Include="src\Becketron\Window.h" />
+    <ClInclude Include="src\Becketron\Core\Window.h" />
+    <ClInclude Include="src\Becketron\Renderer\cameraController.h" />
     <ClInclude Include="src\Platform\OpenGL\OpenGLBuffer.h" />
     <ClInclude Include="src\Platform\OpenGL\OpenGLContext.h" />
     <ClInclude Include="src\Platform\OpenGL\OpenGLRendererAPI.h" />
@@ -592,21 +597,22 @@
     <ClInclude Include="vendor\stb_image\stb_image.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\Becketron\Application.cpp" />
-    <ClCompile Include="src\Becketron\cameraController.cpp" />
+    <ClCompile Include="src\Becketron\Core\Application.cpp" />
     <ClCompile Include="src\Becketron\ImGui\ImGuiBuild.cpp" />
     <ClCompile Include="src\Becketron\ImGui\ImGuiLayer.cpp" />
-    <ClCompile Include="src\Becketron\Layer.cpp" />
-    <ClCompile Include="src\Becketron\LayerStack.cpp" />
-    <ClCompile Include="src\Becketron\Log.cpp" />
+    <ClCompile Include="src\Becketron\Core\Layer.cpp" />
+    <ClCompile Include="src\Becketron\Core\LayerStack.cpp" />
+    <ClCompile Include="src\Becketron\Core\Log.cpp" />
     <ClCompile Include="src\Becketron\Renderer\Buffer.cpp" />
     <ClCompile Include="src\Becketron\Renderer\Camera.cpp" />
     <ClCompile Include="src\Becketron\Renderer\RenderCommand.cpp" />
     <ClCompile Include="src\Becketron\Renderer\Renderer.cpp" />
+    <ClCompile Include="src\Becketron\Renderer\Renderer2D.cpp" />
     <ClCompile Include="src\Becketron\Renderer\RendererAPI.cpp" />
     <ClCompile Include="src\Becketron\Renderer\Shader.cpp" />
     <ClCompile Include="src\Becketron\Renderer\Texture.cpp" />
     <ClCompile Include="src\Becketron\Renderer\VertexArray.cpp" />
+    <ClCompile Include="src\Becketron\Renderer\cameraController.cpp" />
     <ClCompile Include="src\Platform\OpenGL\OpenGLBuffer.cpp" />
     <ClCompile Include="src\Platform\OpenGL\OpenGLContext.cpp" />
     <ClCompile Include="src\Platform\OpenGL\OpenGLRendererAPI.cpp" />

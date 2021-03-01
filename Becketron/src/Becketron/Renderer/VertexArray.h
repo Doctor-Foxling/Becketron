@@ -2,7 +2,7 @@
  
 #include <memory>
 #include "Becketron/Renderer/Buffer.h"
-#include "Becketron/Core.h"
+#include "Becketron/Core/Core.h"
 
 namespace Becketron {
 	

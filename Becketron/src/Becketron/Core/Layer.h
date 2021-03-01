@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Becketron/Core.h"
+#include "Becketron/Core/Core.h"
 #include "Becketron/Events/Event.h"
 #include "Becketron/Core/Timestep.h"
 

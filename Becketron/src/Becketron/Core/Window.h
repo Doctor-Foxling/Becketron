@@ -2,7 +2,7 @@
 
 #include "btpch.h"
 
-#include "Becketron/Core.h"
+#include "Becketron/Core/Core.h"
 #include "Becketron/Events/Event.h"
 
 namespace Becketron {

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Becketron/Input.h"
+#include "Becketron/Core/Input.h"
 
 namespace Becketron {
 

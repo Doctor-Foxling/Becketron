@@ -1,10 +1,13 @@
 #include <Becketron.h>
+#include <Becketron/Core/EntryPoint.h>
 
 #include "Platform/OpenGL/OpenGLShader.h"
 
 #include "imgui/imgui.h"
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
+#include "Sandbox2D.h"
+
 #include "Becketron/Renderer/Shader.h"
 
 class ExampleLayer : public Becketron::Layer
@@ -218,7 +221,8 @@ class Sandbox : public Becketron::Application
 public:
 	Sandbox()
 	{
-		PushLayer(new ExampleLayer());
+		//PushLayer(new ExampleLayer());
+		PushLayer(new Sandbox2D());
 	}
 
 	~Sandbox()

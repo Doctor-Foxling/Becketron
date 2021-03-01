@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Becketron/Core.h"
+#include "Becketron/Core/Core.h"
 #include "Layer.h"
 
 #include <vector>

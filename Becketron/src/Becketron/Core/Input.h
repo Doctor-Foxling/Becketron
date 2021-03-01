@@ -1,12 +1,18 @@
 #pragma once
 
-#include "Becketron/Core.h"
+#include "Becketron/Core/Core.h"
 
 namespace Becketron {
 
 	class BTRON_API Input
 	{
+	protected:
+		Input() = default; // making Input a true singleton
 	public:
+		// making it a singleton
+		Input(const Input&) = delete;
+		Input& operator = (const Input&) = delete;
+
 		inline static bool IsKeyPressed(int keycode) { return s_Instance->IsKeyPressedImpl(keycode); }
 		
 		inline static bool IsMouseButtonPressed(int button) { return s_Instance->IsMouseButtonPressedImpl(button); }
@@ -21,7 +27,7 @@ namespace Becketron {
 		virtual float GetMouseYImpl() = 0;
 	private:
 		// Making this class a singleton
-		static Input* s_Instance;
+		static Scope<Input> s_Instance;
 
 	};
 }

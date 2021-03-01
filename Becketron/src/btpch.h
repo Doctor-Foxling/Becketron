@@ -12,7 +12,7 @@
 #include <unordered_map>
 #include <unordered_set>
 
-#include "Becketron/Log.h"
+#include "Becketron/Core/Log.h"
 
 #ifdef BT_PLATFORM_WINDOWS
 	#include <Windows.h>

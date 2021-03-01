@@ -2,11 +2,11 @@
 #include "WindowsInput.h"
 
 #include <GLFW/glfw3.h>
-#include "Becketron/Application.h"
+#include "Becketron/Core/Application.h"
 
 namespace Becketron {
 
-	Input* Input::s_Instance = new WindowsInput();
+	Scope<Input> Input::s_Instance = CreateScope<WindowsInput>();
 
 	bool WindowsInput::IsKeyPressedImpl(int keycode)
 	{
