@@ -17,6 +17,8 @@ namespace Becketron {
 
 	Application::Application()
 	{
+		BT_PROFILE_FUNCTION();
+
 		BT_CORE_ASSERT(!s_Instance, "Application already exists!");
 		s_Instance = this;
 
@@ -36,22 +38,31 @@ namespace Becketron {
 
 	Application::~Application()
 	{
+		BT_PROFILE_FUNCTION();
+
+		//Renderer::Shutdown();
 	}
 
 	void Application::PushLayer(Layer* layer)
 	{
+		BT_PROFILE_FUNCTION();
+
 		m_LayerStack.PushLayer(layer);
 		layer->OnAttach();
 	}
 
 	void Application::PushOverlay(Layer* layer)
 	{
+		BT_PROFILE_FUNCTION();
+
 		m_LayerStack.PushOverlay(layer);
 		layer->OnAttach();
 	}
 
 	void Application::OnEvent(Event& e)
 	{
+		BT_PROFILE_FUNCTION();
+
 		EventDispatcher dispatcher(e);
 		dispatcher.Dispatch<WindowCloseEvent>(BT_BIND_EVENT_FN(Application::OnWindowClose));
 		dispatcher.Dispatch<WindowResizeEvent>(BT_BIND_EVENT_FN(Application::OnWindowResize));
@@ -68,8 +79,12 @@ namespace Becketron {
 	
 	void Application::Run()
 	{
+		BT_PROFILE_FUNCTION();
+
 		while (m_Running)
 		{
+			BT_PROFILE_SCOPE("RunLoop");
+
 			float time = (float)glfwGetTime();
 			// we can just assign it to float like that because
 			// we have a constructor that takes a float, (implicit cast)
@@ -78,15 +93,22 @@ namespace Becketron {
 
 			if (!m_Minimized)
 			{
-				for (Layer* layer : m_LayerStack)
-					layer->OnUpdate(timestep); 
-			} 
+				{
+					BT_PROFILE_SCOPE("LayerStack - OnUpdate");
 
-			m_ImGuiLayer->Begin();
-			for (Layer* layer : m_LayerStack)
-				layer->OnImGuiRender();
-			m_ImGuiLayer->End();
+					for (Layer* layer : m_LayerStack)
+						layer->OnUpdate(timestep); 
+				}
 
+				m_ImGuiLayer->Begin();
+				{
+					BT_PROFILE_SCOPE("LayerStack OnImGuiRender");
+
+					for (Layer* layer : m_LayerStack)
+						layer->OnImGuiRender();
+				}
+				m_ImGuiLayer->End();
+			}
 			m_Window->OnUpdate();
 		}
 
@@ -95,6 +117,8 @@ namespace Becketron {
 
 	bool Application::OnWindowResize(WindowResizeEvent& e)
 	{
+		BT_PROFILE_FUNCTION();
+
 		if (e.GetWidth() == 0 || e.GetHeight() == 0)
 		{
 			m_Minimized = true;

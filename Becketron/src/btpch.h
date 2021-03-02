@@ -14,6 +14,8 @@
 
 #include "Becketron/Core/Log.h"
 
+#include "Becketron/Debug/Instrumentor.h"
+
 #ifdef BT_PLATFORM_WINDOWS
 	#include <Windows.h>
 #endif

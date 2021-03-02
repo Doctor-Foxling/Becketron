@@ -24,16 +24,20 @@ namespace Becketron {
 
 	WindowsWindow::WindowsWindow(const WindowProps& props)
 	{
+		BT_PROFILE_FUNCTION();
 		Init(props);
 	}
 
 	WindowsWindow::~WindowsWindow()
 	{
+		BT_PROFILE_FUNCTION();
 		Shutdown();
 	}
 
 	void WindowsWindow::Init(const WindowProps& props)
 	{
+		BT_PROFILE_FUNCTION();
+
 		m_Data.Title = props.Title;
 		m_Data.Width = props.Width;
 		m_Data.Height = props.Height;
@@ -43,6 +47,8 @@ namespace Becketron {
 
 		if (s_GLFWWindowCount == 0)
 		{
+			BT_PROFILE_SCOPE("glfwInit");
+
 			BT_CORE_INFO("Initializing GLFW!");
 			int success = glfwInit();
 			BT_CORE_ASSERT(success, "Could not initialize GLFW!");
@@ -52,9 +58,11 @@ namespace Becketron {
 			glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 6);
 			glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 		}
-
-		m_Window = glfwCreateWindow((int)props.Width, (int)props.Height, m_Data.Title.c_str(), nullptr, nullptr);
-		++s_GLFWWindowCount;
+		{
+			BT_PROFILE_SCOPE("glfwCreateWindow");
+			m_Window = glfwCreateWindow((int)props.Width, (int)props.Height, m_Data.Title.c_str(), nullptr, nullptr);
+			++s_GLFWWindowCount;
+		}
 
 		//m_Context = CreateScope<OpenGLContext>(m_Window);
 		m_Context = GraphicsContext::Create(m_Window);
@@ -152,6 +160,7 @@ namespace Becketron {
 
 	void WindowsWindow::Shutdown()
 	{
+		BT_PROFILE_FUNCTION();
 		glfwDestroyWindow(m_Window);
 
 		s_GLFWWindowCount -= 1;
@@ -165,6 +174,7 @@ namespace Becketron {
 
 	void WindowsWindow::OnUpdate()
 	{
+		BT_PROFILE_FUNCTION();
 		glfwPollEvents();
 		m_Context->SwapBuffers();
 	//glfwWaitEvents();
@@ -172,6 +182,8 @@ namespace Becketron {
 
 	void WindowsWindow::SetVSync(bool enabled)
 	{
+		BT_PROFILE_FUNCTION();
+
 		if (enabled)
 			glfwSwapInterval(1);
 		else

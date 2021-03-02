@@ -7,13 +7,18 @@ extern Becketron::Application* Becketron::CreateApplication();
 int main(int argc, char** argv)
 { 
 	Becketron::Log::Init();
-	BT_CORE_WARN("Initialized Log!");
-	int a = 0;
-	BT_INFO("Hello VAr={0}", a);
 
+	BT_PROFILE_BEGIN_SESSION("Startup", "BtronProfile-Startup.json");
 	auto app = Becketron::CreateApplication();
+	BT_PROFILE_END_SESSION();
+
+	BT_PROFILE_BEGIN_SESSION("Runtime", "BtronProfile-Runtime.json");
 	app->Run();
+	BT_PROFILE_END_SESSION();
+
+	BT_PROFILE_BEGIN_SESSION("Startup", "BtronProfile-Shutdown.json");
 	delete app;
+	BT_PROFILE_END_SESSION();
 }
 
 

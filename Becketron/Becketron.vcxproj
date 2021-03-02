@@ -147,19 +147,21 @@
     <ClInclude Include="src\Becketron.h" />
     <ClInclude Include="src\Becketron\Core\Application.h" />
     <ClInclude Include="src\Becketron\Core\Core.h" />
-    <ClInclude Include="src\Becketron\Core\Timestep.h" />
     <ClInclude Include="src\Becketron\Core\EntryPoint.h" />
-    <ClInclude Include="src\Becketron\Events\ApplicationEvent.h" />
-    <ClInclude Include="src\Becketron\Events\Event.h" />
-    <ClInclude Include="src\Becketron\Events\KeyEvent.h" />
-    <ClInclude Include="src\Becketron\Events\MouseEvent.h" />
-    <ClInclude Include="src\Becketron\ImGui\ImGuiLayer.h" />
     <ClInclude Include="src\Becketron\Core\Input.h" />
     <ClInclude Include="src\Becketron\Core\KeyCodes.h" />
     <ClInclude Include="src\Becketron\Core\Layer.h" />
     <ClInclude Include="src\Becketron\Core\LayerStack.h" />
     <ClInclude Include="src\Becketron\Core\Log.h" />
     <ClInclude Include="src\Becketron\Core\MouseButtonCodes.h" />
+    <ClInclude Include="src\Becketron\Core\Timestep.h" />
+    <ClInclude Include="src\Becketron\Core\Window.h" />
+    <ClInclude Include="src\Becketron\Debug\Instrumentor.h" />
+    <ClInclude Include="src\Becketron\Events\ApplicationEvent.h" />
+    <ClInclude Include="src\Becketron\Events\Event.h" />
+    <ClInclude Include="src\Becketron\Events\KeyEvent.h" />
+    <ClInclude Include="src\Becketron\Events\MouseEvent.h" />
+    <ClInclude Include="src\Becketron\ImGui\ImGuiLayer.h" />
     <ClInclude Include="src\Becketron\Renderer\Buffer.h" />
     <ClInclude Include="src\Becketron\Renderer\Camera.h" />
     <ClInclude Include="src\Becketron\Renderer\GraphicsContext.h" />
@@ -170,7 +172,6 @@
     <ClInclude Include="src\Becketron\Renderer\Shader.h" />
     <ClInclude Include="src\Becketron\Renderer\Texture.h" />
     <ClInclude Include="src\Becketron\Renderer\VertexArray.h" />
-    <ClInclude Include="src\Becketron\Core\Window.h" />
     <ClInclude Include="src\Becketron\Renderer\cameraController.h" />
     <ClInclude Include="src\Platform\OpenGL\OpenGLBuffer.h" />
     <ClInclude Include="src\Platform\OpenGL\OpenGLContext.h" />
@@ -598,11 +599,11 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Becketron\Core\Application.cpp" />
-    <ClCompile Include="src\Becketron\ImGui\ImGuiBuild.cpp" />
-    <ClCompile Include="src\Becketron\ImGui\ImGuiLayer.cpp" />
     <ClCompile Include="src\Becketron\Core\Layer.cpp" />
     <ClCompile Include="src\Becketron\Core\LayerStack.cpp" />
     <ClCompile Include="src\Becketron\Core\Log.cpp" />
+    <ClCompile Include="src\Becketron\ImGui\ImGuiBuild.cpp" />
+    <ClCompile Include="src\Becketron\ImGui\ImGuiLayer.cpp" />
     <ClCompile Include="src\Becketron\Renderer\Buffer.cpp" />
     <ClCompile Include="src\Becketron\Renderer\Camera.cpp" />
     <ClCompile Include="src\Becketron\Renderer\GraphicsContext.cpp" />

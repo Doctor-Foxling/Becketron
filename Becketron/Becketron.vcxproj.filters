@@ -10,6 +10,9 @@
     <Filter Include="src\Becketron\Core">
       <UniqueIdentifier>{F1C7A4A7-DDAB-65FD-460C-6050320F507F}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\Becketron\Debug">
+      <UniqueIdentifier>{2F214A9C-9B82-27AA-24F0-6D5C90505E69}</UniqueIdentifier>
+    </Filter>
     <Filter Include="src\Becketron\Events">
       <UniqueIdentifier>{BD991829-A928-A2F2-5247-B6ED3EB5B298}</UniqueIdentifier>
     </Filter>
@@ -57,8 +60,41 @@
     <ClInclude Include="src\Becketron.h">
       <Filter>src</Filter>
     </ClInclude>
+    <ClInclude Include="src\Becketron\Core\Application.h">
+      <Filter>src\Becketron\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Becketron\Core\Core.h">
+      <Filter>src\Becketron\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Becketron\Core\EntryPoint.h">
+      <Filter>src\Becketron\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Becketron\Core\Input.h">
+      <Filter>src\Becketron\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Becketron\Core\KeyCodes.h">
+      <Filter>src\Becketron\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Becketron\Core\Layer.h">
+      <Filter>src\Becketron\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Becketron\Core\LayerStack.h">
+      <Filter>src\Becketron\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Becketron\Core\Log.h">
+      <Filter>src\Becketron\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Becketron\Core\MouseButtonCodes.h">
+      <Filter>src\Becketron\Core</Filter>
+    </ClInclude>
     <ClInclude Include="src\Becketron\Core\Timestep.h">
       <Filter>src\Becketron\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Becketron\Core\Window.h">
+      <Filter>src\Becketron\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Becketron\Debug\Instrumentor.h">
+      <Filter>src\Becketron\Debug</Filter>
     </ClInclude>
     <ClInclude Include="src\Becketron\Events\ApplicationEvent.h">
       <Filter>src\Becketron\Events</Filter>
@@ -90,6 +126,9 @@
     <ClInclude Include="src\Becketron\Renderer\Renderer.h">
       <Filter>src\Becketron\Renderer</Filter>
     </ClInclude>
+    <ClInclude Include="src\Becketron\Renderer\Renderer2D.h">
+      <Filter>src\Becketron\Renderer</Filter>
+    </ClInclude>
     <ClInclude Include="src\Becketron\Renderer\RendererAPI.h">
       <Filter>src\Becketron\Renderer</Filter>
     </ClInclude>
@@ -100,6 +139,9 @@
       <Filter>src\Becketron\Renderer</Filter>
     </ClInclude>
     <ClInclude Include="src\Becketron\Renderer\VertexArray.h">
+      <Filter>src\Becketron\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Becketron\Renderer\cameraController.h">
       <Filter>src\Becketron\Renderer</Filter>
     </ClInclude>
     <ClInclude Include="src\Platform\OpenGL\OpenGLBuffer.h">
@@ -1371,42 +1413,20 @@
     <ClInclude Include="vendor\stb_image\stb_image.h">
       <Filter>vendor\stb_image</Filter>
     </ClInclude>
-    <ClInclude Include="src\Becketron\Core\Application.h">
-      <Filter>src\Becketron</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Becketron\Core\Core.h">
-      <Filter>src\Becketron</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Becketron\Core\EntryPoint.h">
-      <Filter>src\Becketron</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Becketron\Core\Input.h">
-      <Filter>src\Becketron</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Becketron\Core\KeyCodes.h">
-      <Filter>src\Becketron</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Becketron\Core\Layer.h">
-      <Filter>src\Becketron</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Becketron\Core\LayerStack.h">
-      <Filter>src\Becketron</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Becketron\Core\Log.h">
-      <Filter>src\Becketron</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Becketron\Core\MouseButtonCodes.h">
-      <Filter>src\Becketron</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Becketron\Core\Window.h">
-      <Filter>src\Becketron</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Becketron\Renderer\cameraController.h">
-      <Filter>src\Becketron</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Becketron\Renderer\Renderer2D.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\Becketron\Core\Application.cpp">
+      <Filter>src\Becketron\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Becketron\Core\Layer.cpp">
+      <Filter>src\Becketron\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Becketron\Core\LayerStack.cpp">
+      <Filter>src\Becketron\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Becketron\Core\Log.cpp">
+      <Filter>src\Becketron\Core</Filter>
+    </ClCompile>
     <ClCompile Include="src\Becketron\ImGui\ImGuiBuild.cpp">
       <Filter>src\Becketron\ImGui</Filter>
     </ClCompile>
@@ -1419,10 +1439,16 @@
     <ClCompile Include="src\Becketron\Renderer\Camera.cpp">
       <Filter>src\Becketron\Renderer</Filter>
     </ClCompile>
+    <ClCompile Include="src\Becketron\Renderer\GraphicsContext.cpp">
+      <Filter>src\Becketron\Renderer</Filter>
+    </ClCompile>
     <ClCompile Include="src\Becketron\Renderer\RenderCommand.cpp">
       <Filter>src\Becketron\Renderer</Filter>
     </ClCompile>
     <ClCompile Include="src\Becketron\Renderer\Renderer.cpp">
+      <Filter>src\Becketron\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Becketron\Renderer\Renderer2D.cpp">
       <Filter>src\Becketron\Renderer</Filter>
     </ClCompile>
     <ClCompile Include="src\Becketron\Renderer\RendererAPI.cpp">
@@ -1435,6 +1461,9 @@
       <Filter>src\Becketron\Renderer</Filter>
     </ClCompile>
     <ClCompile Include="src\Becketron\Renderer\VertexArray.cpp">
+      <Filter>src\Becketron\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Becketron\Renderer\cameraController.cpp">
       <Filter>src\Becketron\Renderer</Filter>
     </ClCompile>
     <ClCompile Include="src\Platform\OpenGL\OpenGLBuffer.cpp">
@@ -1467,22 +1496,5 @@
     <ClCompile Include="vendor\stb_image\stb_image.cpp">
       <Filter>vendor\stb_image</Filter>
     </ClCompile>
-    <ClCompile Include="src\Becketron\Core\Application.cpp">
-      <Filter>src\Becketron</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Becketron\Core\Layer.cpp">
-      <Filter>src\Becketron</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Becketron\Core\LayerStack.cpp">
-      <Filter>src\Becketron</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Becketron\Core\Log.cpp">
-      <Filter>src\Becketron</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Becketron\Renderer\cameraController.cpp">
-      <Filter>src\Becketron</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Becketron\Renderer\Renderer2D.cpp" />
-    <ClCompile Include="src\Becketron\Renderer\GraphicsContext.cpp" />
   </ItemGroup>
 </Project>

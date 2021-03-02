@@ -9,6 +9,8 @@ namespace Becketron
 
 	void Renderer::Init()
 	{
+		BT_PROFILE_FUNCTION();
+
 		RenderCommand::Init();
 		Renderer2D::Init();
 	}
