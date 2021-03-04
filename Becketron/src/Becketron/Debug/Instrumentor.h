@@ -125,7 +125,7 @@ namespace Becketron {
 
 }
 
-#define BT_PROFILE 1
+#define BT_PROFILE 0
 #if BT_PROFILE
 	#define	BT_PROFILE_BEGIN_SESSION(name, filepath) ::Becketron::Instrumentor::Get().BeginSession(name, filepath)
 	#define BT_PROFILE_END_SESSION() ::Becketron::Instrumentor::Get().EndSession()

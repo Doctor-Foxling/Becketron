@@ -41,10 +41,12 @@ void Sandbox2D::OnUpdate(Becketron::Timestep ts)
 
 		BT_PROFILE_SCOPE("Renderer Draw");
 		Becketron::Renderer2D::BeginScene(m_CameraController.GetCamera());
-		Becketron::Renderer2D::DrawQuad({ -1.0f, 0.0f }, { 0.8f, 1.0f }, m_SquareColor);
+		//Becketron::Renderer2D::DrawRotatedQuad({ -1.0f, 0.0f }, { 0.8f, 1.0f }, glm::radians(45.0f) , m_SquareColor);
 		Becketron::Renderer2D::DrawQuad({ 0.5f, -0.5f }, { 0.5f, 0.75f }, { 0.2f, 0.3f, 0.2f, 1.0f });
-		Becketron::Renderer2D::DrawQuad({ 0.5f, 0.0f, -0.1f }, { 10.0f, 10.0f }, m_CheckerboardTexture);
-		Becketron::Renderer::EndScene();
+		Becketron::Renderer2D::DrawQuad({ -1.0f, 0.0f }, { 0.8f, 1.0f }, m_SquareColor);
+		Becketron::Renderer2D::DrawQuad({ -5.0f, -5.0f, -0.1f }, { 10.0f, 10.0f }, m_CheckerboardTexture, 10.0f);
+		Becketron::Renderer2D::DrawQuad({ 0.0f, -0.8f, 0.0f }, { 1.0f, 1.0f }, m_CheckerboardTexture, 0.5f);
+		Becketron::Renderer2D::EndScene();
 	}
 
 	// TODO:: Add these funs - Shader::SetMat4, Shader::SetFloat4
