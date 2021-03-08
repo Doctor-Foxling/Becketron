@@ -155,3 +155,56 @@ project "Sandbox"
 		defines "BT_DIST"
 		runtime "Release"
 		optimize "on"
+
+
+project "Tron"
+		location "Tron"
+		kind "ConsoleApp"
+		language "C++"
+		cppdialect "C++latest"
+		staticruntime "on"
+		
+		targetdir ("bin/" .. outputdir .. "/%{prj.name}")
+		objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
+	
+		files
+		{
+			"%{prj.name}/src/**.h",
+			"%{prj.name}/src/**.cpp",
+		}
+	
+		includedirs
+		{
+			"Becketron/vendor/spdlog/include",
+			"Becketron/src",
+			"Becketron/vendor",
+			"%{IncludeDir.glm}"
+		}
+	
+		links
+		{
+			"Becketron"
+		}
+	
+		filter "system:windows"
+			systemversion "latest"
+	
+			defines
+			{
+				"BT_PLATFORM_WINDOWS"
+			}
+	
+		filter "configurations:Debug"
+			defines "BT_DEBUG"
+			runtime "Debug"
+			symbols "on"
+	
+		filter "configurations:Release"
+			defines "BT_RELEASE"
+			runtime "Release"
+			optimize "on"
+	
+		filter "configurations:Dist"
+			defines "BT_DIST"
+			runtime "Release"
+			optimize "on"		

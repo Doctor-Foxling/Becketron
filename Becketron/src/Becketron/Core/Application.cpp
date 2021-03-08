@@ -15,7 +15,7 @@ namespace Becketron {
 
 	Application* Application::s_Instance = nullptr;
 
-	Application::Application()
+	Application::Application(const std::string& name)
 	{
 		BT_PROFILE_FUNCTION();
 
@@ -25,7 +25,7 @@ namespace Becketron {
 		/*m_Window = std::unique_ptr<Window>(Window::Create());
 		m_Window->SetEventCallback(BIND_EVENT_FN(OnEvent));*/
 
-		m_Window = Window::Create();
+		m_Window = Window::Create(WindowProps(name));
 		m_Window->SetEventCallback(BT_BIND_EVENT_FN(Application::OnEvent));
 
 		Renderer::Init();
@@ -59,6 +59,11 @@ namespace Becketron {
 		layer->OnAttach();
 	}
 
+	void Application::Close()
+	{
+		m_Running = false;
+	}
+
 	void Application::OnEvent(Event& e)
 	{
 		BT_PROFILE_FUNCTION();
@@ -71,9 +76,9 @@ namespace Becketron {
 
 		for (auto it = m_LayerStack.end(); it != m_LayerStack.begin(); )
 		{
-			(*--it)->OnEvent(e);
 			if (e.Handled)
 				break;
+			(*--it)->OnEvent(e);
 		}
 	}
 	

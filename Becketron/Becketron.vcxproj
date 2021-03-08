@@ -164,6 +164,7 @@
     <ClInclude Include="src\Becketron\ImGui\ImGuiLayer.h" />
     <ClInclude Include="src\Becketron\Renderer\Buffer.h" />
     <ClInclude Include="src\Becketron\Renderer\Camera.h" />
+    <ClInclude Include="src\Becketron\Renderer\Framebuffer.h" />
     <ClInclude Include="src\Becketron\Renderer\GraphicsContext.h" />
     <ClInclude Include="src\Becketron\Renderer\RenderCommand.h" />
     <ClInclude Include="src\Becketron\Renderer\Renderer.h" />
@@ -175,11 +176,11 @@
     <ClInclude Include="src\Becketron\Renderer\cameraController.h" />
     <ClInclude Include="src\Platform\OpenGL\OpenGLBuffer.h" />
     <ClInclude Include="src\Platform\OpenGL\OpenGLContext.h" />
+    <ClInclude Include="src\Platform\OpenGL\OpenGLFramebuffer.h" />
     <ClInclude Include="src\Platform\OpenGL\OpenGLRendererAPI.h" />
     <ClInclude Include="src\Platform\OpenGL\OpenGLShader.h" />
     <ClInclude Include="src\Platform\OpenGL\OpenGLTexture.h" />
     <ClInclude Include="src\Platform\OpenGL\OpenGLVertexArray.h" />
-    <ClInclude Include="src\Platform\Windows\WindowsInput.h" />
     <ClInclude Include="src\Platform\Windows\WindowsWindow.h" />
     <ClInclude Include="src\btpch.h" />
     <ClInclude Include="vendor\glm\glm\common.hpp" />
@@ -606,6 +607,7 @@
     <ClCompile Include="src\Becketron\ImGui\ImGuiLayer.cpp" />
     <ClCompile Include="src\Becketron\Renderer\Buffer.cpp" />
     <ClCompile Include="src\Becketron\Renderer\Camera.cpp" />
+    <ClCompile Include="src\Becketron\Renderer\Framebuffer.cpp" />
     <ClCompile Include="src\Becketron\Renderer\GraphicsContext.cpp" />
     <ClCompile Include="src\Becketron\Renderer\RenderCommand.cpp" />
     <ClCompile Include="src\Becketron\Renderer\Renderer.cpp" />
@@ -617,6 +619,7 @@
     <ClCompile Include="src\Becketron\Renderer\cameraController.cpp" />
     <ClCompile Include="src\Platform\OpenGL\OpenGLBuffer.cpp" />
     <ClCompile Include="src\Platform\OpenGL\OpenGLContext.cpp" />
+    <ClCompile Include="src\Platform\OpenGL\OpenGLFramebuffer.cpp" />
     <ClCompile Include="src\Platform\OpenGL\OpenGLRendererAPI.cpp" />
     <ClCompile Include="src\Platform\OpenGL\OpenGLShader.cpp" />
     <ClCompile Include="src\Platform\OpenGL\OpenGLTexture.cpp" />

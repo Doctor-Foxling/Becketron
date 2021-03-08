@@ -16,7 +16,7 @@ int main(int argc, char** argv)
 	app->Run();
 	BT_PROFILE_END_SESSION();
 
-	BT_PROFILE_BEGIN_SESSION("Startup", "BtronProfile-Shutdown.json");
+	BT_PROFILE_BEGIN_SESSION("Shutdown", "BtronProfile-Shutdown.json");
 	delete app;
 	BT_PROFILE_END_SESSION();
 }

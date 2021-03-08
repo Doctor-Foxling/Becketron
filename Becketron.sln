@@ -13,6 +13,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Glad", "Becketron\vendor\Gl
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ImGui", "Becketron\vendor\imgui\ImGui.vcxproj", "{C0FF640D-2C14-8DBE-F595-301E616989EF}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Tron", "Tron\Tron.vcxproj", "{08138D7C-F449-8E0D-9D36-7410894C0A0F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -50,6 +52,12 @@ Global
 		{C0FF640D-2C14-8DBE-F595-301E616989EF}.Dist|x64.Build.0 = Dist|x64
 		{C0FF640D-2C14-8DBE-F595-301E616989EF}.Release|x64.ActiveCfg = Release|x64
 		{C0FF640D-2C14-8DBE-F595-301E616989EF}.Release|x64.Build.0 = Release|x64
+		{08138D7C-F449-8E0D-9D36-7410894C0A0F}.Debug|x64.ActiveCfg = Debug|x64
+		{08138D7C-F449-8E0D-9D36-7410894C0A0F}.Debug|x64.Build.0 = Debug|x64
+		{08138D7C-F449-8E0D-9D36-7410894C0A0F}.Dist|x64.ActiveCfg = Dist|x64
+		{08138D7C-F449-8E0D-9D36-7410894C0A0F}.Dist|x64.Build.0 = Dist|x64
+		{08138D7C-F449-8E0D-9D36-7410894C0A0F}.Release|x64.ActiveCfg = Release|x64
+		{08138D7C-F449-8E0D-9D36-7410894C0A0F}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

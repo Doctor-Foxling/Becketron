@@ -117,6 +117,9 @@
     <ClInclude Include="src\Becketron\Renderer\Camera.h">
       <Filter>src\Becketron\Renderer</Filter>
     </ClInclude>
+    <ClInclude Include="src\Becketron\Renderer\Framebuffer.h">
+      <Filter>src\Becketron\Renderer</Filter>
+    </ClInclude>
     <ClInclude Include="src\Becketron\Renderer\GraphicsContext.h">
       <Filter>src\Becketron\Renderer</Filter>
     </ClInclude>
@@ -150,6 +153,9 @@
     <ClInclude Include="src\Platform\OpenGL\OpenGLContext.h">
       <Filter>src\Platform\OpenGL</Filter>
     </ClInclude>
+    <ClInclude Include="src\Platform\OpenGL\OpenGLFramebuffer.h">
+      <Filter>src\Platform\OpenGL</Filter>
+    </ClInclude>
     <ClInclude Include="src\Platform\OpenGL\OpenGLRendererAPI.h">
       <Filter>src\Platform\OpenGL</Filter>
     </ClInclude>
@@ -161,9 +167,6 @@
     </ClInclude>
     <ClInclude Include="src\Platform\OpenGL\OpenGLVertexArray.h">
       <Filter>src\Platform\OpenGL</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Platform\Windows\WindowsInput.h">
-      <Filter>src\Platform\Windows</Filter>
     </ClInclude>
     <ClInclude Include="src\Platform\Windows\WindowsWindow.h">
       <Filter>src\Platform\Windows</Filter>
@@ -1439,6 +1442,9 @@
     <ClCompile Include="src\Becketron\Renderer\Camera.cpp">
       <Filter>src\Becketron\Renderer</Filter>
     </ClCompile>
+    <ClCompile Include="src\Becketron\Renderer\Framebuffer.cpp">
+      <Filter>src\Becketron\Renderer</Filter>
+    </ClCompile>
     <ClCompile Include="src\Becketron\Renderer\GraphicsContext.cpp">
       <Filter>src\Becketron\Renderer</Filter>
     </ClCompile>
@@ -1470,6 +1476,9 @@
       <Filter>src\Platform\OpenGL</Filter>
     </ClCompile>
     <ClCompile Include="src\Platform\OpenGL\OpenGLContext.cpp">
+      <Filter>src\Platform\OpenGL</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Platform\OpenGL\OpenGLFramebuffer.cpp">
       <Filter>src\Platform\OpenGL</Filter>
     </ClCompile>
     <ClCompile Include="src\Platform\OpenGL\OpenGLRendererAPI.cpp">
