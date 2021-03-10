@@ -11,6 +11,11 @@
 
 #include "Becketron/Core/Timestep.h"
 
+// -- Scene --------
+#include "Becketron/Scene/Scene.h"
+#include "Becketron/Scene/Entity.h"
+#include "Becketron/Scene/Components.h"
+
 // -- Renderer -----
 
 #include "Becketron/Renderer/Renderer.h"

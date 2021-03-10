@@ -24,6 +24,7 @@ IncludeDir["Glad"] = "Becketron/vendor/Glad/include"
 IncludeDir["ImGui"] = "Becketron/vendor/imgui"
 IncludeDir["glm"] = "Becketron/vendor/glm"
 IncludeDir["stb_image"] = "Becketron/vendor/stb_image"
+IncludeDir["entt"] = "Becketron/vendor/entt/include"
 
 group "Dependencies"
 	include "Becketron/vendor/GLFW"
@@ -68,6 +69,7 @@ project "Becketron"
 		"%{IncludeDir.ImGui}",
 		"%{IncludeDir.glm}",
 		"%{IncludeDir.stb_image}",
+		"%{IncludeDir.entt}"
 	}
 
 	links
@@ -125,7 +127,8 @@ project "Sandbox"
 		"Becketron/vendor/spdlog/include",
 		"Becketron/src",
 		"Becketron/vendor",
-		"%{IncludeDir.glm}"
+		"%{IncludeDir.glm}",
+		"%{IncludeDir.entt}"
 	}
 
 	links
@@ -178,7 +181,8 @@ project "Tron"
 			"Becketron/vendor/spdlog/include",
 			"Becketron/src",
 			"Becketron/vendor",
-			"%{IncludeDir.glm}"
+			"%{IncludeDir.glm}",
+			"%{IncludeDir.entt}"
 		}
 	
 		links
