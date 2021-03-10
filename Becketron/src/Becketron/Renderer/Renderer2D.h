@@ -1,8 +1,8 @@
 #pragma once
 
-#include "Camera.h"
+#include "Becketron/Renderer/Texture.h"
 
-#include "Texture.h"
+#include "Becketron/Renderer/Camera.h"
 
 namespace Becketron {
 
@@ -12,7 +12,8 @@ namespace Becketron {
 		static void Init();
 		static void Shutdown();
 
-		static void BeginScene(const OrthographicCamera& camera);
+		static void BeginScene(const Camera& camera, const glm::mat4& transform);
+		static void BeginScene(const OrthographicCamera& camera);  // TODO: Remove
 		static void EndScene();
 		static void Flush();
 

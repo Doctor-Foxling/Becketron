@@ -2,6 +2,8 @@
 
 #include <glm/glm.hpp>
 
+#include "Becketron/Renderer/Camera.h"
+
 namespace Becketron {
 
 	struct TagComponent
@@ -36,5 +38,16 @@ namespace Becketron {
 		SpriteRendererComponent(const SpriteRendererComponent&) = default;
 		SpriteRendererComponent(const glm::vec4& color)
 			: Color(color) {}
+	};
+
+	struct CameraComponent
+	{
+		Becketron::Camera Camera;
+		bool Primary = true;  // TODO: think about moving to Scene
+
+		CameraComponent() = default;
+		CameraComponent(const CameraComponent&) = default;
+		CameraComponent(const glm::mat4& projection)
+			: Camera(projection) {}
 	};
 }
