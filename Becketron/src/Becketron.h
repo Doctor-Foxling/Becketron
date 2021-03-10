@@ -14,6 +14,7 @@
 // -- Scene --------
 #include "Becketron/Scene/Scene.h"
 #include "Becketron/Scene/Entity.h"
+#include "Becketron/Scene/ScriptableEntity.h"
 #include "Becketron/Scene/Components.h"
 
 // -- Renderer -----

@@ -177,6 +177,8 @@
     <ClInclude Include="src\Becketron\Scene\Components.h" />
     <ClInclude Include="src\Becketron\Scene\Entity.h" />
     <ClInclude Include="src\Becketron\Scene\Scene.h" />
+    <ClInclude Include="src\Becketron\Scene\SceneCamera.h" />
+    <ClInclude Include="src\Becketron\Scene\ScriptableEntity.h" />
     <ClInclude Include="src\Platform\OpenGL\OpenGLBuffer.h" />
     <ClInclude Include="src\Platform\OpenGL\OpenGLContext.h" />
     <ClInclude Include="src\Platform\OpenGL\OpenGLFramebuffer.h" />
@@ -622,6 +624,7 @@
     <ClCompile Include="src\Becketron\Renderer\cameraController.cpp" />
     <ClCompile Include="src\Becketron\Scene\Scene.cpp" />
     <ClCompile Include="src\Becketron\Scene\Entity.cpp" />
+    <ClCompile Include="src\Becketron\Scene\SceneCamera.cpp" />
     <ClCompile Include="src\Platform\OpenGL\OpenGLBuffer.cpp" />
     <ClCompile Include="src\Platform\OpenGL\OpenGLContext.cpp" />
     <ClCompile Include="src\Platform\OpenGL\OpenGLFramebuffer.cpp" />
