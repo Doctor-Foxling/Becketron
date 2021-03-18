@@ -2,6 +2,7 @@
 #include "Renderer.h"
 
 #include "Renderer2D.h"
+#include "Renderer3D.h"
 
 namespace Becketron
 {
@@ -13,6 +14,7 @@ namespace Becketron
 
 		RenderCommand::Init();
 		Renderer2D::Init();
+		Renderer3D::Init();
 	}
 
 	void Renderer::Shutdown()

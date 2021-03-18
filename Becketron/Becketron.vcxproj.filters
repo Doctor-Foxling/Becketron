@@ -1426,6 +1426,7 @@
     <ClInclude Include="src\Becketron\Scene\Entity.h" />
     <ClInclude Include="src\Becketron\Scene\SceneCamera.h" />
     <ClInclude Include="src\Becketron\Scene\ScriptableEntity.h" />
+    <ClInclude Include="src\Becketron\Renderer\Renderer3D.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Becketron\Core\Application.cpp">
@@ -1520,5 +1521,6 @@
     </ClCompile>
     <ClCompile Include="src\Becketron\Scene\Entity.cpp" />
     <ClCompile Include="src\Becketron\Scene\SceneCamera.cpp" />
+    <ClCompile Include="src\Becketron\Renderer\Renderer3D.cpp" />
   </ItemGroup>
 </Project>
