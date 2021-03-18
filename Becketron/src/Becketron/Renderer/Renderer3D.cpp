@@ -21,11 +21,11 @@ namespace Becketron {
 
 	struct Renderer3DData
 	{
-		static const uint32_t MaxCubes = 1000;
+		//static const uint32_t MaxCubes = 1000;
 		static const uint32_t MaxTexCubes = 1000;
-		static const uint32_t MaxVertices = MaxCubes * 8;
-		static const uint32_t MaxTVertices = MaxTexCubes * 24;
-		static const uint32_t MaxIndices = MaxCubes * 36;
+		//static const uint32_t MaxVertices = MaxCubes * 8;
+		static const uint32_t MaxTexVertices = MaxTexCubes * 24;
+		//static const uint32_t MaxIndices = MaxCubes * 36;
 		static const uint32_t MaxTexIndices = MaxTexCubes * 36;
 		static const uint32_t MaxTextureSlots = 32;  // TODO: RenderCaps
 
@@ -41,7 +41,7 @@ namespace Becketron {
 		std::array<Ref<Texture2D>, MaxTextureSlots> TextureSlots;
 		uint32_t TextureSlotIndex = 1;
 
-		glm::vec4 CubeVertexPositions[8];
+		//glm::vec4 CubeVertexPositions[8];
 		
 		glm::vec4 CubeVertexTexPositions[24];
 		glm::vec2 CubeTextureCoordinates[24];
@@ -57,7 +57,7 @@ namespace Becketron {
 
 		s_Data.CubeVertexArray = VertexArray::Create();
 
-		s_Data.CubeVertexBuffer = VertexBuffer::Create(s_Data.MaxVertices * sizeof(CubeVertex));
+		s_Data.CubeVertexBuffer = VertexBuffer::Create(s_Data.MaxTexVertices * sizeof(CubeVertex));
 
 		s_Data.CubeVertexBuffer->SetLayout({
 				{ShaderDataType::Float3, "a_Position" },
@@ -68,81 +68,81 @@ namespace Becketron {
 			});
 		s_Data.CubeVertexArray->AddVertexBuffer(s_Data.CubeVertexBuffer);
 
-		s_Data.CubeVertexBufferBase = new CubeVertex[s_Data.MaxVertices];
+		s_Data.CubeVertexBufferBase = new CubeVertex[s_Data.MaxTexVertices];
 
 		// ------------ Indices for normal cube --------------
 
-		uint32_t* cubeIndices = new uint32_t[s_Data.MaxIndices];
+		//uint32_t* cubeIndices = new uint32_t[s_Data.MaxIndices];
 
-		uint32_t offset = 0;
-		for (uint32_t i = 0; i < s_Data.MaxIndices; i += 36)
-		{
-			// front
-			cubeIndices[i + 0] = offset + 0;
-			cubeIndices[i + 1] = offset + 1;
-			cubeIndices[i + 2] = offset + 2;
+		//uint32_t offset = 0;
+		//for (uint32_t i = 0; i < s_Data.MaxIndices; i += 36)
+		//{
+		//	// front
+		//	cubeIndices[i + 0] = offset + 0;
+		//	cubeIndices[i + 1] = offset + 1;
+		//	cubeIndices[i + 2] = offset + 2;
 
-			cubeIndices[i + 3] = offset + 2;
-			cubeIndices[i + 4] = offset + 3;
-			cubeIndices[i + 5] = offset + 0;
+		//	cubeIndices[i + 3] = offset + 2;
+		//	cubeIndices[i + 4] = offset + 3;
+		//	cubeIndices[i + 5] = offset + 0;
 
-			// right
-			cubeIndices[i + 6] = offset + 1;
-			cubeIndices[i + 7] = offset + 5;
-			cubeIndices[i + 8] = offset + 6;
+		//	// right
+		//	cubeIndices[i + 6] = offset + 1;
+		//	cubeIndices[i + 7] = offset + 5;
+		//	cubeIndices[i + 8] = offset + 6;
 
-			cubeIndices[i + 9] = offset + 6;
-			cubeIndices[i + 10] = offset + 2;
-			cubeIndices[i + 11] = offset + 1;
+		//	cubeIndices[i + 9] = offset + 6;
+		//	cubeIndices[i + 10] = offset + 2;
+		//	cubeIndices[i + 11] = offset + 1;
 
-			// back
-			cubeIndices[i + 12] = offset + 7;
-			cubeIndices[i + 13] = offset + 6;
-			cubeIndices[i + 14] = offset + 5;
+		//	// back
+		//	cubeIndices[i + 12] = offset + 7;
+		//	cubeIndices[i + 13] = offset + 6;
+		//	cubeIndices[i + 14] = offset + 5;
 
-			cubeIndices[i + 15] = offset + 5;
-			cubeIndices[i + 16] = offset + 4;
-			cubeIndices[i + 17] = offset + 7;
+		//	cubeIndices[i + 15] = offset + 5;
+		//	cubeIndices[i + 16] = offset + 4;
+		//	cubeIndices[i + 17] = offset + 7;
 
-			// left
-			cubeIndices[i + 18] = offset + 4;
-			cubeIndices[i + 19] = offset + 0;
-			cubeIndices[i + 20] = offset + 3;
+		//	// left
+		//	cubeIndices[i + 18] = offset + 4;
+		//	cubeIndices[i + 19] = offset + 0;
+		//	cubeIndices[i + 20] = offset + 3;
 
-			cubeIndices[i + 21] = offset + 3;
-			cubeIndices[i + 22] = offset + 7;
-			cubeIndices[i + 23] = offset + 4;
+		//	cubeIndices[i + 21] = offset + 3;
+		//	cubeIndices[i + 22] = offset + 7;
+		//	cubeIndices[i + 23] = offset + 4;
 
-			// bottom
-			cubeIndices[i + 24] = offset + 4;
-			cubeIndices[i + 25] = offset + 5;
-			cubeIndices[i + 26] = offset + 1;
+		//	// bottom
+		//	cubeIndices[i + 24] = offset + 4;
+		//	cubeIndices[i + 25] = offset + 5;
+		//	cubeIndices[i + 26] = offset + 1;
 
-			cubeIndices[i + 27] = offset + 1;
-			cubeIndices[i + 28] = offset + 0;
-			cubeIndices[i + 29] = offset + 4;
+		//	cubeIndices[i + 27] = offset + 1;
+		//	cubeIndices[i + 28] = offset + 0;
+		//	cubeIndices[i + 29] = offset + 4;
 
-			// top
-			cubeIndices[i + 30] = offset + 3;
-			cubeIndices[i + 31] = offset + 2;
-			cubeIndices[i + 32] = offset + 6;
+		//	// top
+		//	cubeIndices[i + 30] = offset + 3;
+		//	cubeIndices[i + 31] = offset + 2;
+		//	cubeIndices[i + 32] = offset + 6;
 
-			cubeIndices[i + 33] = offset + 6;
-			cubeIndices[i + 34] = offset + 7;
-			cubeIndices[i + 35] = offset + 3;
+		//	cubeIndices[i + 33] = offset + 6;
+		//	cubeIndices[i + 34] = offset + 7;
+		//	cubeIndices[i + 35] = offset + 3;
 
-			offset += 8;
-		}
+		//	offset += 8;
+		//}
 
-		Ref<IndexBuffer> cubeIB = IndexBuffer::Create(cubeIndices, s_Data.MaxIndices);
-		//s_Data.CubeVertexArray->SetIndexBuffer(cubeIB);
-		delete[] cubeIndices;
+		//Ref<IndexBuffer> cubeIB = IndexBuffer::Create(cubeIndices, s_Data.MaxIndices);
+		////s_Data.CubeVertexArray->SetIndexBuffer(cubeIB);
+		//delete[] cubeIndices;
 
 		// --------- Cube Indices for textured Cube -------
 
 		uint32_t* cubeTexIndices = new uint32_t[s_Data.MaxTexIndices];
 		// Re-using the offset variable
-		offset = 0;
+		uint32_t offset = 0;
 
 		for (uint32_t i = 0; i < s_Data.MaxTexIndices; i += 36)
 		{
@@ -226,7 +226,7 @@ namespace Becketron {
 		s_Data.TextureSlots[0] = s_Data.WhiteTexture;
 
 		// Normal Cube Vertices
-		s_Data.CubeVertexPositions[0] = { -0.5f, -0.5f, 0.5f, 1.0f };
+		/*s_Data.CubeVertexPositions[0] = { -0.5f, -0.5f, 0.5f, 1.0f };
 		s_Data.CubeVertexPositions[1] = { 0.5f, -0.5f, 0.5f, 1.0f };
 		s_Data.CubeVertexPositions[2] = { 0.5f,  0.5f, 0.5f, 1.0f };
 		s_Data.CubeVertexPositions[3] = { -0.5f,  0.5f, 0.5f, 1.0f };
@@ -234,7 +234,7 @@ namespace Becketron {
 		s_Data.CubeVertexPositions[4] = { -0.5f, -0.5f, -0.5f, 1.0f };
 		s_Data.CubeVertexPositions[5] = { 0.5f, -0.5f, -0.5f, 1.0f };
 		s_Data.CubeVertexPositions[6] = { 0.5f,  0.5f, -0.5f, 1.0f };
-		s_Data.CubeVertexPositions[7] = { -0.5f,  0.5f, -0.5f, 1.0f };
+		s_Data.CubeVertexPositions[7] = { -0.5f,  0.5f, -0.5f, 1.0f };*/
 
 
 		// --- Textured Cube Vertices 
@@ -402,20 +402,18 @@ namespace Becketron {
 	{
 		BT_PROFILE_FUNCTION();
 
-		constexpr size_t CubeVertexCount = 8;
+		constexpr size_t CubeVertexCount = 24;
 		const float textureIndex = 0.0f;  // White Texture
-		constexpr glm::vec2 textureCoords[] = { { 0.0f, 0.0f }, { 1.0f, 0.0f}, { 1.0f, 1.0f}, { 0.0f, 1.0f },
-												{ 0.0f, 0.0f }, { 1.0f, 0.0f}, { 1.0f, 1.0f}, { 0.0f, 1.0f } };
 		const float tilingFactor = 1.0f;
 
-		if (s_Data.CubeIndexCount >= Renderer3DData::MaxIndices)
+		if (s_Data.CubeIndexCount >= Renderer3DData::MaxTexIndices)
 			FlushAndReset();
 
 		for (size_t i = 0; i < CubeVertexCount; i++)
 		{
-			s_Data.CubeVertexBufferPtr->Position = transform * s_Data.CubeVertexPositions[i];
+			s_Data.CubeVertexBufferPtr->Position = transform * s_Data.CubeVertexTexPositions[i];
 			s_Data.CubeVertexBufferPtr->Color = color + glm::vec4(i*0.1);
-			s_Data.CubeVertexBufferPtr->TexCoord = textureCoords[i];
+			s_Data.CubeVertexBufferPtr->TexCoord = s_Data.CubeTextureCoordinates[i];
 			s_Data.CubeVertexBufferPtr->TexIndex = textureIndex;
 			s_Data.CubeVertexBufferPtr->TilingFactor = tilingFactor;
 			s_Data.CubeVertexBufferPtr++;
@@ -447,7 +445,7 @@ namespace Becketron {
 
 		constexpr size_t cubeVertexCount = 24;
 
-		if (s_Data.CubeIndexCount >= Renderer3DData::MaxIndices)
+		if (s_Data.CubeIndexCount >= Renderer3DData::MaxTexIndices)
 			FlushAndReset();
 
 		float textureIndex = 0.0f;

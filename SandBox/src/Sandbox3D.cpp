@@ -66,6 +66,7 @@ void Sandbox3D::OnUpdate(Becketron::Timestep ts)
 			}
 		}*/
 		Becketron::Renderer3D::EndScene();
+
 	}
 
 	// TODO:: Add these funs - Shader::SetMat4, Shader::SetFloat4
