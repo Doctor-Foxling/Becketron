@@ -3,6 +3,7 @@
 
 #include "Components.h"
 #include "Becketron/Renderer/Renderer2D.h"
+#include "Becketron/Renderer/Renderer3D.h"
 
 #include <glm/glm.hpp>
 
@@ -73,6 +74,7 @@ namespace Becketron {
 		{
 			Renderer2D::BeginScene(mainCamera->GetProjection(), cameraTransform);
 
+
 			auto group = m_Registry.group<TransformComponent>(entt::get<SpriteRendererComponent>);
 			for (auto entity : group)
 			{
@@ -82,6 +84,22 @@ namespace Becketron {
 			}
 
 			Renderer2D::EndScene();
+
+		}
+
+		if (mainCamera)
+		{
+			Renderer3D::BeginScene(mainCamera->GetProjection(), cameraTransform);
+
+			auto group2 = m_Registry.group<TransformComponent>(entt::get<CubeRendererComponent>);
+			for (auto entity : group2)
+			{
+				auto [transform, cube] = group2.get<TransformComponent, CubeRendererComponent>(entity);
+
+				Renderer3D::DrawCube(transform.GetTransform(), cube.Color);
+			}
+
+			Renderer3D::EndScene();
 		}
 	}
 
@@ -119,6 +137,11 @@ namespace Becketron {
 
 	template<>
 	void Scene::OnComponentAdded<SpriteRendererComponent>(Entity entity, SpriteRendererComponent& component)
+	{
+	}
+
+	template<>
+	void Scene::OnComponentAdded<CubeRendererComponent>(Entity entity, CubeRendererComponent& component)
 	{
 	}
 

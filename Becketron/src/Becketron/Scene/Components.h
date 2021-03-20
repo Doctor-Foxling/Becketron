@@ -52,6 +52,16 @@ namespace Becketron {
 			: Color(color) {}
 	};
 
+	struct CubeRendererComponent
+	{
+		glm::vec4 Color{ 1.0f, 1.0f, 1.0f, 1.0f };
+
+		CubeRendererComponent() = default;
+		CubeRendererComponent(const CubeRendererComponent&) = default;
+		CubeRendererComponent(const glm::vec4& color)
+			: Color(color) {}
+	};
+
 	struct CameraComponent
 	{
 		SceneCamera Camera;

@@ -42,7 +42,7 @@ namespace Becketron {
 			uint32_t DrawCalls = 0;
 			uint32_t CubeCount = 0;
 
-			uint32_t GetTotalVertexCount() { return CubeCount * 8; }
+			uint32_t GetTotalVertexCount() { return CubeCount * 24; }
 			uint32_t GetTotalIndexCount() { return CubeCount * 36; }
 		};
 		static void ResetStats();

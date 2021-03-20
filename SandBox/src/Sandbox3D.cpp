@@ -8,7 +8,7 @@
 
 
 Sandbox3D::Sandbox3D()
-	: Layer("Sandbox3D"), m_CameraController(glm::radians(45.0f), 1280.0f / 720.0f, 0.01f, 1000.0f)
+	: Layer("Sandbox3D"), m_CameraController(glm::radians(45.0f), 1280.0f / 720.0f, 0.01f, 1000.0f, true)
 {
 }
 
@@ -48,12 +48,11 @@ void Sandbox3D::OnUpdate(Becketron::Timestep ts)
 
 		Becketron::Renderer3D::BeginScene(m_CameraController.GetCamera());
 		//Becketron::Renderer3D::DrawRotatedQuad({ -1.0f, 0.0f }, { 0.8f, 1.0f }, -45.0f, m_SquareColor);
-		m_CameraController.GetCamera().SetPosition(m_camPos);
+		//m_CameraController.GetCamera().SetPosition(m_camPos);
 
 		//Becketron::Renderer3D::DrawQuad({ -1.0f, 0.0f }, { 0.8f, 1.0f }, m_SquareColor);
 		Becketron::Renderer3D::DrawCube({ 0.5f, -0.5f, -5.0f }, { 0.5f, 0.5f, 0.5f }, m_SquareColor);
 		Becketron::Renderer3D::DrawCube({ 0.5f, 0.7f, -5.0f }, { 1.0f, 1.0f, 1.0f }, m_CheckerboardTexture, 1.0f);
-		//Becketron::Renderer3D::DrawRotatedQuad({ 0.0f, -0.8f, 0.0f }, { 1.0f, 1.0f }, rotation, m_CheckerboardTexture, 0.5f);
 		//Becketron::Renderer2D::EndScene();
 
 		//Becketron::Renderer2D::BeginScene(m_CameraController.GetCamera());
@@ -66,6 +65,12 @@ void Sandbox3D::OnUpdate(Becketron::Timestep ts)
 			}
 		}*/
 		Becketron::Renderer3D::EndScene();
+
+		Becketron::Renderer2D::BeginScene(m_CameraController.GetCamera());
+		Becketron::Renderer2D::DrawQuad({ -0.75f, -0.25f, -7.0f }, { 0.5f, 0.5f, 5.0f }, m_SquareColor);
+		Becketron::Renderer2D::DrawRotatedQuad({ 0.0f, -0.8f, -4.0f }, { 1.0f, 1.0f, 10.f }, rotation, m_CheckerboardTexture, 0.5f, Becketron::BT_axis::x);
+
+		Becketron::Renderer2D::EndScene();
 
 	}
 

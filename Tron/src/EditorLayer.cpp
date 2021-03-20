@@ -13,6 +13,7 @@ namespace Becketron {
 
 	void EditorLayer::OnAttach()
 	{
+		//Renderer3D::Init();
 		BT_PROFILE_FUNCTION();
 		m_CheckerboardTexture = Texture2D::Create("assets/textures/Chess_board.jpg");
 
@@ -29,6 +30,9 @@ namespace Becketron {
 
 		auto redSquare = m_ActiveScene->CreateEntity("Red Square");
 		redSquare.AddComponent<SpriteRendererComponent>(glm::vec4{ 1.0f, 0.0f, 0.0f, 1.0f });
+
+		auto redCube = m_ActiveScene->CreateEntity("Red Cube");
+		redCube.AddComponent<CubeRendererComponent>(glm::vec4{ 1.0f, 0.0f, 0.0f, 1.0f });
 
 		m_SquareEntity = square;
 

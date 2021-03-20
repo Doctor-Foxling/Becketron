@@ -65,8 +65,9 @@ namespace Becketron {
 		bool m_Rotation;
 
 		glm::vec3 m_CameraPosition = { 0.0f, 0.0f, 0.0f };
-		float m_CameraRotation = 0.0f;  // In the anti-clockwise direction (in degrees)
-		float m_CameraTranslationSpeed = 5.0f, m_CameraRotationSpeed = 180.0f;
+		glm::vec3 m_CameraRotation = glm::vec3(0.0f);  // In the anti-clockwise direction (in degrees)
+		BT_axis m_CamRotAxis = BT_axis::z;
+		float m_CameraTranslationSpeed = 5.0f, m_CameraRotationSpeed = 1.0f;
 		
 	};
 }

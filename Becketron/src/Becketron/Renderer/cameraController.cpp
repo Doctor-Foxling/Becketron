@@ -4,6 +4,8 @@
 #include "Becketron/Core/Input.h"
 #include "Becketron/Core/KeyCodes.h"
 
+#include "GLFW/glfw3.h"
+
 namespace Becketron {
 
 	OrthographicCameraController::OrthographicCameraController(float aspectRatio, bool rotation)
@@ -105,38 +107,94 @@ namespace Becketron {
 
 		if (Input::IsKeyPressed(BT_KEY_A))
 		{
-			m_CameraPosition.x -= cos(glm::radians(m_CameraRotation)) * m_CameraTranslationSpeed * ts;
-			m_CameraPosition.y -= sin(glm::radians(m_CameraRotation)) * m_CameraTranslationSpeed * ts;
+			m_CameraPosition.x -= cos(glm::radians(m_CameraRotation.z)) * m_CameraTranslationSpeed * ts;
+			m_CameraPosition.y -= sin(glm::radians(m_CameraRotation.z)) * m_CameraTranslationSpeed * ts;
 		}
 		else if (Input::IsKeyPressed(BT_KEY_D))
 		{
-			m_CameraPosition.x += cos(glm::radians(m_CameraRotation)) * m_CameraTranslationSpeed * ts;
-			m_CameraPosition.y += sin(glm::radians(m_CameraRotation)) * m_CameraTranslationSpeed * ts;
+			m_CameraPosition.x += cos(glm::radians(m_CameraRotation.z)) * m_CameraTranslationSpeed * ts;
+			m_CameraPosition.y += sin(glm::radians(m_CameraRotation.z)) * m_CameraTranslationSpeed * ts;
 		}
 		if (Input::IsKeyPressed(BT_KEY_W))
 		{
-			m_CameraPosition.x += -sin(glm::radians(m_CameraRotation)) * m_CameraTranslationSpeed * ts;
-			m_CameraPosition.y += cos(glm::radians(m_CameraRotation)) * m_CameraTranslationSpeed * ts;
+			m_CameraPosition.x += -sin(glm::radians(m_CameraRotation.z)) * m_CameraTranslationSpeed * ts;
+			m_CameraPosition.y += cos(glm::radians(m_CameraRotation.z)) * m_CameraTranslationSpeed * ts;
 		}
 		else if (Input::IsKeyPressed(BT_KEY_S))
 		{
-			m_CameraPosition.x -= -sin(glm::radians(m_CameraRotation)) * m_CameraTranslationSpeed * ts;
-			m_CameraPosition.y -= cos(glm::radians(m_CameraRotation)) * m_CameraTranslationSpeed * ts;
+			m_CameraPosition.x -= -sin(glm::radians(m_CameraRotation.z)) * m_CameraTranslationSpeed * ts;
+			m_CameraPosition.y -= cos(glm::radians(m_CameraRotation.z)) * m_CameraTranslationSpeed * ts;
 		}
 
 		if (m_Rotation)
 		{
-			if (Input::IsKeyPressed(BT_KEY_Q))
-				m_CameraRotation += m_CameraRotationSpeed * ts;
-			else if (Input::IsKeyPressed(BT_KEY_E))
-				m_CameraRotation -= m_CameraRotationSpeed * ts;
+			if (Input::IsKeyPressed(BT_KEY_Q) && Input::IsKeyPressed(BT_KEY_LEFT_CONTROL))
+			{
+				BT_CORE_INFO("Input keys: {0} and {1}", BT_KEY_Q, BT_KEY_LEFT_CONTROL);
+				m_CameraRotation.z += m_CameraTranslationSpeed * ts;
+				m_Camera.SetRotAxis(BT_axis::z);
+			}
+			else if (Input::IsKeyPressed(BT_KEY_E) && Input::IsKeyPressed(BT_KEY_LEFT_CONTROL))
+			{
+				m_CameraRotation.z -= m_CameraTranslationSpeed * ts;
+				m_Camera.SetRotAxis(BT_axis::z);
+			}
 
-			if (m_CameraRotation > 180.0f)
-				m_CameraRotation -= 360.0f;
-			else if (m_CameraRotation <= -180.0f)
-				m_CameraRotation += 360.0f;
+			if (Input::IsKeyPressed(BT_KEY_W) && Input::IsKeyPressed(BT_KEY_LEFT_CONTROL))
+			{
+				m_CameraRotation.x += m_CameraTranslationSpeed * ts;
+				m_Camera.SetRotAxis(BT_axis::x);
+			}
+			else if (Input::IsKeyPressed(BT_KEY_S) && Input::IsKeyPressed(BT_KEY_LEFT_CONTROL))
+			{
+				m_CameraRotation.x -= m_CameraTranslationSpeed * ts;
+				m_Camera.SetRotAxis(BT_axis::x);
+			}
 
-			m_Camera.SetRotation(m_CameraRotation);
+			 if (Input::IsKeyPressed(BT_KEY_A) && Input::IsKeyPressed(BT_KEY_LEFT_CONTROL))
+			{
+				m_CameraRotation.x += m_CameraTranslationSpeed * ts;
+				m_Camera.SetRotAxis(BT_axis::x);
+			}
+
+			else if (Input::IsKeyPressed(BT_KEY_D) && Input::IsKeyPressed(BT_KEY_LEFT_CONTROL))
+			{
+				m_CameraRotation.x -= m_CameraTranslationSpeed * ts;
+				m_Camera.SetRotAxis(BT_axis::x);
+			}
+
+			m_CamRotAxis = m_Camera.GetRotAxis();
+			float radius = 10.0f;
+
+			//float camX = sin(glfwGetTime()) * radius;
+			//float camZ = cos(glfwGetTime()) * radius;
+
+			//m_Camera.SetFocusPoint(glm::vec3(camX, 0.0, camZ));
+
+			switch (m_CamRotAxis)
+			{
+			case BT_axis::x:	m_Camera.SetFocusPoint(m_CameraPosition * radius);
+				if (m_CameraRotation.x > 180.0f)
+					m_CameraRotation.x -= 360.0f;
+				else if (m_CameraRotation.x <= -180.0f)
+					m_CameraRotation.x += 360.0f;
+				break;
+
+			case BT_axis::y:	m_Camera.SetFocusPoint({ 0.0f, m_CameraRotation.y * radius, 0.0f, });;
+				if (m_CameraRotation.y > 180.0f)
+					m_CameraRotation.y -= 360.0f;
+				else if (m_CameraRotation.y <= -180.0f)
+					m_CameraRotation.y += 360.0f;
+				break;
+
+			case BT_axis::z:	m_Camera.SetFocusPoint(m_CameraPosition * radius);
+				if (m_CameraRotation.z > 180.0f)
+					m_CameraRotation.z -= 360.0f;
+				else if (m_CameraRotation.z <= -180.0f)
+					m_CameraRotation.z += 360.0f;
+				 break;
+			}
+			
 		}
 
 		m_Camera.SetPosition(m_CameraPosition);
@@ -165,8 +223,11 @@ namespace Becketron {
 		BT_PROFILE_FUNCTION();
 
 		m_ZoomLevel -= e.GetYOffset() * 0.25f;
-		m_ZoomLevel = std::max(m_ZoomLevel, 0.25f);
+		m_ZoomLevel = std::max(m_ZoomLevel, -0.05f);
+		//m_ZoomLevel = std::min(m_ZoomLevel, 2.0f);
+		m_CameraPosition.z = m_ZoomLevel;
 		m_Camera.SetProjection(m_PerspectiveFOV, m_AspectRatio, m_PerspectiveNear, m_PerspectiveFar);
+		m_Camera.SetFocusPoint(m_CameraPosition);
 		return false;
 	}
 
