@@ -85,22 +85,38 @@ namespace Becketron {
 
 			Renderer2D::EndScene();
 
-		}
-
-		if (mainCamera)
-		{
 			Renderer3D::BeginScene(mainCamera->GetProjection(), cameraTransform);
 
-			auto group2 = m_Registry.group<TransformComponent>(entt::get<CubeRendererComponent>);
-			for (auto entity : group2)
+			int a = 0;
+			for (auto entity : group)
 			{
-				auto [transform, cube] = group2.get<TransformComponent, CubeRendererComponent>(entity);
+				
+				auto [transform, sprite] = group.get<TransformComponent, SpriteRendererComponent>(entity);
 
-				Renderer3D::DrawCube(transform.GetTransform(), cube.Color);
+				if (a == 0)
+					Renderer3D::DrawCube(transform.GetTransform(), sprite.Color);
+
+				a = 1;
 			}
 
 			Renderer3D::EndScene();
+
 		}
+
+		//if (mainCamera)
+		//{
+		//	//Renderer3D::BeginScene(mainCamera->GetProjection(), cameraTransform);
+
+		//	auto group2 = m_Registry.group<TransformComponent>(entt::get<CubeRendererComponent>);
+		//	for (auto entity : group2)
+		//	{
+		//		auto [transform, cube] = group2.get<TransformComponent, CubeRendererComponent>(entity);
+
+		//		//Renderer3D::DrawCube(transform.GetTransform(), cube.Color);
+		//	}
+
+		//	//Renderer3D::EndScene();
+		//}
 	}
 
 	void Scene::OnViewportResize(uint32_t width, uint32_t height)
