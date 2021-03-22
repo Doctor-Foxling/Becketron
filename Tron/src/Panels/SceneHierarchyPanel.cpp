@@ -179,6 +179,39 @@ namespace Becketron {
 		ImGui::PopID();
 	}
 
+	template <typename T>
+	static void AddComponentProps(Entity entity, ImGuiTreeNodeFlags treeNodeFlags, const char* propName) 
+	{
+		ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2{ 4, 4 });
+		bool open = ImGui::TreeNodeEx((void*)typeid(T).hash_code(), treeNodeFlags, propName);
+		ImGui::SameLine(ImGui::GetWindowWidth() - 25.0f);
+
+		if (ImGui::Button("+", ImVec2{ 20, 20 }))
+		{
+			ImGui::OpenPopup("ComponentSettings");
+		}
+		ImGui::PopStyleVar();
+
+		bool removeComponent = false;
+		if (ImGui::BeginPopup("ComponentSettings"))
+		{
+			if (ImGui::MenuItem("Remove component"))
+				removeComponent = true;
+
+			ImGui::EndPopup();
+		}
+
+		if (open)
+		{
+			auto& src = entity.GetComponent<T>();
+			ImGui::ColorEdit4("Color", glm::value_ptr(src.Color));
+			ImGui::TreePop();
+		}
+
+		if (removeComponent)
+			entity.RemoveComponent<T>();
+	}
+
 	void SceneHierarchyPanel::DrawComponents(Entity entity)
 	{
 		if (entity.HasComponent<TagComponent>())
@@ -282,7 +315,9 @@ namespace Becketron {
 
 		if (entity.HasComponent<SpriteRendererComponent>())
 		{
-			ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2{ 4, 4 });
+			AddComponentProps<SpriteRendererComponent>(entity, treeNodeFlags, "Sprite Renderer");
+
+			/*ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2{ 4, 4 });
 			bool open = ImGui::TreeNodeEx((void*)typeid(SpriteRendererComponent).hash_code(), treeNodeFlags, "Sprite Renderer");
 			ImGui::SameLine(ImGui::GetWindowWidth() - 25.0f);
 
@@ -310,6 +345,7 @@ namespace Becketron {
 
 			if (removeComponent)
 				entity.RemoveComponent<SpriteRendererComponent>();
+		*/
 		}
 	}
 
