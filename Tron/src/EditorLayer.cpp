@@ -26,7 +26,11 @@ namespace Becketron {
 
 		// Entity
 		auto square = m_ActiveScene->CreateEntity("Green Square");
-		square.AddComponent<SpriteRendererComponent>(glm::vec4{ 0.0f, 1.0f, 0.0f, 1.0f });
+		square.AddComponent<SpriteRendererComponent>(glm::vec4{ 0.0f, 1.0f, 1.0f, 0.5f });
+		auto& tc = square.GetComponent<TransformComponent>();
+		tc.Translation = { 0.0f, -3.0f, 0.0f };
+		tc.Scale = { 20.0f, 20.0f, 0.0f };
+		tc.Rotation = { 90.0f, 0.0f, 0.0f };
 
 		auto redSquare = m_ActiveScene->CreateEntity("Red Square");
 		redSquare.AddComponent<SpriteRendererComponent>(glm::vec4{ 1.0f, 0.0f, 0.0f, 1.0f });
@@ -37,7 +41,9 @@ namespace Becketron {
 		m_SquareEntity = square;
 
 		m_CameraEntity = m_ActiveScene->CreateEntity("Camera A");
-		m_CameraEntity.AddComponent<CameraComponent>();
+		auto& cameraA = m_CameraEntity.AddComponent<CameraComponent>();
+		auto& camA_tc = m_CameraEntity.GetComponent<TransformComponent>();
+		camA_tc.Translation = { 0.0f, 2.0f, 20.0f };
 
 		m_SecondCamera = m_ActiveScene->CreateEntity("Camera B");
 		auto& cc = m_SecondCamera.AddComponent<CameraComponent>();
@@ -48,8 +54,8 @@ namespace Becketron {
 		public:
 			virtual void OnCreate() override
 			{
-				auto& translation = GetComponent<TransformComponent>().Translation;
-				translation.x = rand() % 10 - 5.0f;
+				//auto& translation = GetComponent<TransformComponent>().Translation;
+				//translation.x = rand() % 10 - 5.0f;
 			}
 
 			virtual void OnDestroy() override
