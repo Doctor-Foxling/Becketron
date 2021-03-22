@@ -62,9 +62,19 @@ namespace Becketron {
 					ImGui::CloseCurrentPopup();
 				}
 
-				if (ImGui::MenuItem("Sprite Renderer"))
+				if (!m_SelectionContext.HasComponent<CubeRendererComponent>() &&
+					!m_SelectionContext.HasComponent<SpriteRendererComponent>()
+					&& ImGui::MenuItem("Sprite Renderer"))
 				{
 					m_SelectionContext.AddComponent<SpriteRendererComponent>();
+					ImGui::CloseCurrentPopup();
+				}
+
+				if (!m_SelectionContext.HasComponent<CubeRendererComponent>() &&
+					!m_SelectionContext.HasComponent<SpriteRendererComponent>()
+					&& ImGui::MenuItem("Cube Renderer"))
+				{
+					m_SelectionContext.AddComponent<CubeRendererComponent>();
 					ImGui::CloseCurrentPopup();
 				}
 
