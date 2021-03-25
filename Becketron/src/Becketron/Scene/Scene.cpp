@@ -39,6 +39,10 @@ namespace Becketron {
 
 	void Scene::OnUpdate(Timestep ts)
 	{
+		// Update PhysicsEngine
+		m_PhysEng.Simulate(ts);
+		m_PhysEng.HandleCollision();
+
 		// Update scripts
 		{
 			m_Registry.view<NativeScriptComponent>().each([=](auto entity, auto& nsc)
@@ -76,9 +80,9 @@ namespace Becketron {
 				auto [transform, physComp] = view.get<TransformComponent, PhysicsComponent>(entity);
 
 				auto& phyObj = physComp.physicsObject;
-				phyObj.Integrate(ts);
-				transform.Translation = phyObj.GetPosition();
-				float cube_side = phyObj.GetRadius() * glm::root_two<float>();
+				//phyObj.Integrate(ts);
+				transform.Translation = phyObj->GetPosition();
+				float cube_side = phyObj->GetRadius() * glm::root_two<float>();
 				transform.Scale = glm::vec3(cube_side);
 			}
 		}
@@ -204,7 +208,7 @@ namespace Becketron {
 	template<>
 	void Scene::OnComponentAdded<PhysicsComponent>(Entity entity, PhysicsComponent& component)
 	{
+		m_PhysEng.AddObject(component.physicsObject);
 	}
-	
 }
 

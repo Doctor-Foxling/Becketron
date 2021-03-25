@@ -26,7 +26,7 @@ namespace Becketron {
 	private:
 		template<typename T>
 		void OnComponentAdded(Entity entity, T& component);
-		//PhysicsEngine physEng;
+		PhysicsEngine m_PhysEng;
 	private:
 		entt::registry m_Registry;
 		uint32_t m_ViewportWidth = 0, m_ViewportHeight = 0;

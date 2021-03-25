@@ -21,6 +21,8 @@ public:
 	const glm::vec3& GetPosition() const { return m_position; }
 	const glm::vec3& GetVelocity() const { return m_velocity; }
 
+	void SetVelocity(const glm::vec3& velocity) { m_velocity = velocity; }
+
 	float GetRadius() const { return m_radius; }
 
 	// Create boundingSphere on the fly when requested

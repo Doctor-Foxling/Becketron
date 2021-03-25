@@ -14,7 +14,10 @@ public:
 
 	const glm::vec3& GetCenter() const { return m_center; }
 	float GetRadius()			 const { return m_radius; }
+
+	static void Test();
 private:
 	const glm::vec3& m_center;
 	const float		 m_radius;
 };
+

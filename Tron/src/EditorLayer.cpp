@@ -6,6 +6,7 @@
 #include <glm/gtc/type_ptr.hpp>
 
 // coolision testing
+#include "Becketron/Physics/BoundingSphere.h"
 #include "Becketron/Physics/aabb.h"
 #include "Becketron/Physics/PhysicsObject.h"
 #include "Becketron/Physics/PhysicsEngine.h"
@@ -41,11 +42,14 @@ namespace Becketron {
 		auto redSquare = m_ActiveScene->CreateEntity("Red Square");
 		redSquare.AddComponent<SpriteRendererComponent>(glm::vec4{ 1.0f, 0.0f, 0.0f, 1.0f });
 
-		auto redCube = m_ActiveScene->CreateEntity("Red Cube");
-		redCube.AddComponent<CubeRendererComponent>(glm::vec4{ 1.0f, 0.0f, 0.0f, 1.0f });
-
 		auto blueCube = m_ActiveScene->CreateEntity("Blue Cube");
 		blueCube.AddComponent<CubeRendererComponent>(glm::vec4{ 0.0f, 0.4f, 1.0f, 1.0f });
+
+		auto greenCube = m_ActiveScene->CreateEntity("Green Square");
+		greenCube.AddComponent<CubeRendererComponent>(glm::vec4{ 0.0f, 1.0f, 0.4f, 1.0f });
+
+		auto redCube = m_ActiveScene->CreateEntity("Red Cube");
+		redCube.AddComponent<CubeRendererComponent>(glm::vec4{ 1.0f, 0.0f, 0.0f, 1.0f });
 
 		m_SquareEntity = square;
 
@@ -123,13 +127,16 @@ namespace Becketron {
 		m_CameraEntity.AddComponent<NativeScriptComponent>().Bind<CameraController>();
 		m_SecondCamera.AddComponent<NativeScriptComponent>().Bind<CameraController>();
 
-		PhysicsObject phyObj1(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f), 1.0f);
+		PhysicsObject* phyObj2 = new PhysicsObject(glm::vec3(0.0f, 20.0f, 0.0f), glm::vec3(0.0f, -1.0f, 0.0f), 2.0f);
+		blueCube.AddComponent<PhysicsComponent>(phyObj2);
+
+		PhysicsObject* phyObj1 = new PhysicsObject(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f), 1.0f);
 		redCube.AddComponent<PhysicsComponent>(phyObj1);
 
-		PhysicsObject phyObj2(glm::vec3(0.0f, 20.0f, 0.0f), glm::vec3(0.0f, -1.0f, 0.0f), 2.0f);
+		PhysicsObject* phyObj3 = new PhysicsObject(glm::vec3(10.0f, 0.0f, 0.0f), glm::vec3(0.5f, 0.0f, 0.0f), 1.0f);
+		greenCube.AddComponent<PhysicsComponent>(phyObj3);
 
 		m_SceneHierarchyPanel.SetContext(m_ActiveScene);
-		blueCube.AddComponent<PhysicsComponent>(phyObj2);
 
 		// Random Physics Test
 		PhysicsObject test(glm::vec3(0.0f, 1.0f, 0.0f), glm::vec3(1.0f, 2.0f, 3.0f), 1.0f);
@@ -142,6 +149,8 @@ namespace Becketron {
 		BT_CORE_INFO("testPos: {0}, {1}, {2}", testPos.x, testPos.y, testPos.z);
 		BT_CORE_INFO("testVel: {0}, {1}, {2}", testVel.x, testVel.y, testVel.z);
 
+		// Random Bounding SPhere test
+		BoundingSphere::Test();
 	}
 
 	void EditorLayer::OnDetach()

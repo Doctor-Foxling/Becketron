@@ -77,11 +77,11 @@ namespace Becketron {
 
 	struct PhysicsComponent
 	{
-		PhysicsObject physicsObject;
+		PhysicsObject* physicsObject;
 
 		PhysicsComponent() = default;
 		PhysicsComponent(const PhysicsComponent&) = default;
-		PhysicsComponent(PhysicsObject& physObj)
+		PhysicsComponent(PhysicsObject* physObj)
 			: physicsObject(physObj) {}
 	};
 

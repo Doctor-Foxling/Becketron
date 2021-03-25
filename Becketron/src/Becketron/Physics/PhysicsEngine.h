@@ -5,12 +5,12 @@
 class PhysicsEngine
 {
 public:
-	void AddObject(const PhysicsObject& object);
+	void AddObject(PhysicsObject* object);
 
 	void Simulate(float delta_time);
 
 	// TODO: Temporary Getters
-	const PhysicsObject& GetObject(unsigned int index) const
+	const PhysicsObject* GetObject(unsigned int index) const
 	{
 		return m_objects[index];
 	}
@@ -18,7 +18,8 @@ public:
 	{
 		return (unsigned int)m_objects.size();
 	}
-//private:
-public:
-	std::vector<PhysicsObject> m_objects;
+
+	void HandleCollision();
+private:
+	std::vector<PhysicsObject*> m_objects;
 };
