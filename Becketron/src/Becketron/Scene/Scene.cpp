@@ -54,36 +54,35 @@ namespace Becketron {
 			});
 		}
 
-		{
-			m_Registry.view<PhysicsComponent>().each([=](auto entity, auto& phy)
-			{
-				if (!phy.Instance)
-				{
-					phy.Instance = phy.InstantiatePhysics();
-					phy.Instance->m_Entity = Entity{ entity, this };
-
-					phy.Instance->OnCreate();
-				}
-				phy.Instance->OnUpdate(ts);
-			});
-		}
-
-		//// TODO: Temporrary: replace with a physicsEngine component
 		//{
-		//	auto view = m_Registry.view<PhysicsComponent>();
-
-		//	for (auto entity : view)
+		//	m_Registry.view<PhysicsComponent>().each([=](auto entity, auto& phy)
 		//	{
-		//		PhysicsComponent& physComp = view.get<PhysicsComponent>(entity);
-		//		PhysicsEntity* physEnt = physComp.Instance;
-		//		PhysicsObject& physObj = physEnt->m_Entity.
-		//		for (auto entity : view)
+		//		if (!phy.Instance)
 		//		{
+		//			phy.Instance = phy.InstantiatePhysics();
+		//			phy.Instance->m_Entity = Entity{ entity, this };
 
-		//			IntersectData intersectData = 
+		//			phy.Instance->OnCreate();
 		//		}
-		//	}
+		//		phy.Instance->OnUpdate(ts);
+		//	});
 		//}
+
+
+		{
+			auto view = m_Registry.view<TransformComponent, PhysicsComponent>();
+			for (auto entity : view)
+			{
+				auto [transform, physComp] = view.get<TransformComponent, PhysicsComponent>(entity);
+
+				auto& phyObj = physComp.physicsObject;
+				phyObj.Integrate(ts);
+				transform.Translation = phyObj.GetPosition();
+				float cube_side = phyObj.GetRadius() * glm::root_two<float>();
+				transform.Scale = glm::vec3(cube_side);
+			}
+		}
+		
 
 		// Renderer 2D
 		Camera* mainCamera = nullptr;

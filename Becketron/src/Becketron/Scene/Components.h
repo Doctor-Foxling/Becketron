@@ -75,13 +75,15 @@ namespace Becketron {
 		CameraComponent(const CameraComponent&) = default;
 	};
 
-	//struct PhysicsComponent
-	//{
-	//	PhysicsObject physObject;
+	struct PhysicsComponent
+	{
+		PhysicsObject physicsObject;
 
-	//	PhysicsComponent() = default;
-	//	PhysicsComponent(const PhysicsComponent&) = default;
-	//};
+		PhysicsComponent() = default;
+		PhysicsComponent(const PhysicsComponent&) = default;
+		PhysicsComponent(PhysicsObject& physObj)
+			: physicsObject(physObj) {}
+	};
 
 	struct NativeScriptComponent
 	{
@@ -100,20 +102,20 @@ namespace Becketron {
 		}
 	};
 
-	struct PhysicsComponent
-	{
-		PhysicsEntity* Instance = nullptr;
-		using Instantiate_fn = std::function<PhysicsEntity*()>;
-		Instantiate_fn InstantiatePhysics;
-		//PhysicsEntity* (*InstantiatePhysics)();
-		void (*DestroyPhysics)(PhysicsComponent*);
+	//struct PhysicsComponent
+	//{
+	//	PhysicsEntity* Instance = nullptr;
+	//	using Instantiate_fn = std::function<PhysicsEntity*()>;
+	//	Instantiate_fn InstantiatePhysics;
+	//	//PhysicsEntity* (*InstantiatePhysics)();
+	//	void (*DestroyPhysics)(PhysicsComponent*);
 
-		template<typename T>
-		void Bind(PhysicsObject& physObj)
-		{
-			InstantiatePhysics = [physObj]() { return static_cast<PhysicsEntity*>(new T(physObj)); };
-			// simulating 'this' being captured
-			DestroyPhysics = [](PhysicsComponent* phy) {delete phy->Instance; phy->Instance = nullptr; };
-		}
-	};
+	//	template<typename T>
+	//	void Bind(PhysicsObject& physObj)
+	//	{
+	//		InstantiatePhysics = [physObj]() { return static_cast<PhysicsEntity*>(new T(physObj)); };
+	//		// simulating 'this' being captured
+	//		DestroyPhysics = [](PhysicsComponent* phy) {delete phy->Instance; phy->Instance = nullptr; };
+	//	}
+	//};
 }

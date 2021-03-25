@@ -88,49 +88,48 @@ namespace Becketron {
 			}
 		};
 
-		class RigidBody : public PhysicsEntity
-		{
-		public:
-			RigidBody(PhysicsObject phyObj)
-				: m_physicsObject(phyObj)
-			{}
+		//class RigidBody : public PhysicsEntity
+		//{
+		//public:
+		//	RigidBody(PhysicsObject phyObj)
+		//		: m_physicsObject(phyObj)
+		//	{}
 
-			virtual void OnCreate() override
-			{
+		//	virtual void OnCreate() override
+		//	{
 
-			}
+		//	}
 
-			virtual void OnDestroy() override
-			{
+		//	virtual void OnDestroy() override
+		//	{
 
-			}
+		//	}
 
-			virtual void OnUpdate(Timestep ts) override
-			{
-				m_physicsObject.Integrate(ts);
-				auto& translation = GetComponent<TransformComponent>().Translation;
-				auto& scale = GetComponent<TransformComponent>().Scale;
+		//	virtual void OnUpdate(Timestep ts) override
+		//	{
+		//		m_physicsObject.Integrate(ts);
+		//		auto& translation = GetComponent<TransformComponent>().Translation;
+		//		auto& scale = GetComponent<TransformComponent>().Scale;
 
-				//BT_TRACE("Rigid-body position x: {0}", translation.x);
-				translation = m_physicsObject.GetPosition();
-				float cubeSide = m_physicsObject.GetRadius() * glm::root_two<float>();
-				scale = glm::vec3(cubeSide);
-			}
-		private:
-			PhysicsObject m_physicsObject;
-		};
+		//		//BT_TRACE("Rigid-body position x: {0}", translation.x);
+		//		translation = m_physicsObject.GetPosition();
+		//		float cubeSide = m_physicsObject.GetRadius() * glm::root_two<float>();
+		//		scale = glm::vec3(cubeSide);
+		//	}
+		//private:
+		//	PhysicsObject m_physicsObject;
+		//};
 
 		m_CameraEntity.AddComponent<NativeScriptComponent>().Bind<CameraController>();
 		m_SecondCamera.AddComponent<NativeScriptComponent>().Bind<CameraController>();
 
 		PhysicsObject phyObj1(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f), 1.0f);
-		redCube.AddComponent<PhysicsComponent>().Bind<RigidBody>(phyObj1);
+		redCube.AddComponent<PhysicsComponent>(phyObj1);
 
 		PhysicsObject phyObj2(glm::vec3(0.0f, 20.0f, 0.0f), glm::vec3(0.0f, -1.0f, 0.0f), 2.0f);
-		blueCube.AddComponent<PhysicsComponent>().Bind<RigidBody>(phyObj2);
 
 		m_SceneHierarchyPanel.SetContext(m_ActiveScene);
-
+		blueCube.AddComponent<PhysicsComponent>(phyObj2);
 
 		// Random Physics Test
 		PhysicsObject test(glm::vec3(0.0f, 1.0f, 0.0f), glm::vec3(1.0f, 2.0f, 3.0f), 1.0f);
