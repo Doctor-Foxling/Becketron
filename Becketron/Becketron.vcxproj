@@ -145,6 +145,12 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="src\Becketron.h" />
+    <ClInclude Include="src\Becketron\Physics\aabb.h" />
+    <ClInclude Include="src\Becketron\Physics\BoundingSphere.h" />
+    <ClInclude Include="src\Becketron\Physics\IntersectData.h" />
+    <ClInclude Include="src\Becketron\Physics\PhysicsEngine.h" />
+    <ClInclude Include="src\Becketron\Physics\PhysicsObject.h" />
+    <ClInclude Include="src\Becketron\Physics\Plane.h" />
     <ClInclude Include="src\Becketron\Core\Application.h" />
     <ClInclude Include="src\Becketron\Core\Core.h" />
     <ClInclude Include="src\Becketron\Core\EntryPoint.h" />
@@ -177,6 +183,7 @@
     <ClInclude Include="src\Becketron\Renderer\cameraController.h" />
     <ClInclude Include="src\Becketron\Scene\Components.h" />
     <ClInclude Include="src\Becketron\Scene\Entity.h" />
+    <ClInclude Include="src\Becketron\Scene\PhysicsEntity.h" />
     <ClInclude Include="src\Becketron\Scene\Scene.h" />
     <ClInclude Include="src\Becketron\Scene\SceneCamera.h" />
     <ClInclude Include="src\Becketron\Scene\ScriptableEntity.h" />
@@ -605,6 +612,11 @@
     <ClInclude Include="vendor\stb_image\stb_image.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\Becketron\Physics\aabb.cpp" />
+    <ClCompile Include="src\Becketron\Physics\BoundingSphere.cpp" />
+    <ClCompile Include="src\Becketron\Physics\PhysicsEngine.cpp" />
+    <ClCompile Include="src\Becketron\Physics\PhysicsObject.cpp" />
+    <ClCompile Include="src\Becketron\Physics\Plane.cpp" />
     <ClCompile Include="src\Becketron\Core\Application.cpp" />
     <ClCompile Include="src\Becketron\Core\Layer.cpp" />
     <ClCompile Include="src\Becketron\Core\LayerStack.cpp" />

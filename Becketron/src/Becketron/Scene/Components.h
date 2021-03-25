@@ -4,7 +4,10 @@
 #include <glm/gtc/matrix_transform.hpp>
 
 #include "SceneCamera.h"
+#include "Becketron/Physics/PhysicsObject.h"
+
 #include "ScriptableEntity.h"
+#include "PhysicsEntity.h"
 
 namespace Becketron {
 
@@ -72,6 +75,14 @@ namespace Becketron {
 		CameraComponent(const CameraComponent&) = default;
 	};
 
+	//struct PhysicsComponent
+	//{
+	//	PhysicsObject physObject;
+
+	//	PhysicsComponent() = default;
+	//	PhysicsComponent(const PhysicsComponent&) = default;
+	//};
+
 	struct NativeScriptComponent
 	{
 		ScriptableEntity* Instance = nullptr;
@@ -86,6 +97,23 @@ namespace Becketron {
 			InstantiateScript = []() { return static_cast<ScriptableEntity*>(new T()); };
 			// Since we are not capturing 'this' we simulate that by passeing a pointer to iteself as a paramenter
 			DestroyScript = [](NativeScriptComponent* nsc) {delete nsc->Instance; nsc->Instance = nullptr; };
+		}
+	};
+
+	struct PhysicsComponent
+	{
+		PhysicsEntity* Instance = nullptr;
+		using Instantiate_fn = std::function<PhysicsEntity*()>;
+		Instantiate_fn InstantiatePhysics;
+		//PhysicsEntity* (*InstantiatePhysics)();
+		void (*DestroyPhysics)(PhysicsComponent*);
+
+		template<typename T>
+		void Bind(PhysicsObject& physObj)
+		{
+			InstantiatePhysics = [physObj]() { return static_cast<PhysicsEntity*>(new T(physObj)); };
+			// simulating 'this' being captured
+			DestroyPhysics = [](PhysicsComponent* phy) {delete phy->Instance; phy->Instance = nullptr; };
 		}
 	};
 }

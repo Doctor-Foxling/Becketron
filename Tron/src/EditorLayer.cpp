@@ -2,7 +2,13 @@
 #include "imgui/imgui.h"
 
 #include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/constants.hpp>
 #include <glm/gtc/type_ptr.hpp>
+
+// coolision testing
+#include "Becketron/Physics/aabb.h"
+#include "Becketron/Physics/PhysicsObject.h"
+#include "Becketron/Physics/PhysicsEngine.h"
 
 namespace Becketron {
 
@@ -37,6 +43,9 @@ namespace Becketron {
 
 		auto redCube = m_ActiveScene->CreateEntity("Red Cube");
 		redCube.AddComponent<CubeRendererComponent>(glm::vec4{ 1.0f, 0.0f, 0.0f, 1.0f });
+
+		auto blueCube = m_ActiveScene->CreateEntity("Blue Cube");
+		blueCube.AddComponent<CubeRendererComponent>(glm::vec4{ 0.0f, 0.4f, 1.0f, 1.0f });
 
 		m_SquareEntity = square;
 
@@ -79,10 +88,61 @@ namespace Becketron {
 			}
 		};
 
+		class RigidBody : public PhysicsEntity
+		{
+		public:
+			RigidBody(PhysicsObject phyObj)
+				: m_physicsObject(phyObj)
+			{}
+
+			virtual void OnCreate() override
+			{
+
+			}
+
+			virtual void OnDestroy() override
+			{
+
+			}
+
+			virtual void OnUpdate(Timestep ts) override
+			{
+				m_physicsObject.Integrate(ts);
+				auto& translation = GetComponent<TransformComponent>().Translation;
+				auto& scale = GetComponent<TransformComponent>().Scale;
+
+				//BT_TRACE("Rigid-body position x: {0}", translation.x);
+				translation = m_physicsObject.GetPosition();
+				float cubeSide = m_physicsObject.GetRadius() * glm::root_two<float>();
+				scale = glm::vec3(cubeSide);
+			}
+		private:
+			PhysicsObject m_physicsObject;
+		};
+
 		m_CameraEntity.AddComponent<NativeScriptComponent>().Bind<CameraController>();
 		m_SecondCamera.AddComponent<NativeScriptComponent>().Bind<CameraController>();
 
+		PhysicsObject phyObj1(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f), 1.0f);
+		redCube.AddComponent<PhysicsComponent>().Bind<RigidBody>(phyObj1);
+
+		PhysicsObject phyObj2(glm::vec3(0.0f, 20.0f, 0.0f), glm::vec3(0.0f, -1.0f, 0.0f), 2.0f);
+		blueCube.AddComponent<PhysicsComponent>().Bind<RigidBody>(phyObj2);
+
 		m_SceneHierarchyPanel.SetContext(m_ActiveScene);
+
+
+		// Random Physics Test
+		PhysicsObject test(glm::vec3(0.0f, 1.0f, 0.0f), glm::vec3(1.0f, 2.0f, 3.0f), 1.0f);
+
+		test.Integrate(20.0f);
+
+		glm::vec3 testPos = test.GetPosition();
+		glm::vec3 testVel = test.GetVelocity();
+
+		BT_CORE_INFO("testPos: {0}, {1}, {2}", testPos.x, testPos.y, testPos.z);
+		BT_CORE_INFO("testVel: {0}, {1}, {2}", testVel.x, testVel.y, testVel.z);
+
 	}
 
 	void EditorLayer::OnDetach()

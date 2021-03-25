@@ -4,6 +4,9 @@
 
 #include "Becketron/Core/Timestep.h"
 
+// Temporary
+#include "Becketron/Physics/PhysicsEngine.h"
+
 
 namespace Becketron {
 
@@ -23,6 +26,7 @@ namespace Becketron {
 	private:
 		template<typename T>
 		void OnComponentAdded(Entity entity, T& component);
+		//PhysicsEngine physEng;
 	private:
 		entt::registry m_Registry;
 		uint32_t m_ViewportWidth = 0, m_ViewportHeight = 0;

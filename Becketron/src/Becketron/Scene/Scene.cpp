@@ -9,6 +9,9 @@
 
 #include "Entity.h"
 
+// Temporary
+#include "Becketron/Physics/BoundingSphere.h"
+
 namespace Becketron {
 
 	
@@ -50,6 +53,37 @@ namespace Becketron {
 				nsc.Instance->OnUpdate(ts);
 			});
 		}
+
+		{
+			m_Registry.view<PhysicsComponent>().each([=](auto entity, auto& phy)
+			{
+				if (!phy.Instance)
+				{
+					phy.Instance = phy.InstantiatePhysics();
+					phy.Instance->m_Entity = Entity{ entity, this };
+
+					phy.Instance->OnCreate();
+				}
+				phy.Instance->OnUpdate(ts);
+			});
+		}
+
+		//// TODO: Temporrary: replace with a physicsEngine component
+		//{
+		//	auto view = m_Registry.view<PhysicsComponent>();
+
+		//	for (auto entity : view)
+		//	{
+		//		PhysicsComponent& physComp = view.get<PhysicsComponent>(entity);
+		//		PhysicsEntity* physEnt = physComp.Instance;
+		//		PhysicsObject& physObj = physEnt->m_Entity.
+		//		for (auto entity : view)
+		//		{
+
+		//			IntersectData intersectData = 
+		//		}
+		//	}
+		//}
 
 		// Renderer 2D
 		Camera* mainCamera = nullptr;
@@ -165,6 +199,11 @@ namespace Becketron {
 
 	template<>
 	void Scene::OnComponentAdded<NativeScriptComponent>(Entity entity, NativeScriptComponent& component)
+	{
+	}
+
+	template<>
+	void Scene::OnComponentAdded<PhysicsComponent>(Entity entity, PhysicsComponent& component)
 	{
 	}
 	
