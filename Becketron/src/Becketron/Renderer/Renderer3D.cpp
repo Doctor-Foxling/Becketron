@@ -17,7 +17,9 @@ namespace Becketron {
 		// TODO: texid
 		float TexIndex;
 		float TilingFactor;
+		glm::vec3 Normal;
 	};
+
 
 	struct Renderer3DData
 	{
@@ -29,10 +31,20 @@ namespace Becketron {
 		static const uint32_t MaxTexIndices = MaxTexCubes * 36;
 		static const uint32_t MaxTextureSlots = 32;  // TODO: RenderCaps
 
+		
 		Ref<VertexArray> CubeVertexArray;
 		Ref<VertexBuffer> CubeVertexBuffer;
 		Ref<Shader> TextureShader;
 		Ref<Texture2D> WhiteTexture;
+
+		// Lighting
+		Ref<VertexArray> lightVertexArray;
+		Ref<VertexBuffer> lightVertexBuffer;
+		Ref<Shader> lightShader;
+		float lightVertices[24 * 4];
+		glm::vec3 lightPos = glm::vec3(3.0f, -1.0f, -1.0f);
+		// Temporary
+		glm::vec4 lightColor = glm::vec4(1.0f, 1.0f, 0.4f, 1.0f);
 
 		uint32_t CubeIndexCount = 0;
 		CubeVertex* CubeVertexBufferBase = nullptr;
@@ -43,18 +55,54 @@ namespace Becketron {
 
 		//glm::vec4 CubeVertexPositions[8];
 		
+		// Vertex positions for the textured cube (which is the only type we're using)
 		glm::vec4 CubeVertexTexPositions[24];
 		glm::vec2 CubeTextureCoordinates[24];
+		glm::vec3 CubeNormalCoordinates[24];
 
 		Renderer3D::Statistics Stats;
 	};
 
 	static Renderer3DData s_Data3D;
 
+	//Temp
+	static Renderer3D::LightInfo lightInfo;
+
+	void SetLightInformation()
+	{
+		lightInfo.lightPos = s_Data3D.lightPos;
+		lightInfo.lightColor = s_Data3D.lightColor;
+	}
+
+	Renderer3D::LightInfo GetLightInformation()
+	{
+		lightInfo.lightPos = s_Data3D.lightPos;
+		lightInfo.lightColor = s_Data3D.lightColor;
+
+		return lightInfo;
+	}
+
 	void Renderer3D::Init()
 	{
 		BT_PROFILE_FUNCTION();
 
+		// --- Textured Cube Vertices 
+
+		CubeVertexPosInit();
+
+		// --- Cube Texture Coordinares
+
+		CubeTexCoordInit();
+
+		// --- Cube Normal Coordinated
+
+		CubeNormalCoordsInit();
+
+		// ---- Light Cube Vertices
+
+		LightVertexPosInit();
+
+		// VAO For batch rendering the cubes
 		s_Data3D.CubeVertexArray = VertexArray::Create();
 
 		s_Data3D.CubeVertexBuffer = VertexBuffer::Create(s_Data3D.MaxTexVertices * sizeof(CubeVertex));
@@ -64,79 +112,23 @@ namespace Becketron {
 				{ShaderDataType::Float4, "a_Color" },
 				{ShaderDataType::Float2, "a_TexCoord"},
 				{ShaderDataType::Float, "a_TexIndex"},
-				{ShaderDataType::Float, "a_TilingFactor"}
+				{ShaderDataType::Float, "a_TilingFactor"},
+				{ShaderDataType::Float3, "a_Normal"}
 			});
 		s_Data3D.CubeVertexArray->AddVertexBuffer(s_Data3D.CubeVertexBuffer);
 
 		s_Data3D.CubeVertexBufferBase = new CubeVertex[s_Data3D.MaxTexVertices];
 
-		// ------------ Indices for normal cube --------------
 
-		//uint32_t* cubeIndices = new uint32_t[s_Data3D.MaxIndices];
+		// VAO For Light_Cube
+		s_Data3D.lightVertexArray = VertexArray::Create();
 
-		//uint32_t offset = 0;
-		//for (uint32_t i = 0; i < s_Data3D.MaxIndices; i += 36)
-		//{
-		//	// front
-		//	cubeIndices[i + 0] = offset + 0;
-		//	cubeIndices[i + 1] = offset + 1;
-		//	cubeIndices[i + 2] = offset + 2;
+		s_Data3D.lightVertexBuffer = VertexBuffer::Create(s_Data3D.lightVertices, sizeof(s_Data3D.lightVertices));
 
-		//	cubeIndices[i + 3] = offset + 2;
-		//	cubeIndices[i + 4] = offset + 3;
-		//	cubeIndices[i + 5] = offset + 0;
+		s_Data3D.lightVertexBuffer->SetLayout({ 
+				{ ShaderDataType::Float4, "a_Position"} });
 
-		//	// right
-		//	cubeIndices[i + 6] = offset + 1;
-		//	cubeIndices[i + 7] = offset + 5;
-		//	cubeIndices[i + 8] = offset + 6;
-
-		//	cubeIndices[i + 9] = offset + 6;
-		//	cubeIndices[i + 10] = offset + 2;
-		//	cubeIndices[i + 11] = offset + 1;
-
-		//	// back
-		//	cubeIndices[i + 12] = offset + 7;
-		//	cubeIndices[i + 13] = offset + 6;
-		//	cubeIndices[i + 14] = offset + 5;
-
-		//	cubeIndices[i + 15] = offset + 5;
-		//	cubeIndices[i + 16] = offset + 4;
-		//	cubeIndices[i + 17] = offset + 7;
-
-		//	// left
-		//	cubeIndices[i + 18] = offset + 4;
-		//	cubeIndices[i + 19] = offset + 0;
-		//	cubeIndices[i + 20] = offset + 3;
-
-		//	cubeIndices[i + 21] = offset + 3;
-		//	cubeIndices[i + 22] = offset + 7;
-		//	cubeIndices[i + 23] = offset + 4;
-
-		//	// bottom
-		//	cubeIndices[i + 24] = offset + 4;
-		//	cubeIndices[i + 25] = offset + 5;
-		//	cubeIndices[i + 26] = offset + 1;
-
-		//	cubeIndices[i + 27] = offset + 1;
-		//	cubeIndices[i + 28] = offset + 0;
-		//	cubeIndices[i + 29] = offset + 4;
-
-		//	// top
-		//	cubeIndices[i + 30] = offset + 3;
-		//	cubeIndices[i + 31] = offset + 2;
-		//	cubeIndices[i + 32] = offset + 6;
-
-		//	cubeIndices[i + 33] = offset + 6;
-		//	cubeIndices[i + 34] = offset + 7;
-		//	cubeIndices[i + 35] = offset + 3;
-
-		//	offset += 8;
-		//}
-
-		//Ref<IndexBuffer> cubeIB = IndexBuffer::Create(cubeIndices, s_Data3D.MaxIndices);
-		////s_Data3D.CubeVertexArray->SetIndexBuffer(cubeIB);
-		//delete[] cubeIndices;
+		s_Data3D.lightVertexArray->AddVertexBuffer(s_Data3D.lightVertexBuffer);
 
 		// --------- Cube Indices for textured Cube -------
 
@@ -203,12 +195,23 @@ namespace Becketron {
 			offset += 24;
 		}
 
+		// Using the 1st cube indices for lightIndices
+		uint32_t* lightTexIndices = new uint32_t[36];
+
+		for (int i = 0; i < 36; i++)
+		{
+			lightTexIndices[i] = cubeTexIndices[i];
+		}
 
 		Ref<IndexBuffer> cubeTexIB = IndexBuffer::Create(cubeTexIndices, s_Data3D.MaxTexIndices);
 		s_Data3D.CubeVertexArray->SetIndexBuffer(cubeTexIB);
 		delete[] cubeTexIndices;
 
-		// --- done creating index buffers ----
+		Ref<IndexBuffer> lightTexIB = IndexBuffer::Create(lightTexIndices, 36);
+		s_Data3D.lightVertexArray->SetIndexBuffer(lightTexIB);
+		delete[] lightTexIndices;
+
+		// --- done cube index buffers ----
 
 		s_Data3D.WhiteTexture = Texture2D::Create(1, 1);
 		uint32_t whiteTextureData = 0xffffffff;
@@ -221,84 +224,169 @@ namespace Becketron {
 		s_Data3D.TextureShader = Shader::Create("assets/shaders/Texture.glsl");
 		s_Data3D.TextureShader->Bind();
 		s_Data3D.TextureShader->SetIntArray("u_Textures", samplers, s_Data3D.MaxTextureSlots);
+		s_Data3D.TextureShader->SetFloat4("lightColor", s_Data3D.lightColor);
+		s_Data3D.TextureShader->SetFloat3("lightPos", s_Data3D.lightPos);
+
+		s_Data3D.lightShader = Shader::Create("assets/shaders/Light.glsl");
 
 		// Set all texture slots to 0
 		s_Data3D.TextureSlots[0] = s_Data3D.WhiteTexture;
 
-		// Normal Cube Vertices
-		/*s_Data3D.CubeVertexPositions[0] = { -0.5f, -0.5f, 0.5f, 1.0f };
-		s_Data3D.CubeVertexPositions[1] = { 0.5f, -0.5f, 0.5f, 1.0f };
-		s_Data3D.CubeVertexPositions[2] = { 0.5f,  0.5f, 0.5f, 1.0f };
-		s_Data3D.CubeVertexPositions[3] = { -0.5f,  0.5f, 0.5f, 1.0f };
+		SetLightInformation();
+	}
 
-		s_Data3D.CubeVertexPositions[4] = { -0.5f, -0.5f, -0.5f, 1.0f };
-		s_Data3D.CubeVertexPositions[5] = { 0.5f, -0.5f, -0.5f, 1.0f };
-		s_Data3D.CubeVertexPositions[6] = { 0.5f,  0.5f, -0.5f, 1.0f };
-		s_Data3D.CubeVertexPositions[7] = { -0.5f,  0.5f, -0.5f, 1.0f };*/
+	void Renderer3D::CubeVertexPosInit()
+	{
+		// Putting this here to clean up the Init() function
 
-
-		// --- Textured Cube Vertices 
-
-		s_Data3D.CubeVertexTexPositions[0] =	{ -0.5f , -0.5f ,  0.5f, 1.0f  };
+		//Front
+		s_Data3D.CubeVertexTexPositions[0] = { -0.5f , -0.5f ,  0.5f, 1.0f };
 		s_Data3D.CubeVertexTexPositions[1] = { 0.5f , -0.5f ,  0.5f,   1.0f };
 		s_Data3D.CubeVertexTexPositions[2] = { -0.5f ,  0.5f ,  0.5f,  1.0f };
 		s_Data3D.CubeVertexTexPositions[3] = { 0.5f ,  0.5f ,  0.5f,   1.0f };
 
+		//Right
 		s_Data3D.CubeVertexTexPositions[4] = { 0.5f , -0.5f ,  0.5f ,  1.0f };
-		s_Data3D.CubeVertexTexPositions[5] = { 0.5f , -0.5f ,  -0.5f,  1.0f  };
+		s_Data3D.CubeVertexTexPositions[5] = { 0.5f , -0.5f ,  -0.5f,  1.0f };
 		s_Data3D.CubeVertexTexPositions[6] = { 0.5f ,  0.5f ,  0.5f ,  1.0f };
-		s_Data3D.CubeVertexTexPositions[7] = { 0.5f ,  0.5f ,  -0.5f,  1.0f  };
+		s_Data3D.CubeVertexTexPositions[7] = { 0.5f ,  0.5f ,  -0.5f,  1.0f };
 
+		// Back
 		s_Data3D.CubeVertexTexPositions[8] = { 0.5f , -0.5f , -0.5f ,  1.0f };
 		s_Data3D.CubeVertexTexPositions[9] = { -0.5f , -0.5f , -0.5f , 1.0f };
-		s_Data3D.CubeVertexTexPositions[10] = { 0.5f ,  0.5f , -0.5f,  1.0f  };
-		s_Data3D.CubeVertexTexPositions[11] = { -0.5f ,  0.5f , -0.5f, 1.0f  };
+		s_Data3D.CubeVertexTexPositions[10] = { 0.5f ,  0.5f , -0.5f,  1.0f };
+		s_Data3D.CubeVertexTexPositions[11] = { -0.5f ,  0.5f , -0.5f, 1.0f };
 
-		s_Data3D.CubeVertexTexPositions[12] = { -0.5f ,-0.5f ,-0.5f ,  1.0f};
-		s_Data3D.CubeVertexTexPositions[13] = { -0.5f , -0.5f , 0.5f,  1.0f};
-		s_Data3D.CubeVertexTexPositions[14] = { -0.5f ,  0.5f ,-0.5f,  1.0f};
-		s_Data3D.CubeVertexTexPositions[15] = { -0.5f ,  0.5f , 0.5f,  1.0f};
+		// Left
+		s_Data3D.CubeVertexTexPositions[12] = { -0.5f ,-0.5f ,-0.5f ,  1.0f };
+		s_Data3D.CubeVertexTexPositions[13] = { -0.5f , -0.5f , 0.5f,  1.0f };
+		s_Data3D.CubeVertexTexPositions[14] = { -0.5f ,  0.5f ,-0.5f,  1.0f };
+		s_Data3D.CubeVertexTexPositions[15] = { -0.5f ,  0.5f , 0.5f,  1.0f };
 
-		s_Data3D.CubeVertexTexPositions[16] = { -0.5f , -0.5f , -0.5f, 1.0f  };
-		s_Data3D.CubeVertexTexPositions[17] = { 0.5f , -0.5f , -0.5f,  1.0f  };
-		s_Data3D.CubeVertexTexPositions[18] = { -0.5f , -0.5f ,  0.5f, 1.0f  };
-		s_Data3D.CubeVertexTexPositions[19] = { 0.5f , -0.5f ,  0.5f,  1.0f  };
+		// Bottom
+		s_Data3D.CubeVertexTexPositions[16] = { -0.5f , -0.5f , -0.5f, 1.0f };
+		s_Data3D.CubeVertexTexPositions[17] = { 0.5f , -0.5f , -0.5f,  1.0f };
+		s_Data3D.CubeVertexTexPositions[18] = { -0.5f , -0.5f ,  0.5f, 1.0f };
+		s_Data3D.CubeVertexTexPositions[19] = { 0.5f , -0.5f ,  0.5f,  1.0f };
 
-		s_Data3D.CubeVertexTexPositions[20] = { -0.5f ,  0.5f ,  0.5f, 1.0f  };
-		s_Data3D.CubeVertexTexPositions[21] = { 0.5f ,  0.5f ,  0.5f,  1.0f  };
-		s_Data3D.CubeVertexTexPositions[22] = { -0.5f ,  0.5f , -0.5f, 1.0f  };
-		s_Data3D.CubeVertexTexPositions[23] = { 0.5f ,  0.5f , -0.5f,  1.0f  };
-									    
-		// --- Cube Texture Coordinares
-		s_Data3D.CubeTextureCoordinates[0] = 	{	0.0f, 0.0f	};
-		s_Data3D.CubeTextureCoordinates[1] = 	{	0.33f, 0.0f	};
-		s_Data3D.CubeTextureCoordinates[2] = 	{	0.0f, 0.5f	};
-		s_Data3D.CubeTextureCoordinates[3] = 	{	0.33f, 0.5f	};
-		
-		s_Data3D.CubeTextureCoordinates[4] = 	{	0.0f, 0.5f	};
-		s_Data3D.CubeTextureCoordinates[5] = 	{	0.33f, 0.5f	};
-		s_Data3D.CubeTextureCoordinates[6] = 	{	0.0f, 1.0f	};
-		s_Data3D.CubeTextureCoordinates[7] = 	{	0.33f, 1.0f	};
-		
-		s_Data3D.CubeTextureCoordinates[8] = 	{	0.66f, 0.5f	};
-		s_Data3D.CubeTextureCoordinates[9] = 	{	1.0f, 0.5f	};
-		s_Data3D.CubeTextureCoordinates[10] = {	0.66f, 1.0f	};
-		s_Data3D.CubeTextureCoordinates[11] = {	1.0f, 1.0f	};
-		
-		s_Data3D.CubeTextureCoordinates[12] = {	0.66f, 0.0f	};
-		s_Data3D.CubeTextureCoordinates[13] = {	1.0f, 0.0f	};
-		s_Data3D.CubeTextureCoordinates[14] = {	0.66f, 0.5f	};
-		s_Data3D.CubeTextureCoordinates[15] = {	1.0f, 0.5f	};
-		
-		s_Data3D.CubeTextureCoordinates[16] = {	0.33f, 0.0f	};
-		s_Data3D.CubeTextureCoordinates[17] = {	0.66f, 0.0f	};
-		s_Data3D.CubeTextureCoordinates[18] = {	0.33f, 0.5f	};
-		s_Data3D.CubeTextureCoordinates[19] = {	0.66f, 0.5f	};
-		
-		s_Data3D.CubeTextureCoordinates[20] = {	0.33f, 0.5f	};
-		s_Data3D.CubeTextureCoordinates[21] = {	0.66f, 0.5f	};
-		s_Data3D.CubeTextureCoordinates[22] = {	0.33f, 1.0f	};
-		s_Data3D.CubeTextureCoordinates[23] = {	0.66f, 1.0f	};
+		// Top
+		s_Data3D.CubeVertexTexPositions[20] = { -0.5f ,  0.5f ,  0.5f, 1.0f };
+		s_Data3D.CubeVertexTexPositions[21] = { 0.5f ,  0.5f ,  0.5f,  1.0f };
+		s_Data3D.CubeVertexTexPositions[22] = { -0.5f ,  0.5f , -0.5f, 1.0f };
+		s_Data3D.CubeVertexTexPositions[23] = { 0.5f ,  0.5f , -0.5f,  1.0f };
+	}
+
+	void Renderer3D::CubeTexCoordInit()
+	{
+		// Just to clean up the Init() fucntion
+
+		s_Data3D.CubeTextureCoordinates[0] = { 0.0f, 0.0f };
+		s_Data3D.CubeTextureCoordinates[1] = { 0.33f, 0.0f };
+		s_Data3D.CubeTextureCoordinates[2] = { 0.0f, 0.5f };
+		s_Data3D.CubeTextureCoordinates[3] = { 0.33f, 0.5f };
+
+		s_Data3D.CubeTextureCoordinates[4] = { 0.0f, 0.5f };
+		s_Data3D.CubeTextureCoordinates[5] = { 0.33f, 0.5f };
+		s_Data3D.CubeTextureCoordinates[6] = { 0.0f, 1.0f };
+		s_Data3D.CubeTextureCoordinates[7] = { 0.33f, 1.0f };
+
+		s_Data3D.CubeTextureCoordinates[8] = { 0.66f, 0.5f };
+		s_Data3D.CubeTextureCoordinates[9] = { 1.0f, 0.5f };
+		s_Data3D.CubeTextureCoordinates[10] = { 0.66f, 1.0f };
+		s_Data3D.CubeTextureCoordinates[11] = { 1.0f, 1.0f };
+
+		s_Data3D.CubeTextureCoordinates[12] = { 0.66f, 0.0f };
+		s_Data3D.CubeTextureCoordinates[13] = { 1.0f, 0.0f };
+		s_Data3D.CubeTextureCoordinates[14] = { 0.66f, 0.5f };
+		s_Data3D.CubeTextureCoordinates[15] = { 1.0f, 0.5f };
+
+		s_Data3D.CubeTextureCoordinates[16] = { 0.33f, 0.0f };
+		s_Data3D.CubeTextureCoordinates[17] = { 0.66f, 0.0f };
+		s_Data3D.CubeTextureCoordinates[18] = { 0.33f, 0.5f };
+		s_Data3D.CubeTextureCoordinates[19] = { 0.66f, 0.5f };
+
+		s_Data3D.CubeTextureCoordinates[20] = { 0.33f, 0.5f };
+		s_Data3D.CubeTextureCoordinates[21] = { 0.66f, 0.5f };
+		s_Data3D.CubeTextureCoordinates[22] = { 0.33f, 1.0f };
+		s_Data3D.CubeTextureCoordinates[23] = { 0.66f, 1.0f };
+	}
+
+	void Renderer3D::CubeNormalCoordsInit()
+	{
+		// Front
+		s_Data3D.CubeNormalCoordinates[0] =  { 0.0f, 0.0f, 1.0f };
+		s_Data3D.CubeNormalCoordinates[1] =  { 0.0f, 0.0f, 1.0f };
+		s_Data3D.CubeNormalCoordinates[2] =  { 0.0f, 0.0f, 1.0f };
+		s_Data3D.CubeNormalCoordinates[3] =  { 0.0f, 0.0f, 1.0f };
+
+		// Right
+		s_Data3D.CubeNormalCoordinates[4] =  { 1.0f, 0.0f, 0.0f };
+		s_Data3D.CubeNormalCoordinates[5] =  { 1.0f, 0.0f, 0.0f };
+		s_Data3D.CubeNormalCoordinates[6] =  { 1.0f, 0.0f, 0.0f };
+		s_Data3D.CubeNormalCoordinates[7] =  { 1.0f, 0.0f, 0.0f };
+
+		// Back
+		s_Data3D.CubeNormalCoordinates[8] =  { 0.0f, 0.0f,-1.0f };
+		s_Data3D.CubeNormalCoordinates[9] =  { 0.0f, 0.0f,-1.0f };
+		s_Data3D.CubeNormalCoordinates[10] = { 0.0f, 0.0f,-1.0f };
+		s_Data3D.CubeNormalCoordinates[11] = { 0.0f, 0.0f,-1.0f };
+
+		// Left
+		s_Data3D.CubeNormalCoordinates[12] = {-1.0f, 0.0f, 0.0f };
+		s_Data3D.CubeNormalCoordinates[13] = {-1.0f, 0.0f, 0.0f };
+		s_Data3D.CubeNormalCoordinates[14] = {-1.0f, 0.0f, 0.0f };
+		s_Data3D.CubeNormalCoordinates[15] = {-1.0f, 0.0f, 0.0f };
+
+		// Bottom
+		s_Data3D.CubeNormalCoordinates[16] = { 0.0f,-1.0f, 0.0f };
+		s_Data3D.CubeNormalCoordinates[17] = { 0.0f,-1.0f, 0.0f };
+		s_Data3D.CubeNormalCoordinates[18] = { 0.0f,-1.0f, 0.0f };
+		s_Data3D.CubeNormalCoordinates[19] = { 0.0f,-1.0f, 0.0f };
+
+		// Top
+		s_Data3D.CubeNormalCoordinates[20] = { 0.0f, 1.0f, 0.0f };
+		s_Data3D.CubeNormalCoordinates[21] = { 0.0f, 1.0f, 0.0f };
+		s_Data3D.CubeNormalCoordinates[22] = { 0.0f, 1.0f, 0.0f };
+		s_Data3D.CubeNormalCoordinates[23] = { 0.0f, 1.0f, 0.0f };
+	}
+
+
+	void Renderer3D::LightVertexPosInit()
+	{
+		float vertices[24 * 4] = {
+			-0.5f, -0.5f, 0.5f, 1.0f ,
+			 0.5f, -0.5f, 0.5f, 1.0f ,
+			- 0.5f, 0.5f, 0.5f, 1.0f ,
+			  0.5f, 0.5f, 0.5f, 1.0f ,
+
+			 0.5f, -0.5f, 0.5f, 1.0f,
+			0.5f, -0.5f, -0.5f, 1.0f,
+			  0.5f, 0.5f, 0.5f, 1.0f,
+			 0.5f, 0.5f, -0.5f, 1.0f,
+
+			0.5f, -0.5f, -0.5f, 1.0f,
+		  - 0.5f, -0.5f, -0.5f, 1.0f,
+			 0.5f, 0.5f, -0.5f, 1.0f,
+		   - 0.5f, 0.5f, -0.5f, 1.0f,
+
+		   - 0.5f, -0.5f, -0.5f, 1.0f,
+			- 0.5f, -0.5f, 0.5f, 1.0f,
+			- 0.5f, 0.5f, -0.5f, 1.0f,
+		     - 0.5f, 0.5f, 0.5f, 1.0f,
+
+			- 0.5f, -0.5f, -0.5f, 1.0f,
+			0.5f, -0.5f, -0.5f, 1.0f  ,
+			- 0.5f, -0.5f, 0.5f, 1.0f ,
+			0.5f, -0.5f, 0.5f, 1.0f	  ,
+
+			- 0.5f, 0.5f, 0.5f, 1.0f ,
+			0.5f, 0.5f, 0.5f, 1.0f	 ,
+			- 0.5f, 0.5f, -0.5f, 1.0f,
+			0.5f, 0.5f, -0.5f, 1.0f	
+		};
+
+		for (int i = 0; i < (24 * 4); i++)
+			s_Data3D.lightVertices[i] = vertices[i];
 	}
 
 	void Renderer3D::Shutdown()
@@ -384,7 +472,25 @@ namespace Becketron {
 
 		s_Data3D.CubeVertexArray->Unbind();
 		s_Data3D.CubeVertexArray->GetIndexBuffer()->Unbind();
+		s_Data3D.TextureShader->Unbind();
 
+		// Lighting (Temp most likely) involves extra draw call and binding of buffers
+		//DrawLightCube();
+	}
+
+	void Renderer3D::ShowLightCube(const PerspectiveCamera& camera)
+	{
+		s_Data3D.lightVertexArray->Bind();
+		s_Data3D.lightVertexArray->GetIndexBuffer()->Bind();
+
+		DrawLightCube(s_Data3D.lightPos, glm::vec3(2.0f), s_Data3D.lightColor, camera);
+
+		RenderCommand::DrawIndexed(s_Data3D.lightVertexArray, 36);
+		s_Data3D.Stats.DrawCalls++;
+
+		s_Data3D.lightVertexArray->Unbind();
+		s_Data3D.lightVertexArray->GetIndexBuffer()->Unbind();
+		s_Data3D.lightShader->Unbind();
 	}
 
 	void Renderer3D::FlushAndReset()
@@ -396,6 +502,32 @@ namespace Becketron {
 
 		s_Data3D.TextureSlotIndex = 1;
 	}
+
+	// Light Cube (Temp maybe)
+
+	void Renderer3D::DrawLightCube(const glm::vec3& position, const glm::vec3& size, const glm::vec4& color, const PerspectiveCamera& camera)
+	{
+		BT_PROFILE_FUNCTION();
+
+		glm::mat4 transform = glm::translate(glm::mat4(1.0f), position)
+			* glm::scale(glm::mat4(1.0f), { size.x, size.y, size.z });
+
+		DrawLightCube(transform, color, camera);
+	}
+
+	void Renderer3D::DrawLightCube(const glm::mat4& transform, const glm::vec4& color, const PerspectiveCamera& camera)
+	{
+		BT_PROFILE_FUNCTION();
+
+		s_Data3D.lightShader->Bind();
+		s_Data3D.lightShader->SetMat4("u_Transform", transform);
+		s_Data3D.lightShader->SetMat4("u_ViewProjection", camera.GetViewProjectionMatrix());
+		s_Data3D.lightShader->SetFloat4("u_Color", color);
+		
+		s_Data3D.Stats.CubeCount++;
+	}
+
+	// -----------------
 
 	void Renderer3D::DrawCube(const glm::vec2& position, const glm::vec3& size, const glm::vec4& color)
 	{
@@ -426,10 +558,11 @@ namespace Becketron {
 		for (size_t i = 0; i < CubeVertexCount; i++)
 		{
 			s_Data3D.CubeVertexBufferPtr->Position = transform * s_Data3D.CubeVertexTexPositions[i];
-			s_Data3D.CubeVertexBufferPtr->Color = color + glm::vec4(i*0.1);
+			s_Data3D.CubeVertexBufferPtr->Color = color;
 			s_Data3D.CubeVertexBufferPtr->TexCoord = s_Data3D.CubeTextureCoordinates[i];
 			s_Data3D.CubeVertexBufferPtr->TexIndex = textureIndex;
 			s_Data3D.CubeVertexBufferPtr->TilingFactor = tilingFactor;
+			s_Data3D.CubeVertexBufferPtr->Normal = s_Data3D.CubeNormalCoordinates[i];
 			s_Data3D.CubeVertexBufferPtr++;
 		}
 
@@ -491,6 +624,7 @@ namespace Becketron {
 			s_Data3D.CubeVertexBufferPtr->TexCoord = s_Data3D.CubeTextureCoordinates[i];
 			s_Data3D.CubeVertexBufferPtr->TexIndex = textureIndex;
 			s_Data3D.CubeVertexBufferPtr->TilingFactor = tilingFactor;
+			s_Data3D.CubeVertexBufferPtr->Normal = s_Data3D.CubeNormalCoordinates[i];
 			s_Data3D.CubeVertexBufferPtr++;
 		}
 

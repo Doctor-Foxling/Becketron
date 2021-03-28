@@ -66,9 +66,13 @@ void Sandbox3D::OnUpdate(Becketron::Timestep ts)
 		}*/
 		Becketron::Renderer3D::EndScene();
 
+		Becketron::Renderer3D::ShowLightCube(m_CameraController.GetCamera());
+
 		Becketron::Renderer2D::BeginScene(m_CameraController.GetCamera());
 		Becketron::Renderer2D::DrawQuad({ -0.75f, -0.25f, -7.0f }, { 0.5f, 0.5f, 5.0f }, m_SquareColor);
 		Becketron::Renderer2D::DrawRotatedQuad({ 0.0f, -0.8f, -4.0f }, { 1.0f, 1.0f, 10.f }, rotation, m_CheckerboardTexture, 0.5f, Becketron::BT_axis::x);
+
+		//m_lightColor = Becketron::Renderer3D::GetDataByRef();
 
 		Becketron::Renderer2D::EndScene();
 

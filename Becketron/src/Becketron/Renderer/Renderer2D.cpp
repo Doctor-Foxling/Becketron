@@ -5,6 +5,9 @@
 #include "Shader.h"
 #include "RenderCommand.h"
 
+// Maybe Temp
+#include "Becketron/Renderer/Renderer3D.h"
+
 #include <glm/gtc/matrix_transform.hpp>
 
 namespace Becketron {
@@ -17,6 +20,7 @@ namespace Becketron {
 		// TODO: texid
 		float TexIndex;
 		float TilingFactor;
+		glm::vec3 Normal;
 	};
 
 	struct Renderer2DData
@@ -39,6 +43,7 @@ namespace Becketron {
 		uint32_t TextureSlotIndex = 1;
 
 		glm::vec4 QuadVertexPositions[4];
+		glm::vec3 QuadVertexNormal[4];
 
 		Renderer2D::Statistics Stats;
 	};
@@ -58,7 +63,8 @@ namespace Becketron {
 				{ShaderDataType::Float4, "a_Color" },
 				{ShaderDataType::Float2, "a_TexCoord"},
 				{ShaderDataType::Float, "a_TexIndex"},
-				{ShaderDataType::Float, "a_TilingFactor"}
+				{ShaderDataType::Float, "a_TilingFactor"},
+				{ShaderDataType::Float3, "a_Normal"}
 			});
 		s_Data.QuadVertexArray->AddVertexBuffer(s_Data.QuadVertexBuffer);
 
@@ -104,6 +110,11 @@ namespace Becketron {
 		s_Data.QuadVertexPositions[2] = {  0.5f,  0.5f, 0.0f, 1.0f };
 		s_Data.QuadVertexPositions[3] = { -0.5f,  0.5f, 0.0f, 1.0f };
 
+		s_Data.QuadVertexNormal[0] = { 0.0f, 0.0f, 1.0f };
+		s_Data.QuadVertexNormal[1] = { 0.0f, 0.0f, 1.0f };
+		s_Data.QuadVertexNormal[2] = { 0.0f, 0.0f, 1.0f };
+		s_Data.QuadVertexNormal[3] = { 0.0f, 0.0f, 1.0f };
+
 	}
 
 	void Renderer2D::Shutdown()
@@ -119,6 +130,9 @@ namespace Becketron {
 
 		s_Data.QuadVertexArray->Bind();
 		s_Data.QuadVertexArray->GetIndexBuffer()->Bind();
+
+		glm::vec3 lightPos = Renderer3D::GetLightInformation().lightPos;
+		glm::vec4 lightColor = Renderer3D::GetLightInformation().lightColor;
 
 		s_Data.TextureShader->Bind();
 		s_Data.TextureShader->SetMat4("u_ViewProjection", camera.GetViewProjectionMatrix());
@@ -138,8 +152,13 @@ namespace Becketron {
 		s_Data.QuadVertexArray->Bind();
 		s_Data.QuadVertexArray->GetIndexBuffer()->Bind();
 
+		glm::vec3 lightPos = Renderer3D::GetLightInformation().lightPos;
+		glm::vec4 lightColor = Renderer3D::GetLightInformation().lightColor;
+
 		s_Data.TextureShader->Bind();
 		s_Data.TextureShader->SetMat4("u_ViewProjection", viewProj);
+		s_Data.TextureShader->SetFloat3("lightPos", lightPos);
+		s_Data.TextureShader->SetFloat4("lightColor", lightColor);
 
 		s_Data.QuadIndexCount = 0;
 		s_Data.QuadVertexBufferPtr = s_Data.QuadVertexBufferBase;
@@ -154,8 +173,13 @@ namespace Becketron {
 		s_Data.QuadVertexArray->Bind();
 		s_Data.QuadVertexArray->GetIndexBuffer()->Bind();
 
+		glm::vec3 lightPos = Renderer3D::GetLightInformation().lightPos;
+		glm::vec4 lightColor = Renderer3D::GetLightInformation().lightColor;
+
 		s_Data.TextureShader->Bind();
 		s_Data.TextureShader->SetMat4("u_ViewProjection", camera.GetViewProjectionMatrix());
+		s_Data.TextureShader->SetFloat3("lightPos", lightPos);
+		s_Data.TextureShader->SetFloat4("lightColor", lightColor);
 
 		s_Data.QuadIndexCount = 0;
 		s_Data.QuadVertexBufferPtr = s_Data.QuadVertexBufferBase;
@@ -244,6 +268,7 @@ namespace Becketron {
 			s_Data.QuadVertexBufferPtr->TexCoord = textureCoords[i];
 			s_Data.QuadVertexBufferPtr->TexIndex = textureIndex;
 			s_Data.QuadVertexBufferPtr->TilingFactor = tilingFactor;
+			s_Data.QuadVertexBufferPtr->Normal = s_Data.QuadVertexNormal[i];
 			s_Data.QuadVertexBufferPtr++;
 		}
 
@@ -316,6 +341,7 @@ namespace Becketron {
 			s_Data.QuadVertexBufferPtr->TexCoord = textureCoords[i];
 			s_Data.QuadVertexBufferPtr->TexIndex = textureIndex;
 			s_Data.QuadVertexBufferPtr->TilingFactor = tilingFactor;
+			s_Data.QuadVertexBufferPtr->Normal = s_Data.QuadVertexNormal[i];
 			s_Data.QuadVertexBufferPtr++;
 		}
 

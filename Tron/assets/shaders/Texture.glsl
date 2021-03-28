@@ -33,10 +33,11 @@ in float v_TexIndex;
 in float v_TilingFactor;
 
 uniform sampler2D u_Textures[32];
+uniform vec3 lightColor;
 
 void main()
 {
-	vec4 texColor = v_Color;
+	vec4 texColor = vec4(lightColor * v_Color, 1.0) ;
 	switch(int(v_TexIndex))
 	{
 		case 0: texColor *= texture(u_Textures[0], v_TexCoord * v_TilingFactor); break;

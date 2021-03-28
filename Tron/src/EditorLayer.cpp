@@ -150,7 +150,7 @@ namespace Becketron {
 		BT_CORE_INFO("testVel: {0}, {1}, {2}", testVel.x, testVel.y, testVel.z);
 
 		// Random Bounding SPhere test
-		BoundingSphere::Test();
+	//	BoundingSphere::Test();
 	}
 
 	void EditorLayer::OnDetach()

@@ -8,11 +8,6 @@ IntersectData BoundingSphere::IntersectBoundingSphere(const BoundingSphere& othe
 	float centerDistance = glm::length(other.GetCenter() - m_center);
 
 	glm::vec3 centerVecDist = other.GetCenter() - m_center;
-	BT_TRACE("other center = {0}, {1}, {2}, my center = {3}, {4}, {5}, the length = {6}", other.GetCenter().x,
-		other.GetCenter().y, other.GetCenter().z, m_center.x, m_center.y, m_center.z, centerDistance);
-	BT_TRACE("Radius = {0}, other Radius = {1}, centerVecDist = [ {2}, {3}, {4}]", m_radius, other.m_radius,
-		centerVecDist.x, centerVecDist.y, centerVecDist.z)
-	BT_TRACE("Center - Radius = {0}", centerDistance - radiusDistance);
 
 	if (centerDistance < radiusDistance)
 	{
