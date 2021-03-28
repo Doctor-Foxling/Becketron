@@ -68,13 +68,13 @@ namespace Becketron {
 	//Temp
 	static Renderer3D::LightInfo lightInfo;
 
-	void SetLightInformation()
+	void Renderer3D::SetLightInformation()
 	{
 		lightInfo.lightPos = s_Data3D.lightPos;
 		lightInfo.lightColor = s_Data3D.lightColor;
 	}
 
-	Renderer3D::LightInfo GetLightInformation()
+	Renderer3D::LightInfo Renderer3D::GetLightInformation()
 	{
 		lightInfo.lightPos = s_Data3D.lightPos;
 		lightInfo.lightColor = s_Data3D.lightColor;

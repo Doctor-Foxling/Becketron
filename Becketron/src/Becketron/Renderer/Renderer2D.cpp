@@ -12,6 +12,8 @@
 
 namespace Becketron {
 
+
+
 	struct QuadVertex
 	{
 		glm::vec3 Position;
