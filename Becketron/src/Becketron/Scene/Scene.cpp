@@ -136,6 +136,19 @@ namespace Becketron {
 			}
 
 			Renderer3D::EndScene();
+
+		}
+
+		if (mainCamera)
+		{
+			auto view = m_Registry.view<TransformComponent, LightCubeComponent>();
+			for (auto entity : view)
+			{
+				auto [transform, light] = view.get<TransformComponent, LightCubeComponent>(entity);
+
+				Renderer3D::ShowLightCube(transform.GetTransform(), light.Color, mainCamera->GetProjection(), cameraTransform);
+			}
+
 		}
 	}
 
@@ -192,6 +205,11 @@ namespace Becketron {
 
 	template<>
 	void Scene::OnComponentAdded<CubeRendererComponent>(Entity entity, CubeRendererComponent& component)
+	{
+	}
+
+	template<>
+	void Scene::OnComponentAdded<LightCubeComponent>(Entity entity, LightCubeComponent& component)
 	{
 	}
 

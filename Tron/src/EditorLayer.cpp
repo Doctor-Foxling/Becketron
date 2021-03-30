@@ -51,6 +51,9 @@ namespace Becketron {
 		auto redCube = m_ActiveScene->CreateEntity("Red Cube");
 		redCube.AddComponent<CubeRendererComponent>(glm::vec4{ 1.0f, 0.0f, 0.0f, 1.0f });
 
+		auto mainLight = m_ActiveScene->CreateEntity("Main Light");
+		mainLight.AddComponent<LightCubeComponent>(glm::vec4{ 0.5f, 0.8f, 0.2f, 1.0f });
+
 		m_SquareEntity = square;
 
 		m_CameraEntity = m_ActiveScene->CreateEntity("Camera A");

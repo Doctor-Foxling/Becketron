@@ -20,7 +20,7 @@ namespace Becketron {
 		BT_PROFILE_FUNCTION();
 
 		BT_CORE_ASSERT(!s_Instance, "Application already exists!");
-		s_Instance = this;
+		s_Instance = this; // setting to the current instance of application
 
 		/*m_Window = std::unique_ptr<Window>(Window::Create());
 		m_Window->SetEventCallback(BIND_EVENT_FN(OnEvent));*/
@@ -28,12 +28,12 @@ namespace Becketron {
 		m_Window = Window::Create(WindowProps(name));
 		m_Window->SetEventCallback(BT_BIND_EVENT_FN(Application::OnEvent));
 
+		// Initializing the Renderer
 		Renderer::Init();
 
+		// Creating the main GUI layer and pushing it as an overlay
 		m_ImGuiLayer = new ImGuiLayer();
 		PushOverlay(m_ImGuiLayer);
-
-		
 	}
 
 	Application::~Application()

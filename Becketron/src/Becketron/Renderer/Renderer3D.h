@@ -37,8 +37,12 @@ namespace Becketron {
 		static void DrawRotatedCube(const glm::mat4& transform, const Ref<Texture2D>& texture, float tilingFactor = 1.0f, const glm::vec4& tintColor = glm::vec4(1.0f));
 
 		static void ShowLightCube(const PerspectiveCamera& camera);
+		static void ShowLightCube(const glm::vec3& position, const glm::vec3& size, const glm::vec4& color, const Camera& camera, const glm::mat4& camTransform);
+		static void ShowLightCube(const glm::mat4& transform, const glm::vec4& color, const Camera& camera, const glm::mat4& camTransform);
 		static void DrawLightCube(const glm::vec3& position, const glm::vec3& size, const glm::vec4& color, const PerspectiveCamera& camera);
+		static void DrawLightCube(const glm::vec3& position, const glm::vec3& size, const glm::vec4& color, const Camera& camera, const glm::mat4& camTransform);
 		static void DrawLightCube(const glm::mat4& transform, const glm::vec4& color, const PerspectiveCamera& camera);
+		static void DrawLightCube(const glm::mat4& transform, const glm::vec4& color, const Camera& camera, const glm::mat4& camTransform);
 
 		static void CubeVertexPosInit();
 		static void CubeTexCoordInit();

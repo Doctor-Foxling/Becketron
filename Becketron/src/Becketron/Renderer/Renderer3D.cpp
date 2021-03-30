@@ -6,6 +6,7 @@
 #include "RenderCommand.h"
 
 #include <glm/gtc/matrix_transform.hpp>
+#include <GLFW/glfw3.h>
 
 namespace Becketron {
 
@@ -42,7 +43,7 @@ namespace Becketron {
 		Ref<VertexBuffer> lightVertexBuffer;
 		Ref<Shader> lightShader;
 		float lightVertices[24 * 4];
-		glm::vec3 lightPos = glm::vec3(3.0f, -1.0f, -1.0f);
+		glm::vec3 lightPos = glm::vec3(3.0f, 5.0f, -1.0f);
 		// Temporary
 		glm::vec4 lightColor = glm::vec4(1.0f, 1.0f, 0.4f, 1.0f);
 
@@ -405,6 +406,8 @@ namespace Becketron {
 
 		s_Data3D.TextureShader->Bind();
 		s_Data3D.TextureShader->SetMat4("u_ViewProjection", camera.GetViewProjectionMatrix());
+		s_Data3D.TextureShader->SetFloat3("lightPos", s_Data3D.lightPos);
+		s_Data3D.TextureShader->SetFloat4("lightColor", s_Data3D.lightColor);
 
 		s_Data3D.CubeIndexCount = 0;
 		s_Data3D.CubeVertexBufferPtr = s_Data3D.CubeVertexBufferBase;
@@ -424,6 +427,8 @@ namespace Becketron {
 
 		s_Data3D.TextureShader->Bind();
 		s_Data3D.TextureShader->SetMat4("u_ViewProjection", viewProj);
+		s_Data3D.TextureShader->SetFloat3("lightPos", s_Data3D.lightPos);
+		s_Data3D.TextureShader->SetFloat4("lightColor", s_Data3D.lightColor);
 
 		s_Data3D.CubeIndexCount = 0;
 		s_Data3D.CubeVertexBufferPtr = s_Data3D.CubeVertexBufferBase;
@@ -440,6 +445,8 @@ namespace Becketron {
 
 		s_Data3D.TextureShader->Bind();
 		s_Data3D.TextureShader->SetMat4("u_ViewProjection", camera.GetViewProjectionMatrix());
+		s_Data3D.TextureShader->SetFloat3("lightPos", s_Data3D.lightPos);
+		s_Data3D.TextureShader->SetFloat4("lightColor", s_Data3D.lightColor);
 
 		s_Data3D.CubeIndexCount = 0;
 		s_Data3D.CubeVertexBufferPtr = s_Data3D.CubeVertexBufferBase;
@@ -478,12 +485,52 @@ namespace Becketron {
 		//DrawLightCube();
 	}
 
+	void Renderer3D::ShowLightCube(const glm::mat4& transform, const glm::vec4& color, const Camera& camera, const glm::mat4& camTransform)
+	{
+		s_Data3D.lightVertexArray->Bind();
+		s_Data3D.lightVertexArray->GetIndexBuffer()->Bind();
+
+		s_Data3D.lightPos = { transform[3].x, transform[3].y , transform[3].z };
+		s_Data3D.lightColor = color;
+		DrawLightCube(transform, color, camera, camTransform);
+		Renderer3D::SetLightInformation();
+
+		RenderCommand::DrawIndexed(s_Data3D.lightVertexArray, 36);
+		s_Data3D.Stats.DrawCalls++;
+
+		s_Data3D.lightVertexArray->Unbind();
+		s_Data3D.lightVertexArray->GetIndexBuffer()->Unbind();
+		s_Data3D.lightShader->Unbind();
+	}
+
+	void Renderer3D::ShowLightCube(const glm::vec3& position, const glm::vec3& size, const glm::vec4& color, const Camera& camera, const glm::mat4& camTransform)
+	{
+		s_Data3D.lightVertexArray->Bind();
+		s_Data3D.lightVertexArray->GetIndexBuffer()->Bind();
+
+		DrawLightCube(position, size, color, camera, camTransform);
+		s_Data3D.lightPos = position;
+		s_Data3D.lightColor = color;
+		Renderer3D::SetLightInformation();
+
+		RenderCommand::DrawIndexed(s_Data3D.lightVertexArray, 36);
+		s_Data3D.Stats.DrawCalls++;
+
+		s_Data3D.lightVertexArray->Unbind();
+		s_Data3D.lightVertexArray->GetIndexBuffer()->Unbind();
+		s_Data3D.lightShader->Unbind();
+	}
+
 	void Renderer3D::ShowLightCube(const PerspectiveCamera& camera)
 	{
 		s_Data3D.lightVertexArray->Bind();
 		s_Data3D.lightVertexArray->GetIndexBuffer()->Bind();
 
+		s_Data3D.lightPos.x = sin(glfwGetTime()) * 50;
+		//s_Data3D.lightColor.r = cos(glfwGetTime());
+		//s_Data3D.lightColor.g = sin(glfwGetTime());
 		DrawLightCube(s_Data3D.lightPos, glm::vec3(2.0f), s_Data3D.lightColor, camera);
+		//Renderer3D::SetLightInformation();
 
 		RenderCommand::DrawIndexed(s_Data3D.lightVertexArray, 36);
 		s_Data3D.Stats.DrawCalls++;
@@ -515,6 +562,16 @@ namespace Becketron {
 		DrawLightCube(transform, color, camera);
 	}
 
+	void Renderer3D::DrawLightCube(const glm::vec3& position, const glm::vec3& size, const glm::vec4& color, const Camera& camera, const glm::mat4& camTransform)
+	{
+		BT_PROFILE_FUNCTION();
+
+		glm::mat4 transform = glm::translate(glm::mat4(1.0f), position)
+			* glm::scale(glm::mat4(1.0f), { size.x, size.y, size.z });
+
+		DrawLightCube(transform, color, camera, camTransform);
+	}
+
 	void Renderer3D::DrawLightCube(const glm::mat4& transform, const glm::vec4& color, const PerspectiveCamera& camera)
 	{
 		BT_PROFILE_FUNCTION();
@@ -522,6 +579,20 @@ namespace Becketron {
 		s_Data3D.lightShader->Bind();
 		s_Data3D.lightShader->SetMat4("u_Transform", transform);
 		s_Data3D.lightShader->SetMat4("u_ViewProjection", camera.GetViewProjectionMatrix());
+		s_Data3D.lightShader->SetFloat4("u_Color", color);
+		
+		s_Data3D.Stats.CubeCount++;
+	}
+	
+	void Renderer3D::DrawLightCube(const glm::mat4& transform, const glm::vec4& color, const Camera& camera, const glm::mat4& camTransform)
+	{
+		BT_PROFILE_FUNCTION();
+
+		glm::mat4 viewProj = camera.GetProjection() * glm::inverse(camTransform);
+
+		s_Data3D.lightShader->Bind();
+		s_Data3D.lightShader->SetMat4("u_Transform", transform);
+		s_Data3D.lightShader->SetMat4("u_ViewProjection", viewProj);
 		s_Data3D.lightShader->SetFloat4("u_Color", color);
 		
 		s_Data3D.Stats.CubeCount++;
