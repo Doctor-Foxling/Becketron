@@ -40,6 +40,9 @@
     <Filter Include="vendor">
       <UniqueIdentifier>{B3738122-9F15-ACF8-88D0-BF4C74113349}</UniqueIdentifier>
     </Filter>
+    <Filter Include="vendor\ImFileBrowser">
+      <UniqueIdentifier>{3CD6B6F0-2865-40BA-D183-54B5BDF15060}</UniqueIdentifier>
+    </Filter>
     <Filter Include="vendor\glm">
       <UniqueIdentifier>{829FC5A8-6E57-07F6-D75E-E051C335A2E6}</UniqueIdentifier>
     </Filter>
@@ -218,6 +221,9 @@
     </ClInclude>
     <ClInclude Include="src\btpch.h">
       <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="vendor\ImFileBrowser\imfilebrowser.h">
+      <Filter>vendor\ImFileBrowser</Filter>
     </ClInclude>
     <ClInclude Include="vendor\glm\glm\common.hpp">
       <Filter>vendor\glm\glm</Filter>
@@ -1573,6 +1579,9 @@
     </ClCompile>
     <ClCompile Include="src\btpch.cpp">
       <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="vendor\ImFileBrowser\imfilebrowser.cpp">
+      <Filter>vendor\ImFileBrowser</Filter>
     </ClCompile>
     <ClCompile Include="vendor\stb_image\stb_image.cpp">
       <Filter>vendor\stb_image</Filter>

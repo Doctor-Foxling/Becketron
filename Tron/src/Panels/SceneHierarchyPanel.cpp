@@ -9,6 +9,9 @@
 
 #include "Becketron/Scene/Components.h"
 
+#include "ImFileBrowser/imfilebrowser.h"
+#include "Becketron/Renderer/Texture.h"
+
 namespace Becketron {
 
 	SceneHierarchyPanel::SceneHierarchyPanel(const Ref<Scene>& context)
@@ -214,6 +217,32 @@ namespace Becketron {
 			auto& src = entity.GetComponent<T>();
 			ImGui::ColorEdit4("Color", glm::value_ptr(src.Color));
 			ImGui::TreePop();
+		}
+
+		if (entity.HasComponent<TexturedCubeComponent>())
+		{
+			static ImGui::FileBrowser fileDialog;
+
+			fileDialog.SetTitle("Select Texture");
+			fileDialog.SetTypeFilters({ ".jpg", ".PNG" });
+
+			if (ImGui::Button("Select Texture"))
+				fileDialog.Open();
+
+			fileDialog.Display();
+
+			if (fileDialog.HasSelected())
+			{
+				Ref<Texture2D> newTex = Texture2D::Create(fileDialog.GetSelected().string());
+				auto& src = entity.GetComponent<TexturedCubeComponent>();
+				src.texture = newTex;
+				BT_TRACE("Image Relative Path: {0}", (fileDialog.GetSelected().relative_path().string()));
+				BT_TRACE("Image string: {0}", fileDialog.GetSelected().string());
+				BT_TRACE("Image parent path: {0}", fileDialog.GetSelected().parent_path().string());
+				BT_TRACE("Image Root Path: {0}", fileDialog.GetSelected().root_path().string());
+				BT_TRACE("Image Root name: {0}", fileDialog.GetSelected().root_name().string());
+				fileDialog.ClearSelected();
+			}
 		}
 
 		if (removeComponent)
