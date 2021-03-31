@@ -5,6 +5,7 @@
 
 #include "SceneCamera.h"
 #include "Becketron/Physics/PhysicsObject.h"
+#include "Becketron/Renderer/Texture.h"
 
 #include "ScriptableEntity.h"
 #include "PhysicsEntity.h"
@@ -63,6 +64,18 @@ namespace Becketron {
 		CubeRendererComponent(const CubeRendererComponent&) = default;
 		CubeRendererComponent(const glm::vec4& color)
 			: Color(color) {}
+	};
+
+	struct TexturedCubeComponent
+	{
+		Ref<Texture2D> texture;
+		float tiling_factor;
+		glm::vec4 Color{ 1.0f, 1.0f, 1.0f, 1.0f };
+
+		TexturedCubeComponent() = default;
+		TexturedCubeComponent(const TexturedCubeComponent&) = default;
+		TexturedCubeComponent(Ref<Texture2D>& tex, float tilingFactor, const glm::vec4& color)
+			: texture(tex), tiling_factor(tilingFactor), Color(color) {}
 	};
 
 	struct LightCubeComponent

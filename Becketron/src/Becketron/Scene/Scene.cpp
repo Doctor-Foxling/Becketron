@@ -141,6 +141,21 @@ namespace Becketron {
 
 		if (mainCamera)
 		{
+			Renderer3D::BeginScene(mainCamera->GetProjection(), cameraTransform);
+
+			auto view = m_Registry.view<TransformComponent, TexturedCubeComponent>();
+			for (auto entity : view)
+			{
+				auto [transform, texCube] = view.get<TransformComponent, TexturedCubeComponent>(entity);
+
+				Renderer3D::DrawCube(transform.GetTransform(), texCube.texture, texCube.tiling_factor, texCube.Color);
+			}
+
+			Renderer3D::EndScene();
+		}
+
+		if (mainCamera)
+		{
 			auto view = m_Registry.view<TransformComponent, LightCubeComponent>();
 			for (auto entity : view)
 			{
@@ -205,6 +220,11 @@ namespace Becketron {
 
 	template<>
 	void Scene::OnComponentAdded<CubeRendererComponent>(Entity entity, CubeRendererComponent& component)
+	{
+	}
+
+	template<>
+	void Scene::OnComponentAdded<TexturedCubeComponent>(Entity entity, TexturedCubeComponent& component)
 	{
 	}
 

@@ -62,8 +62,10 @@ namespace Becketron {
 					ImGui::CloseCurrentPopup();
 				}
 
+				// TODO: Need to find a better solution than just checking against every component
+
 				if (!m_SelectionContext.HasComponent<CubeRendererComponent>() &&
-					!m_SelectionContext.HasComponent<SpriteRendererComponent>()
+					!m_SelectionContext.HasComponent<SpriteRendererComponent>() 
 					&& ImGui::MenuItem("Sprite Renderer"))
 				{
 					m_SelectionContext.AddComponent<SpriteRendererComponent>();
@@ -72,11 +74,17 @@ namespace Becketron {
 
 				if (!m_SelectionContext.HasComponent<CubeRendererComponent>() &&
 					!m_SelectionContext.HasComponent<SpriteRendererComponent>()
-					&& ImGui::MenuItem("Cube Renderer"))
+					&& ImGui::MenuItem("3D Cube"))
 				{
 					m_SelectionContext.AddComponent<CubeRendererComponent>();
 					ImGui::CloseCurrentPopup();
 				}
+
+				//if (ImGui::MenuItem("3DTextured Cube"))
+				//{
+				//	m_SelectionContext.AddComponent<TexturedCubeComponent>();
+				//	ImGui::CloseCurrentPopup();
+				//}
 
 				ImGui::EndPopup();
 			}
@@ -321,6 +329,16 @@ namespace Becketron {
 		if (entity.HasComponent<CubeRendererComponent>())
 		{
 			AddComponentProps<CubeRendererComponent>(entity, treeNodeFlags, "Cube Renderer");
+		}
+
+		if (entity.HasComponent<TexturedCubeComponent>())
+		{
+			AddComponentProps<TexturedCubeComponent>(entity, treeNodeFlags, "Textured Cube");
+		}
+
+		if (entity.HasComponent<LightCubeComponent>())
+		{
+			AddComponentProps<LightCubeComponent>(entity, treeNodeFlags, "Light cube");
 		}
 
 	}

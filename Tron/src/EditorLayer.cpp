@@ -11,6 +11,9 @@
 #include "Becketron/Physics/PhysicsObject.h"
 #include "Becketron/Physics/PhysicsEngine.h"
 
+// Temporary??
+#include "Becketron/Renderer/Texture.h"
+
 namespace Becketron {
 
 	EditorLayer::EditorLayer()
@@ -53,6 +56,10 @@ namespace Becketron {
 
 		auto mainLight = m_ActiveScene->CreateEntity("Main Light");
 		mainLight.AddComponent<LightCubeComponent>(glm::vec4{ 0.5f, 0.8f, 0.2f, 1.0f });
+
+		//Ref<Texture2D> checkerboardTex = Texture2D::Create("assets/textures/Chess_board.jpg");
+		auto texCube = m_ActiveScene->CreateEntity("Tex Cube");
+		texCube.AddComponent<TexturedCubeComponent>(m_CheckerboardTexture, 1.0f, glm::vec4{ 1.0f, 1.0f, 1.0f, 1.0f });
 
 		m_SquareEntity = square;
 
