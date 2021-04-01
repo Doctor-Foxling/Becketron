@@ -39,10 +39,6 @@ namespace Becketron {
 
 	void Scene::OnUpdate(Timestep ts)
 	{
-		// Update PhysicsEngine
-		m_PhysEng.Simulate(ts);
-		m_PhysEng.HandleCollision();
-
 		// Update scripts
 		{
 			m_Registry.view<NativeScriptComponent>().each([=](auto entity, auto& nsc)
@@ -71,8 +67,20 @@ namespace Becketron {
 		//		phy.Instance->OnUpdate(ts);
 		//	});
 		//}
+		if (m_ScenePlayLast != m_ScenePlay)
+		{
+			m_ScenePlayLast = m_ScenePlay;
+			auto view = m_Registry.view<PhysicsComponent>();
+			for (auto entity : view)
+			{
+				auto& physComp = view.get<PhysicsComponent>(entity);
 
+				auto& phyObj = physComp.physicsObject;
+				phyObj->m_play = m_ScenePlay;
+			}
+		}
 
+		if (m_ScenePlay)
 		{
 			auto view = m_Registry.view<TransformComponent, PhysicsComponent>();
 			for (auto entity : view)
@@ -81,14 +89,24 @@ namespace Becketron {
 
 				auto& phyObj = physComp.physicsObject;
 				//phyObj.Integrate(ts);
+				
 				transform.Translation = phyObj->GetPosition();
 				float cube_side = phyObj->GetRadius() * glm::root_two<float>();
 				transform.Scale = glm::vec3(cube_side);
 			}
 		}
+
+		// Update PhysicsEngine
+		//if (m_ScenePlay && m_ScenePlay == m_ScenePlayLast)
+		{
+			m_PhysEng.Simulate(ts);
+			m_PhysEng.HandleCollision();
+		}
 		
 
-		// Renderer 2D
+		// --- Renderering ---
+
+		// Camera
 		Camera* mainCamera = nullptr;
 		glm::mat4 cameraTransform;
 
@@ -107,6 +125,7 @@ namespace Becketron {
 			}
 		}
 
+		// Quad
 		if (mainCamera)
 		{
 			Renderer2D::BeginScene(mainCamera->GetProjection(), cameraTransform);
@@ -123,6 +142,7 @@ namespace Becketron {
 			Renderer2D::EndScene();
 		}
 
+		// Normal Cube
 		if (mainCamera)
 		{
 			Renderer3D::BeginScene(mainCamera->GetProjection(), cameraTransform);
@@ -139,6 +159,7 @@ namespace Becketron {
 
 		}
 
+		// Textured Cube
 		if (mainCamera)
 		{
 			Renderer3D::BeginScene(mainCamera->GetProjection(), cameraTransform);
@@ -154,6 +175,7 @@ namespace Becketron {
 			Renderer3D::EndScene();
 		}
 
+		// Light Cube
 		if (mainCamera)
 		{
 			auto view = m_Registry.view<TransformComponent, LightCubeComponent>();

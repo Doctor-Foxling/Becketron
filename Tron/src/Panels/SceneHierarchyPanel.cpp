@@ -93,6 +93,59 @@ namespace Becketron {
 			}
 		}
 		ImGui::End();
+
+		ImGui::Begin("Scene Options");
+		/*if (ImGui::BeginTabBar("Scene options"))
+		{*/
+			SceneOptions();
+			//ImGui::EndTabBar();
+		//}
+		ImGui::End();
+	}
+
+	void SceneHierarchyPanel::SceneOptions()
+	{
+			ImGui::PushItemWidth(-ImGui::GetFontSize() * 15);
+			ImDrawList* draw_list = ImGui::GetWindowDrawList();
+
+			static float sz = 36.0f;
+			static float thickness = 3.0f;
+			static int ngon_sides = 3;
+			
+			const ImVec2 p = ImGui::GetCursorScreenPos();
+			const ImU32 col = ImColor({0.1f, 1.0f, 1.0f, 1.0f});
+			const float spacing = 10.0f;
+		//	const ImDrawCornerFlags corners_none = 0;
+		//	const ImDrawCornerFlags corners_all = ImDrawCornerFlags_All;
+		//	const ImDrawCornerFlags corners_tl_br = ImDrawCornerFlags_TopLeft | ImDrawCornerFlags_BotRight;
+		//	const int circle_segments = 0;
+		//	const int curve_segments = 0;
+			float x = p.x + 4.0f;
+			float y = p.y + 0.0f;
+			
+			// center, radius, col, num segments
+			draw_list->AddNgonFilled(ImVec2(x + sz * 0.5f, y + sz * 0.4f), sz * 0.4f, col, ngon_sides);               x += sz + spacing;  // N-gon
+			//ImGui::SameLine();
+
+			ImGui::PushID(0);
+			ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(7.0f, 0.6f, 0.6f, 0.0f));
+			ImGui::PushStyleColor(ImGuiCol_ButtonHovered, (ImVec4)ImColor::HSV(7.0f, 0.7f, 0.7f, 0.4f));
+			ImGui::PushStyleColor(ImGuiCol_ButtonActive, (ImVec4)ImColor::HSV(7.0f, 0.8f, 0.8f, 0.7f));
+			if (ImGui::Button("", { 45.0f, 30.0f }))
+			{
+				if (m_Context->m_ScenePlay)
+					m_Context->m_ScenePlay = false;
+				else
+					m_Context->m_ScenePlay = true;
+			}
+			ImGui::PopStyleColor(3);
+			ImGui::PopID();
+			//ImGui::Dummy(ImVec2((sz + spacing) * 10.2f, (sz + spacing) * 3.0f));
+			ImGui::PopItemWidth();
+			
+			//ImGui::AlignTextToFramePadding();
+			ImGui::Text(" Play");
+			//ImGui::SameLine();
 	}
 
 	void SceneHierarchyPanel::DrawEntityNode(Entity entity)

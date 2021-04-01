@@ -19,6 +19,7 @@ namespace Becketron {
 	private:
 		void DrawEntityNode(Entity entity);
 		void DrawComponents(Entity entity);
+		void SceneOptions();
 	private:
 		Ref<Scene> m_Context;
 		Entity m_SelectionContext;
