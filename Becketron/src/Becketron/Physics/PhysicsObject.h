@@ -24,7 +24,9 @@ public:
 	void SetVelocity(const glm::vec3& velocity) { m_velocity = velocity; }
 
 	float GetRadius() const { return m_radius; }
-	bool	  m_play = false;
+	
+	bool m_play = false;
+	bool m_restart = false;
 
 	// Create boundingSphere on the fly when requested
 	BoundingSphere GetBoundingSphere() const
@@ -38,5 +40,5 @@ private:
 	glm::vec3 m_velocity;
 	float	  m_InitialRadius;
 	float	  m_radius;
-	bool	  m_playLast = false;
+	bool	  m_lastRestart = false;
 };

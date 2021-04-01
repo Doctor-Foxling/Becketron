@@ -67,9 +67,43 @@ namespace Becketron {
 		//		phy.Instance->OnUpdate(ts);
 		//	});
 		//}
+
+		if (m_SceneRestartLast != m_SceneRestart)
+		{
+			m_SceneRestartLast = m_SceneRestart;
+
+			auto view = m_Registry.view<PhysicsComponent>();
+			if (!m_SceneRestart)
+			{
+				m_ScenePlay = true;
+				for (auto entity : view)
+				{
+					auto& physComp = view.get<PhysicsComponent>(entity);
+
+					auto& phyObj = physComp.physicsObject;
+					//phyObj->m_play = m_ScenePlay;
+					phyObj->m_restart = m_SceneRestart;
+				}
+			}
+			else
+			{
+				m_ScenePlay = false;
+				for (auto entity : view)
+				{
+					auto& physComp = view.get<PhysicsComponent>(entity);
+
+					auto& phyObj = physComp.physicsObject;
+					//phyObj->m_play = m_ScenePlay;
+					phyObj->m_restart = m_SceneRestart;
+				}
+			}
+		}
+
 		if (m_ScenePlayLast != m_ScenePlay)
 		{
 			m_ScenePlayLast = m_ScenePlay;
+			if (m_SceneRestart)
+				m_SceneRestart = false;
 			auto view = m_Registry.view<PhysicsComponent>();
 			for (auto entity : view)
 			{
@@ -232,7 +266,7 @@ namespace Becketron {
 	template<>
 	void Scene::OnComponentAdded<CameraComponent>(Entity entity, CameraComponent& component)
 	{
-		component.Camera.SetViewportSize(m_ViewportWidth, m_ViewportHeight);
+		//component.Camera.SetViewportSize(m_ViewportWidth, m_ViewportHeight);
 	}
 
 	template<>

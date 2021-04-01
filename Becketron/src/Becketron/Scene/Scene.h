@@ -32,6 +32,8 @@ namespace Becketron {
 		uint32_t m_ViewportWidth = 0, m_ViewportHeight = 0;
 		bool m_ScenePlay = false;
 		bool m_ScenePlayLast = false;
+		bool m_SceneRestart = false;
+		bool m_SceneRestartLast = false;
 
 		friend class Entity;
 		friend class SceneHierarchyPanel;

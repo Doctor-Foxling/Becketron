@@ -56,6 +56,8 @@ namespace Becketron {
 
 		auto mainLight = m_ActiveScene->CreateEntity("Main Light");
 		mainLight.AddComponent<LightCubeComponent>(glm::vec4{ 0.5f, 0.8f, 0.2f, 1.0f });
+		auto& mainLight_tc = mainLight.GetComponent<TransformComponent>();
+		mainLight_tc.Translation = { 5.0f, 4.0f, 21.0f };
 
 		//Ref<Texture2D> checkerboardTex = Texture2D::Create("assets/textures/Chess_board.jpg");
 		auto texCube = m_ActiveScene->CreateEntity("Tex Cube");

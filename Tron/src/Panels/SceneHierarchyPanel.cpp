@@ -109,7 +109,7 @@ namespace Becketron {
 			ImDrawList* draw_list = ImGui::GetWindowDrawList();
 
 			static float sz = 36.0f;
-			static float thickness = 3.0f;
+			static float thickness = 6.0f;
 			static int ngon_sides = 3;
 			
 			const ImVec2 p = ImGui::GetCursorScreenPos();
@@ -124,7 +124,9 @@ namespace Becketron {
 			float y = p.y + 0.0f;
 			
 			// center, radius, col, num segments
-			draw_list->AddNgonFilled(ImVec2(x + sz * 0.5f, y + sz * 0.4f), sz * 0.4f, col, ngon_sides);               x += sz + spacing;  // N-gon
+			draw_list->AddNgonFilled(ImVec2(x + sz * 0.5f, y + sz * 0.4f), sz * 0.4f, col, ngon_sides);               x += sz + spacing * 2.5f;  // N-gon
+			draw_list->AddRectFilled(ImVec2(x, y + 5.0f), ImVec2(x + thickness, y + sz * 0.75f), col);                             x += spacing * 1.5f;
+			draw_list->AddRectFilled(ImVec2(x, y + 5.0f), ImVec2(x + thickness, y + sz * 0.75f), col);                             x += spacing * 2.0f;
 			//ImGui::SameLine();
 
 			ImGui::PushID(0);
@@ -140,11 +142,42 @@ namespace Becketron {
 			}
 			ImGui::PopStyleColor(3);
 			ImGui::PopID();
+
+			// restart button
+			ImGui::SameLine();
+			ImGui::PushID(1);
+			ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(7.0f, 0.6f, 0.6f, 0.0f));
+			ImGui::PushStyleColor(ImGuiCol_ButtonHovered, (ImVec4)ImColor::HSV(7.0f, 0.7f, 0.7f, 0.4f));
+			ImGui::PushStyleColor(ImGuiCol_ButtonActive, (ImVec4)ImColor::HSV(7.0f, 0.8f, 0.8f, 0.7f));
+			
+			if (ImGui::Button("", { 45.0f, 30.0f }))
+			{
+				if (m_Context->m_SceneRestart && !m_Context->m_ScenePlay)
+				{
+					m_Context->m_SceneRestart = false;
+				}
+				else
+					m_Context->m_SceneRestart = true;
+			}
+
+			ImGui::PopStyleColor(3);
+			ImGui::PopID();
 			//ImGui::Dummy(ImVec2((sz + spacing) * 10.2f, (sz + spacing) * 3.0f));
 			ImGui::PopItemWidth();
 			
 			//ImGui::AlignTextToFramePadding();
-			ImGui::Text(" Play");
+			if (m_Context->m_ScenePlay)
+				ImGui::Text(" Pause");
+			else
+				ImGui::Text(" Play");
+			ImGui::SameLine();
+			if (!m_Context->m_SceneRestart && m_Context->m_ScenePlay)
+				ImGui::Text("Restart");
+			else if (!m_Context->m_SceneRestart && !m_Context->m_ScenePlay)
+				ImGui::Text("  Start");
+			else if (m_Context->m_ScenePlay)
+				ImGui::Text("  -----");
+
 			//ImGui::SameLine();
 	}
 
