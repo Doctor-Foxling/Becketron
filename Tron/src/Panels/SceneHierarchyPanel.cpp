@@ -152,7 +152,8 @@ namespace Becketron {
 			
 			if (ImGui::Button("", { 45.0f, 30.0f }))
 			{
-				if (m_Context->m_SceneRestart && !m_Context->m_ScenePlay)
+				m_Context->m_SceneFirstStart = true;
+				if (m_Context->m_SceneRestart) // && !m_Context->m_ScenePlay)
 				{
 					m_Context->m_SceneRestart = false;
 				}
@@ -173,10 +174,13 @@ namespace Becketron {
 			ImGui::SameLine();
 			if (!m_Context->m_SceneRestart && m_Context->m_ScenePlay)
 				ImGui::Text("Restart");
-			else if (!m_Context->m_SceneRestart && !m_Context->m_ScenePlay)
+
+			if (!m_Context->m_SceneFirstStart && !m_Context->m_SceneRestart)
+			{
 				ImGui::Text("  Start");
-			else if (m_Context->m_ScenePlay)
-				ImGui::Text("  -----");
+			}
+			//else if (m_Context->m_ScenePlay)
+			//	ImGui::Text("  -----");
 
 			//ImGui::SameLine();
 	}

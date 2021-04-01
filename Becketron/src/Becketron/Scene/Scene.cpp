@@ -75,7 +75,7 @@ namespace Becketron {
 			auto view = m_Registry.view<PhysicsComponent>();
 			if (!m_SceneRestart)
 			{
-				m_ScenePlay = true;
+				//m_ScenePlay = true;
 				for (auto entity : view)
 				{
 					auto& physComp = view.get<PhysicsComponent>(entity);
@@ -87,7 +87,8 @@ namespace Becketron {
 			}
 			else
 			{
-				m_ScenePlay = false;
+				//m_ScenePlay = false;
+				m_ScenePlay = true;
 				for (auto entity : view)
 				{
 					auto& physComp = view.get<PhysicsComponent>(entity);

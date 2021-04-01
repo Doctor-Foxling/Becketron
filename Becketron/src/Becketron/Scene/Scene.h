@@ -35,6 +35,8 @@ namespace Becketron {
 		bool m_SceneRestart = false;
 		bool m_SceneRestartLast = false;
 
+		bool m_SceneFirstStart = false;
+
 		friend class Entity;
 		friend class SceneHierarchyPanel;
 	};
