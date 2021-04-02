@@ -15,23 +15,42 @@ void PhysicsEngine::Simulate(float delta_time)
 	}
 }
 
-void PhysicsEngine::HandleCollision()
+void PhysicsEngine::HandleCollision(CollisionType type)
 {
 	for (unsigned int i = 0; i < m_objects.size(); i++)
 	{
 		for (unsigned int j = i + 1; j < m_objects.size(); j++)
 		{
-			IntersectData intersectData =
-				m_objects[i]->GetBoundingSphere().IntersectBoundingSphere(
-					m_objects[j]->GetBoundingSphere());
-
-
-			if (intersectData.GetDoesIntersect())
+			if (type == CollisionType::BoundingSphere)
 			{
-				BT_CORE_INFO("Object {0} collided with Object {1}", i, j);
-				m_objects[i]->SetVelocity(m_objects[i]->GetVelocity() * -1.0f);
-				m_objects[j]->SetVelocity(m_objects[j]->GetVelocity() * -1.0f);
+				IntersectData intersectData =
+					m_objects[i]->GetBoundingSphere().IntersectBoundingSphere(
+						m_objects[j]->GetBoundingSphere());
+
+				if (intersectData.GetDoesIntersect())
+				{
+					BT_CORE_INFO("Object {0} collided with Object {1}", i, j);
+					m_objects[i]->SetVelocity(m_objects[i]->GetVelocity() * -1.0f);
+					m_objects[j]->SetVelocity(m_objects[j]->GetVelocity() * -1.0f);
+				}
 			}
+
+			if (type == CollisionType::AABB)
+			{
+				IntersectData intersectData =
+					m_objects[i]->GetAABB().IntersectAABB(m_objects[j]->GetAABB());
+
+				if (intersectData.GetDoesIntersect())
+				{
+					BT_CORE_INFO("Object {0} collided with Object {1}", i, j);
+					m_objects[i]->SetVelocity(m_objects[i]->GetVelocity() * -1.0f);
+					m_objects[j]->SetVelocity(m_objects[j]->GetVelocity() * -1.0f);
+				}
+			}
+
+			 
+
+			
 		}
 	}
 }

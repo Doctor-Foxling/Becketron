@@ -101,6 +101,7 @@ namespace Becketron {
 	struct PhysicsComponent
 	{
 		PhysicsObject* physicsObject;
+		bool controllable = false;
 
 		PhysicsComponent() = default;
 		PhysicsComponent(const PhysicsComponent&) = default;

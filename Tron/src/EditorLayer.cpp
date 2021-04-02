@@ -11,6 +11,8 @@
 #include "Becketron/Physics/PhysicsObject.h"
 #include "Becketron/Physics/PhysicsEngine.h"
 
+#include "PlayerScript.h"
+
 // Temporary??
 #include "Becketron/Renderer/Texture.h"
 
@@ -54,6 +56,8 @@ namespace Becketron {
 		auto redCube = m_ActiveScene->CreateEntity("Red Cube");
 		redCube.AddComponent<CubeRendererComponent>(glm::vec4{ 1.0f, 0.0f, 0.0f, 1.0f });
 
+		redCube.AddComponent<NativeScriptComponent>().Bind<CubeController>();
+
 		auto mainLight = m_ActiveScene->CreateEntity("Main Light");
 		mainLight.AddComponent<LightCubeComponent>(glm::vec4{ 0.5f, 0.8f, 0.2f, 1.0f });
 		auto& mainLight_tc = mainLight.GetComponent<TransformComponent>();
@@ -68,7 +72,7 @@ namespace Becketron {
 		m_CameraEntity = m_ActiveScene->CreateEntity("Camera A");
 		auto& cameraA = m_CameraEntity.AddComponent<CameraComponent>();
 		auto& camA_tc = m_CameraEntity.GetComponent<TransformComponent>();
-		camA_tc.Translation = { 0.0f, 2.0f, 20.0f };
+		camA_tc.Translation = { 0.0f, 5.0f, 20.0f };
 
 		m_SecondCamera = m_ActiveScene->CreateEntity("Camera B");
 		auto& cc = m_SecondCamera.AddComponent<CameraComponent>();
@@ -139,13 +143,14 @@ namespace Becketron {
 		m_CameraEntity.AddComponent<NativeScriptComponent>().Bind<CameraController>();
 		m_SecondCamera.AddComponent<NativeScriptComponent>().Bind<CameraController>();
 
-		PhysicsObject* phyObj2 = new PhysicsObject(glm::vec3(0.0f, 20.0f, 0.0f), glm::vec3(0.0f, -1.0f, 0.0f), 2.0f);
+		PhysicsObject* phyObj2 = new PhysicsObject(glm::vec3(0.0f, 20.0f, 0.0f), glm::vec3(0.0f, -1.0f, 0.0f), glm::vec3(4.0f));
 		blueCube.AddComponent<PhysicsComponent>(phyObj2);
 
-		PhysicsObject* phyObj1 = new PhysicsObject(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f), 1.0f);
-		redCube.AddComponent<PhysicsComponent>(phyObj1);
+		PhysicsObject* phyObj1 = new PhysicsObject(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f), glm::vec3(1.0f));
+		auto& phys_redCube = redCube.AddComponent<PhysicsComponent>(phyObj1);
+		phys_redCube.controllable = true;
 
-		PhysicsObject* phyObj3 = new PhysicsObject(glm::vec3(10.0f, 0.0f, 0.0f), glm::vec3(0.5f, 0.0f, 0.0f), 1.0f);
+		PhysicsObject* phyObj3 = new PhysicsObject(glm::vec3(10.0f, 0.0f, 0.0f), glm::vec3(0.5f, 0.0f, 0.0f), glm::vec3(1.0f));
 		greenCube.AddComponent<PhysicsComponent>(phyObj3);
 
 		m_SceneHierarchyPanel.SetContext(m_ActiveScene);

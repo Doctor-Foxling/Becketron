@@ -124,10 +124,20 @@ namespace Becketron {
 
 				auto& phyObj = physComp.physicsObject;
 				//phyObj.Integrate(ts);
-				
-				transform.Translation = phyObj->GetPosition();
-				float cube_side = phyObj->GetRadius() * glm::root_two<float>();
-				transform.Scale = glm::vec3(cube_side);
+				if (!physComp.controllable)
+				{
+					transform.Translation = phyObj->GetPosition();
+					transform.Scale = phyObj->GetScale();
+				}
+				else
+				{
+					phyObj->SetPosition(transform.Translation);
+					phyObj->SetScale(transform.Scale);
+				}
+
+				// ---- Bounding Spheres
+				//float cube_side = phyObj->GetRadius() * glm::root_two<float>();
+				//transform.Scale = glm::vec3(cube_side);
 			}
 		}
 
@@ -135,7 +145,7 @@ namespace Becketron {
 		//if (m_ScenePlay && m_ScenePlay == m_ScenePlayLast)
 		{
 			m_PhysEng.Simulate(ts);
-			m_PhysEng.HandleCollision();
+			m_PhysEng.HandleCollision(PhysicsEngine::CollisionType::AABB);
 		}
 		
 

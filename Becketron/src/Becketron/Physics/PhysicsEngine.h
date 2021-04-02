@@ -2,8 +2,11 @@
 
 #include "PhysicsObject.h"
 
+
 class PhysicsEngine
 {
+public:
+	enum class CollisionType { AABB = 0, BoundingSphere };
 public:
 	void AddObject(PhysicsObject* object);
 
@@ -19,7 +22,7 @@ public:
 		return (unsigned int)m_objects.size();
 	}
 
-	void HandleCollision();
+	void HandleCollision(CollisionType type);
 private:
 	std::vector<PhysicsObject*> m_objects;
 };

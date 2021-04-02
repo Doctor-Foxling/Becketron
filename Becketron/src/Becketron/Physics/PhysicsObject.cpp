@@ -12,7 +12,6 @@ void PhysicsObject::Integrate(float delta_time)
 			m_position = m_InitialPosition;
 			m_velocity = m_InitialVelocity;
 			m_radius = m_InitialRadius;
-
 		}
 	}
 
