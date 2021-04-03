@@ -24,12 +24,17 @@ namespace Becketron {
 
 			if (Input::IsKeyPressed(BT_KEY_LEFT))
 				translation.x -= speed * ts;
-			if (Input::IsKeyPressed(BT_KEY_RIGHT))
+			else if (Input::IsKeyPressed(BT_KEY_RIGHT))
 				translation.x += speed * ts;
 			if (Input::IsKeyPressed(BT_KEY_UP))
 				translation.y += speed * ts;
-			if (Input::IsKeyPressed(BT_KEY_DOWN))
+			else if (Input::IsKeyPressed(BT_KEY_DOWN))
 				translation.y -= speed * ts;
+			if ((Input::IsKeyPressed(BT_KEY_LEFT_CONTROL)|| Input::IsKeyPressed(BT_KEY_RIGHT_CONTROL)) && Input::IsKeyPressed(BT_KEY_UP))
+				translation.z -= speed * ts;
+			if ((Input::IsKeyPressed(BT_KEY_LEFT_CONTROL)|| Input::IsKeyPressed(BT_KEY_RIGHT_CONTROL)) && Input::IsKeyPressed(BT_KEY_DOWN))
+				translation.z += speed * ts;
+
 
 		}
 	};

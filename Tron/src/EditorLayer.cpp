@@ -143,7 +143,7 @@ namespace Becketron {
 		m_CameraEntity.AddComponent<NativeScriptComponent>().Bind<CameraController>();
 		m_SecondCamera.AddComponent<NativeScriptComponent>().Bind<CameraController>();
 
-		PhysicsObject* phyObj2 = new PhysicsObject(glm::vec3(0.0f, 20.0f, 0.0f), glm::vec3(0.0f, -1.0f, 0.0f), glm::vec3(4.0f));
+		PhysicsObject* phyObj2 = new PhysicsObject(glm::vec3(0.0f, 20.0f, 0.0f), glm::vec3(0.0f, -0.1f, 0.0f), glm::vec3(4.0f));
 		blueCube.AddComponent<PhysicsComponent>(phyObj2);
 
 		PhysicsObject* phyObj1 = new PhysicsObject(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f), glm::vec3(1.0f));
@@ -165,6 +165,13 @@ namespace Becketron {
 
 		BT_CORE_INFO("testPos: {0}, {1}, {2}", testPos.x, testPos.y, testPos.z);
 		BT_CORE_INFO("testVel: {0}, {1}, {2}", testVel.x, testVel.y, testVel.z);
+
+		BT_CORE_INFO("First Test");
+		AABB::Test();
+
+		BT_CORE_INFO("First Test");
+		AABB::Test2({ 0.0f, 0.5f, 0.0f }, { 1.0f, 1.0f, 1.0f }, { 0.0f, 0.0f, 0.0f }, {1.0f, 1.0f, 1.0f});
+
 
 		// Random Bounding SPhere test
 	//	BoundingSphere::Test();

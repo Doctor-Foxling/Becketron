@@ -52,3 +52,16 @@ void AABB::Test()
 	BT_CORE_INFO("AABB1 intersect AABB5: {0}, Distance: {1}", aabb1Intersectaabb5.GetDoesIntersect(),
 		aabb1Intersectaabb5.GetDistance());
 }
+
+void AABB::Test2(glm::vec3 pos1, glm::vec3 scale1, glm::vec3 pos2, glm::vec3 scale2)
+{
+	// Random testing
+	AABB aabb1(pos1, pos1 + scale1);
+	AABB aabb2(pos2, pos2 + scale2);
+	
+
+	IntersectData aabb1Intersectaabb2 = aabb1.IntersectAABB(aabb2);
+	
+	BT_CORE_INFO("AABB1 intersect AABB2: {0}, Distance: {1}", aabb1Intersectaabb2.GetDoesIntersect(),
+		aabb1Intersectaabb2.GetDistance());
+}

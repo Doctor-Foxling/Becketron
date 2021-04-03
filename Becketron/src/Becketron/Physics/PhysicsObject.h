@@ -50,7 +50,7 @@ public:
 
 	AABB GetAABB() const
 	{
-		return AABB(m_position, m_scale - m_position);
+		return AABB(m_position - (m_scale/glm::vec3(2.0f)), m_position + (m_scale/glm::vec3(2.0f)));
 	}
 
 private:
