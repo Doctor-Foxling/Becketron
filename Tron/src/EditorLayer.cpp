@@ -6,10 +6,10 @@
 #include <glm/gtc/type_ptr.hpp>
 
 // coolision testing
-#include "Becketron/Physics/BoundingSphere.h"
-#include "Becketron/Physics/aabb.h"
-#include "Becketron/Physics/PhysicsObject.h"
-#include "Becketron/Physics/PhysicsEngine.h"
+#include "Becketron/Physics/BT_Physics/BoundingSphere.h"
+#include "Becketron/Physics/BT_Physics/aabb.h"
+#include "Becketron/Physics/BT_Physics/PhysicsObject.h"
+#include "Becketron/Physics/BT_Physics/PhysicsEngine.h"
 
 #include "PlayerScript.h"
 

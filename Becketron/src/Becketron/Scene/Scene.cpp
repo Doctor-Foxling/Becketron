@@ -9,8 +9,6 @@
 
 #include "Entity.h"
 
-// Temporary
-#include "Becketron/Physics/BoundingSphere.h"
 
 namespace Becketron {
 

@@ -76,8 +76,8 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>btpch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
-      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;BT_PLATFORM_WINDOWS;BTRON_BUILD_DLL;GLFW_INCLUDE_NONE;BT_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>src;vendor\spdlog\include;vendor\GLFW\include;vendor\Glad\include;vendor\imgui;vendor\glm;vendor\stb_image;vendor\entt\include;vendor\ImFileBrowser;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;PX_PHYSX_STATIC_LIB;BT_PLATFORM_WINDOWS;BTRON_BUILD_DLL;GLFW_INCLUDE_NONE;BT_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>src;vendor\spdlog\include;vendor\GLFW\include;vendor\Glad\include;vendor\imgui;vendor\glm;vendor\stb_image;vendor\entt\include;vendor\ImFileBrowser;vendor\PhysX\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
       <MinimalRebuild>false</MinimalRebuild>
@@ -90,7 +90,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <Lib>
-      <AdditionalDependencies>opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>opengl32.lib;vendor\PhysX\lib\Debug\PhysX_static_64.lib;vendor\PhysX\lib\Debug\PhysXCharacterKinematic_static_64.lib;vendor\PhysX\lib\Debug\PhysXCommon_static_64.lib;vendor\PhysX\lib\Debug\PhysXCooking_static_64.lib;vendor\PhysX\lib\Debug\PhysXExtensions_static_64.lib;vendor\PhysX\lib\Debug\PhysXFoundation_static_64.lib;vendor\PhysX\lib\Debug\PhysXPvdSDK_static_64.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -98,8 +98,8 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>btpch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
-      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;BT_PLATFORM_WINDOWS;BTRON_BUILD_DLL;GLFW_INCLUDE_NONE;BT_RELEASE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>src;vendor\spdlog\include;vendor\GLFW\include;vendor\Glad\include;vendor\imgui;vendor\glm;vendor\stb_image;vendor\entt\include;vendor\ImFileBrowser;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;PX_PHYSX_STATIC_LIB;BT_PLATFORM_WINDOWS;BTRON_BUILD_DLL;GLFW_INCLUDE_NONE;BT_RELEASE;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>src;vendor\spdlog\include;vendor\GLFW\include;vendor\Glad\include;vendor\imgui;vendor\glm;vendor\stb_image;vendor\entt\include;vendor\ImFileBrowser;vendor\PhysX\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -115,7 +115,7 @@
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
     <Lib>
-      <AdditionalDependencies>opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>opengl32.lib;vendor\PhysX\lib\Release\PhysX_static_64.lib;vendor\PhysX\lib\Release\PhysXCharacterKinematic_static_64.lib;vendor\PhysX\lib\Release\PhysXCommon_static_64.lib;vendor\PhysX\lib\Release\PhysXCooking_static_64.lib;vendor\PhysX\lib\Release\PhysXExtensions_static_64.lib;vendor\PhysX\lib\Release\PhysXFoundation_static_64.lib;vendor\PhysX\lib\Release\PhysXPvdSDK_static_64.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Dist|x64'">
@@ -123,8 +123,8 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>btpch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
-      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;BT_PLATFORM_WINDOWS;BTRON_BUILD_DLL;GLFW_INCLUDE_NONE;BT_DIST;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>src;vendor\spdlog\include;vendor\GLFW\include;vendor\Glad\include;vendor\imgui;vendor\glm;vendor\stb_image;vendor\entt\include;vendor\ImFileBrowser;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;PX_PHYSX_STATIC_LIB;BT_PLATFORM_WINDOWS;BTRON_BUILD_DLL;GLFW_INCLUDE_NONE;BT_DIST;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>src;vendor\spdlog\include;vendor\GLFW\include;vendor\Glad\include;vendor\imgui;vendor\glm;vendor\stb_image;vendor\entt\include;vendor\ImFileBrowser;vendor\PhysX\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -140,7 +140,7 @@
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
     <Lib>
-      <AdditionalDependencies>opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>opengl32.lib;vendor\PhysX\lib\Dist\PhysX_static_64.lib;vendor\PhysX\lib\Dist\PhysXCharacterKinematic_static_64.lib;vendor\PhysX\lib\Dist\PhysXCommon_static_64.lib;vendor\PhysX\lib\Dist\PhysXCooking_static_64.lib;vendor\PhysX\lib\Dist\PhysXExtensions_static_64.lib;vendor\PhysX\lib\Dist\PhysXFoundation_static_64.lib;vendor\PhysX\lib\Dist\PhysXPvdSDK_static_64.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -162,12 +162,18 @@
     <ClInclude Include="src\Becketron\Events\KeyEvent.h" />
     <ClInclude Include="src\Becketron\Events\MouseEvent.h" />
     <ClInclude Include="src\Becketron\ImGui\ImGuiLayer.h" />
-    <ClInclude Include="src\Becketron\Physics\BoundingSphere.h" />
-    <ClInclude Include="src\Becketron\Physics\IntersectData.h" />
+    <ClInclude Include="src\Becketron\Physics\BT_Physics\BoundingSphere.h" />
+    <ClInclude Include="src\Becketron\Physics\BT_Physics\IntersectData.h" />
+    <ClInclude Include="src\Becketron\Physics\BT_Physics\PhysicsEngine.h" />
+    <ClInclude Include="src\Becketron\Physics\BT_Physics\PhysicsObject.h" />
+    <ClInclude Include="src\Becketron\Physics\BT_Physics\Plane.h" />
+    <ClInclude Include="src\Becketron\Physics\BT_Physics\aabb.h" />
+    <ClInclude Include="src\Becketron\Physics\PhysX\AllocatorCallback.h" />
+    <ClInclude Include="src\Becketron\Physics\PhysX\ErrorCallback.h" />
+    <ClInclude Include="src\Becketron\Physics\PhysX\PhysicsEnginePhysX.h" />
     <ClInclude Include="src\Becketron\Physics\PhysicsEngine.h" />
-    <ClInclude Include="src\Becketron\Physics\PhysicsObject.h" />
-    <ClInclude Include="src\Becketron\Physics\Plane.h" />
-    <ClInclude Include="src\Becketron\Physics\aabb.h" />
+    <ClInclude Include="src\Becketron\Physics\PhysX\PhysXRigidbody.h" />
+    <ClInclude Include="src\Becketron\Physics\PhysX\PhysXScene.h" />
     <ClInclude Include="src\Becketron\Renderer\Buffer.h" />
     <ClInclude Include="src\Becketron\Renderer\Camera.h" />
     <ClInclude Include="src\Becketron\Renderer\Framebuffer.h" />
@@ -619,11 +625,14 @@
     <ClCompile Include="src\Becketron\Core\Log.cpp" />
     <ClCompile Include="src\Becketron\ImGui\ImGuiBuild.cpp" />
     <ClCompile Include="src\Becketron\ImGui\ImGuiLayer.cpp" />
-    <ClCompile Include="src\Becketron\Physics\BoundingSphere.cpp" />
-    <ClCompile Include="src\Becketron\Physics\PhysicsEngine.cpp" />
-    <ClCompile Include="src\Becketron\Physics\PhysicsObject.cpp" />
-    <ClCompile Include="src\Becketron\Physics\Plane.cpp" />
-    <ClCompile Include="src\Becketron\Physics\aabb.cpp" />
+    <ClCompile Include="src\Becketron\Physics\BT_Physics\BoundingSphere.cpp" />
+    <ClCompile Include="src\Becketron\Physics\BT_Physics\PhysicsEngine.cpp" />
+    <ClCompile Include="src\Becketron\Physics\BT_Physics\PhysicsObject.cpp" />
+    <ClCompile Include="src\Becketron\Physics\BT_Physics\Plane.cpp" />
+    <ClCompile Include="src\Becketron\Physics\BT_Physics\aabb.cpp" />
+    <ClCompile Include="src\Becketron\Physics\PhysX\PhysicsEnginePhysX.cpp" />
+    <ClCompile Include="src\Becketron\Physics\PhysX\PhysXRigidbody.cpp" />
+    <ClCompile Include="src\Becketron\Physics\PhysX\PhysXScene.cpp" />
     <ClCompile Include="src\Becketron\Renderer\Buffer.cpp" />
     <ClCompile Include="src\Becketron\Renderer\Camera.cpp" />
     <ClCompile Include="src\Becketron\Renderer\Framebuffer.cpp" />

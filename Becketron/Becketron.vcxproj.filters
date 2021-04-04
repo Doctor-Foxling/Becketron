@@ -22,6 +22,12 @@
     <Filter Include="src\Becketron\Physics">
       <UniqueIdentifier>{6BACB07B-D718-6C76-A00C-04D40C388EDE}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\Becketron\Physics\BT_Physics">
+      <UniqueIdentifier>{F2E6C03B-DE37-AC7D-079C-9A3FF34B3FE7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Becketron\Physics\PhysX">
+      <UniqueIdentifier>{D6479E40-4255-CC26-CB3B-C811374898DD}</UniqueIdentifier>
+    </Filter>
     <Filter Include="src\Becketron\Renderer">
       <UniqueIdentifier>{BF0BA1C8-AB05-CA1A-9472-602B800B3087}</UniqueIdentifier>
     </Filter>
@@ -120,22 +126,28 @@
     <ClInclude Include="src\Becketron\ImGui\ImGuiLayer.h">
       <Filter>src\Becketron\ImGui</Filter>
     </ClInclude>
-    <ClInclude Include="src\Becketron\Physics\BoundingSphere.h">
-      <Filter>src\Becketron\Physics</Filter>
+    <ClInclude Include="src\Becketron\Physics\BT_Physics\BoundingSphere.h">
+      <Filter>src\Becketron\Physics\BT_Physics</Filter>
     </ClInclude>
-    <ClInclude Include="src\Becketron\Physics\IntersectData.h">
-      <Filter>src\Becketron\Physics</Filter>
+    <ClInclude Include="src\Becketron\Physics\BT_Physics\IntersectData.h">
+      <Filter>src\Becketron\Physics\BT_Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Becketron\Physics\BT_Physics\PhysicsEngine.h">
+      <Filter>src\Becketron\Physics\BT_Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Becketron\Physics\BT_Physics\PhysicsObject.h">
+      <Filter>src\Becketron\Physics\BT_Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Becketron\Physics\BT_Physics\Plane.h">
+      <Filter>src\Becketron\Physics\BT_Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Becketron\Physics\BT_Physics\aabb.h">
+      <Filter>src\Becketron\Physics\BT_Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Becketron\Physics\PhysX\PhysicsEnginePhysX.h">
+      <Filter>src\Becketron\Physics\PhysX</Filter>
     </ClInclude>
     <ClInclude Include="src\Becketron\Physics\PhysicsEngine.h">
-      <Filter>src\Becketron\Physics</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Becketron\Physics\PhysicsObject.h">
-      <Filter>src\Becketron\Physics</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Becketron\Physics\Plane.h">
-      <Filter>src\Becketron\Physics</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Becketron\Physics\aabb.h">
       <Filter>src\Becketron\Physics</Filter>
     </ClInclude>
     <ClInclude Include="src\Becketron\Renderer\Buffer.h">
@@ -1467,6 +1479,10 @@
     <ClInclude Include="vendor\stb_image\stb_image.h">
       <Filter>vendor\stb_image</Filter>
     </ClInclude>
+    <ClInclude Include="src\Becketron\Physics\PhysX\ErrorCallback.h" />
+    <ClInclude Include="src\Becketron\Physics\PhysX\PhysXScene.h" />
+    <ClInclude Include="src\Becketron\Physics\PhysX\AllocatorCallback.h" />
+    <ClInclude Include="src\Becketron\Physics\PhysX\PhysXRigidbody.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Becketron\Core\Application.cpp">
@@ -1487,20 +1503,23 @@
     <ClCompile Include="src\Becketron\ImGui\ImGuiLayer.cpp">
       <Filter>src\Becketron\ImGui</Filter>
     </ClCompile>
-    <ClCompile Include="src\Becketron\Physics\BoundingSphere.cpp">
-      <Filter>src\Becketron\Physics</Filter>
+    <ClCompile Include="src\Becketron\Physics\BT_Physics\BoundingSphere.cpp">
+      <Filter>src\Becketron\Physics\BT_Physics</Filter>
     </ClCompile>
-    <ClCompile Include="src\Becketron\Physics\PhysicsEngine.cpp">
-      <Filter>src\Becketron\Physics</Filter>
+    <ClCompile Include="src\Becketron\Physics\BT_Physics\PhysicsEngine.cpp">
+      <Filter>src\Becketron\Physics\BT_Physics</Filter>
     </ClCompile>
-    <ClCompile Include="src\Becketron\Physics\PhysicsObject.cpp">
-      <Filter>src\Becketron\Physics</Filter>
+    <ClCompile Include="src\Becketron\Physics\BT_Physics\PhysicsObject.cpp">
+      <Filter>src\Becketron\Physics\BT_Physics</Filter>
     </ClCompile>
-    <ClCompile Include="src\Becketron\Physics\Plane.cpp">
-      <Filter>src\Becketron\Physics</Filter>
+    <ClCompile Include="src\Becketron\Physics\BT_Physics\Plane.cpp">
+      <Filter>src\Becketron\Physics\BT_Physics</Filter>
     </ClCompile>
-    <ClCompile Include="src\Becketron\Physics\aabb.cpp">
-      <Filter>src\Becketron\Physics</Filter>
+    <ClCompile Include="src\Becketron\Physics\BT_Physics\aabb.cpp">
+      <Filter>src\Becketron\Physics\BT_Physics</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Becketron\Physics\PhysX\PhysicsEnginePhysX.cpp">
+      <Filter>src\Becketron\Physics\PhysX</Filter>
     </ClCompile>
     <ClCompile Include="src\Becketron\Renderer\Buffer.cpp">
       <Filter>src\Becketron\Renderer</Filter>
@@ -1586,5 +1605,7 @@
     <ClCompile Include="vendor\stb_image\stb_image.cpp">
       <Filter>vendor\stb_image</Filter>
     </ClCompile>
+    <ClCompile Include="src\Becketron\Physics\PhysX\PhysXScene.cpp" />
+    <ClCompile Include="src\Becketron\Physics\PhysX\PhysXRigidbody.cpp" />
   </ItemGroup>
 </Project>

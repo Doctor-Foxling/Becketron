@@ -26,6 +26,17 @@ IncludeDir["glm"] = "Becketron/vendor/glm"
 IncludeDir["stb_image"] = "Becketron/vendor/stb_image"
 IncludeDir["entt"] = "Becketron/vendor/entt/include"
 IncludeDir["ImFileBrowser"] = "Becketron/vendor/ImFileBrowser"
+IncludeDir["PhysX"] = "Becketron/vendor/PhysX/include"
+
+LibraryDir = {}
+LibraryDir["PhysX"] = "vendor/PhysX/lib/%{cfg.buildcfg}/PhysX_static_64.lib"
+LibraryDir["PhysXCharacterKinematic"] = "vendor/PhysX/lib/%{cfg.buildcfg}/PhysXCharacterKinematic_static_64.lib"
+LibraryDir["PhysXCommon"] = "vendor/PhysX/lib/%{cfg.buildcfg}/PhysXCommon_static_64.lib"
+LibraryDir["PhysXCooking"] = "vendor/PhysX/lib/%{cfg.buildcfg}/PhysXCooking_static_64.lib"
+LibraryDir["PhysXExtensions"] = "vendor/PhysX/lib/%{cfg.buildcfg}/PhysXExtensions_static_64.lib"
+LibraryDir["PhysXFoundation"] = "vendor/PhysX/lib/%{cfg.buildcfg}/PhysXFoundation_static_64.lib"
+LibraryDir["PhysXPvd"] = "vendor/PhysX/lib/%{cfg.buildcfg}/PhysXPvdSDK_static_64.lib"
+
 
 group "Dependencies"
 	include "Becketron/vendor/GLFW"
@@ -73,7 +84,8 @@ project "Becketron"
 		"%{IncludeDir.glm}",
 		"%{IncludeDir.stb_image}",
 		"%{IncludeDir.entt}",
-		"%{IncludeDir.ImFileBrowser}"
+		"%{IncludeDir.ImFileBrowser}",
+		"%{IncludeDir.PhysX}",
 	}
 
 	links
@@ -81,7 +93,19 @@ project "Becketron"
 		"GLFW",
 		"Glad",
 		"ImGui",
-		"opengl32.lib"
+		"opengl32.lib",
+		"%{LibraryDir.PhysX}",
+		"%{LibraryDir.PhysXCharacterKinematic}",
+		"%{LibraryDir.PhysXCommon}",
+		"%{LibraryDir.PhysXCooking}",
+		"%{LibraryDir.PhysXExtensions}",
+		"%{LibraryDir.PhysXFoundation}",
+		"%{LibraryDir.PhysXPvd}"
+	}
+
+	defines
+	{
+		"PX_PHYSX_STATIC_LIB"
 	}
 
 	filter "system:windows"
@@ -101,7 +125,11 @@ project "Becketron"
 		symbols "on"
 
 	filter "configurations:Release"
-		defines "BT_RELEASE"
+		defines 
+		{
+			"BT_RELEASE",
+			"NDEBUG" -- PhysX Requires This
+		}
 		runtime "Release"
 		optimize "on"
 

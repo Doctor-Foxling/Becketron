@@ -4,7 +4,7 @@
 #include <glm/gtc/matrix_transform.hpp>
 
 #include "SceneCamera.h"
-#include "Becketron/Physics/PhysicsObject.h"
+#include "Becketron/Physics/BT_Physics/PhysicsObject.h"
 #include "Becketron/Renderer/Texture.h"
 
 #include "ScriptableEntity.h"
