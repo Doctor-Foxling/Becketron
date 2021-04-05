@@ -1,6 +1,6 @@
 #pragma once
 
-#include <PhysX/PxScene.h>
+#include <PxScene.h>
 
 class PhysicsEngine
 {

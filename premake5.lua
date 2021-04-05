@@ -26,6 +26,7 @@ IncludeDir["glm"] = "Becketron/vendor/glm"
 IncludeDir["stb_image"] = "Becketron/vendor/stb_image"
 IncludeDir["entt"] = "Becketron/vendor/entt/include"
 IncludeDir["ImFileBrowser"] = "Becketron/vendor/ImFileBrowser"
+IncludeDir["PhysX"] = "Becketron/vendor/PhysX/physx/include"
 
 group "Dependencies"
 	include "Becketron/vendor/GLFW"
@@ -73,7 +74,8 @@ project "Becketron"
 		"%{IncludeDir.glm}",
 		"%{IncludeDir.stb_image}",
 		"%{IncludeDir.entt}",
-		"%{IncludeDir.ImFileBrowser}"
+		"%{IncludeDir.ImFileBrowser}",
+		"%{IncludeDir.PhysX}"
 	}
 
 	links
