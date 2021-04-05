@@ -1,5 +1,7 @@
 #pragma once
 
+#include <PhysX/PxScene.h>
+
 class PhysicsEngine
 {
 public:

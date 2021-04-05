@@ -4,6 +4,10 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
+#include "Becketron/Physics/PhysicsEngine.h"
+//#include <PhysX/include/PhysX/PxPhysicsAPI.h>
+
+//#include "Becketron/Physics/PhysX/PhysXScene.h"
 
 
 
@@ -16,7 +20,7 @@ void Sandbox3D::OnAttach()
 {
 	BT_PROFILE_FUNCTION();
 	m_CheckerboardTexture = Becketron::Texture2D::Create("assets/textures/Chess_board.jpg");
-
+	//static physx::PxPhysics* phys;
 
 }
 

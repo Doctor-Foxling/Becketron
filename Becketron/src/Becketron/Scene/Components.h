@@ -1,6 +1,7 @@
 #pragma once
 
 #include <glm/glm.hpp>
+#include <glm/gtx/quaternion.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 
 #include "SceneCamera.h"
@@ -9,6 +10,9 @@
 
 #include "ScriptableEntity.h"
 #include "PhysicsEntity.h"
+#include "Becketron/Physics/PhysX/PhysXRigidbody.h"
+
+//#define BT_PHYSICS
 
 namespace Becketron {
 
@@ -25,7 +29,8 @@ namespace Becketron {
 	struct TransformComponent
 	{
 		glm::vec3 Translation = { 0.0f, 0.0f, 0.0f };
-		glm::vec3 Rotation = { 0.0f, 0.0f, 0.0f };
+		//glm::vec3 Rotation = { 0.0f, 0.0f, 0.0f };
+		glm::quat Rotation;
 		glm::vec3 Scale = { 1.0f, 1.0f, 1.0f };
 
 		TransformComponent() = default;
@@ -36,14 +41,30 @@ namespace Becketron {
 
 		glm::mat4 GetTransform() const
 		{
-			glm::mat4 rotation = glm::rotate(glm::mat4(1.0f), Rotation.x, { 1, 0, 0 })
+			/*glm::mat4 rotation = glm::rotate(glm::mat4(1.0f), Rotation.x, { 1, 0, 0 })
 				* glm::rotate(glm::mat4(1.0f), Rotation.y, { 0, 1, 0 })
-				* glm::rotate(glm::mat4(1.0f), Rotation.z, { 0, 0, 1 });
+				* glm::rotate(glm::mat4(1.0f), Rotation.z, { 0, 0, 1 });*/
 
-			return glm::translate(glm::mat4(1.0f), Translation)
+			glm::mat4 position = glm::translate(glm::mat4(1.0f), Translation);
+			glm::mat4 rotation = glm::toMat4(Rotation);
+			glm::mat4 scale = glm::scale(glm::mat4(1.0f), Scale);
+
+			return position * rotation * scale;
+			/*return glm::translate(glm::mat4(1.0f), Translation)
 				* rotation
-				* glm::scale(glm::mat4(1.0f), Scale);
+				* glm::scale(glm::mat4(1.0f), Scale);*/
 		}
+	};
+	
+	struct PhysXRigidbodyComponent
+	{
+		bool isKinematic;
+
+		PhysXRigidbody* m_body;
+
+		PhysXRigidbodyComponent() = default;
+		PhysXRigidbodyComponent(PhysXRigidbody* m_Body, bool IsKinematic) 
+			: m_body(m_Body), isKinematic(IsKinematic) {}
 	};
 
 	struct SpriteRendererComponent

@@ -19,11 +19,11 @@ namespace Becketron {
 			switch (code)
 			{
 			case physx::PxErrorCode::Enum::eDEBUG_INFO:
-				BT_CORE_INFO("{0}", message);
+				BT_CORE_INFO("{0} {1} {2}", message, file, line);
 				break;
 
 			case physx::PxErrorCode::Enum::eDEBUG_WARNING:
-				BT_CORE_WARN("{0}", message);
+				BT_CORE_WARN("{0} {1} {2}", message, file, line);
 				break;
 
 			case physx::PxErrorCode::Enum::eOUT_OF_MEMORY:
@@ -35,30 +35,31 @@ namespace Becketron {
 				break;
 
 			case physx::PxErrorCode::Enum::eABORT:
-				BT_CORE_ERROR("{0}!", message);
+				BT_CORE_ERROR("{0} {1} {2}", message, file, line);
 				break;
 
 			case physx::PxErrorCode::Enum::ePERF_WARNING:
-				BT_CORE_WARN("{0}!", message);
+				BT_CORE_WARN("{0} {1} {2}", message, file, line);
 				break;
 
 			case physx::PxErrorCode::Enum::eINTERNAL_ERROR:
-				BT_CORE_ERROR("{0}!", message);
+				BT_CORE_ERROR("{0} {1} {2}", message, file, line);
 				break;
 
 			case physx::PxErrorCode::Enum::eINVALID_OPERATION:
-				BT_CORE_ERROR("{0}!", message);
+				BT_CORE_ERROR("{0} {1} {2}", message, file, line);
 				break;
 
 			case physx::PxErrorCode::Enum::eMASK_ALL:
-				BT_CORE_INFO("{0}!", message);
+				BT_CORE_INFO("{0} {1} {2}", message, file, line);
 				break;
 
 			case physx::PxErrorCode::Enum::eNO_ERROR:
-				//BT_CORE_INFO("{0}!", message);
+				BT_CORE_INFO("{0} {1} {2}", message, file, line);
 				break;
 
 			default:
+				BT_CORE_INFO("{0} {1} {2}", message, file, line);
 				break;
 			}
 		}

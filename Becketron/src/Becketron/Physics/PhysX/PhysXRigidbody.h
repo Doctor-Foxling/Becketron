@@ -4,8 +4,12 @@
 
 //#ifdef USE_NVIDIA
 
-#include <glm/detail/type_quat.hpp>
-#include <physx/PxPhysicsAPI.h>
+#define GLM_ENABLE_EXPERIMENTAL
+#include <glm/gtx/quaternion.hpp>
+#include <glm/gtx/matrix_decompose.hpp>
+#include <glm/gtc/type_ptr.hpp>
+//#include <glm/detail/type_quat.hpp>
+#include <PhysX/PxPhysicsAPI.h>
 #include "PhysXScene.h"
 
 namespace Becketron {
@@ -60,11 +64,15 @@ namespace Becketron {
 			return q;
 		}
 
+		void SetKinematic(bool kinematic);
+
+		bool IsKinematic();
+
 	protected:
 		PhysXScene* m_Scene;
 		physx::PxRigidDynamic* m_Body;
 	private:
-
+		bool m_Kinematic = false;
 	};
 
 }

@@ -42,7 +42,7 @@ namespace Becketron {
 		auto& tc = square.GetComponent<TransformComponent>();
 		tc.Translation = { 0.0f, -3.0f, 0.0f };
 		tc.Scale = { 20.0f, 20.0f, 0.0f };
-		tc.Rotation = { 90.0f, 0.0f, 0.0f };
+		//tc.Rotation = { 90.0f, 0.0f, 0.0f };
 
 		auto redSquare = m_ActiveScene->CreateEntity("Red Square");
 		redSquare.AddComponent<SpriteRendererComponent>(glm::vec4{ 1.0f, 0.0f, 0.0f, 1.0f });

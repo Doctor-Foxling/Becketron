@@ -2,11 +2,11 @@
 
 #include "Becketron.h"
 
-
 //#ifdef USE_NVIDIA
 
-#include <physx/PxPhysicsAPI.h>
-//#include <physx/PxScene.h>
+#include <PhysX/PxPhysicsAPI.h>
+#include <PhysX/PxFoundation.h>
+#include <PhysX/PxScene.h>
 
 #include "ErrorCallback.h"
 
@@ -24,11 +24,11 @@ namespace Becketron {
 		PhysXErrorCallback m_DefaultErrorCallback;
 		physx::PxDefaultAllocator m_DefaultAllocatorCallback;
 		static physx::PxFoundation* m_Foundation;
+		static physx::PxDefaultCpuDispatcher* m_Dispatcher;
 		static physx::PxCooking* m_Cooking;
 		static physx::PxPhysics* m_Physics;
-
+		static physx::PxScene* m_PhysXScene;
 	protected:
-		physx::PxScene* m_PhysXScene;
 		Scene* m_Scene;
 
 	private:

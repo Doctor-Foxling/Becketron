@@ -9,12 +9,16 @@
 
 #include "Entity.h"
 
+//#define BT_PHYSICS
+
+#define PHYSX_PHYSICS
 
 namespace Becketron {
 
 	
 	Scene::Scene()
 	{
+
 	}
 
 	Scene::~Scene()
@@ -52,6 +56,29 @@ namespace Becketron {
 			});
 		}
 
+#ifdef PHYSX_PHYSICS
+		if (m_SceneRestartLast != m_SceneRestart)
+		{
+			m_SceneRestartLast = m_SceneRestart;
+
+			auto view = m_Registry.view<PhysXRigidbodyComponent, TransformComponent>();
+
+			for (const auto& entity : view)
+			{
+				auto [tc, rb] = view.get<TransformComponent, PhysXRigidbodyComponent>(entity);
+
+				//tc.Position = pc.Position;
+
+				BT_CORE_INFO("x {0}", rb.m_body->GetPos().x);
+				BT_CORE_INFO("y {0}", rb.m_body->GetPos().y);
+				BT_CORE_INFO("z {0}", rb.m_body->GetPos().z);
+
+				tc.Translation = rb.m_body->GetPos();
+			}
+		}
+#endif
+
+#ifdef BT_PHYSICS
 		//{
 		//	m_Registry.view<PhysicsComponent>().each([=](auto entity, auto& phy)
 		//	{
@@ -146,7 +173,7 @@ namespace Becketron {
 			m_PhysEng.HandleCollision(PhysicsEngine::CollisionType::AABB);
 		}
 		
-
+#endif
 		// --- Renderering ---
 
 		// Camera
@@ -300,6 +327,11 @@ namespace Becketron {
 
 	template<>
 	void Scene::OnComponentAdded<TagComponent>(Entity entity, TagComponent& component)
+	{
+	}
+
+	template<>
+	void Scene::OnComponentAdded<PhysXRigidbodyComponent>(Entity entity, PhysXRigidbodyComponent& component)
 	{
 	}
 

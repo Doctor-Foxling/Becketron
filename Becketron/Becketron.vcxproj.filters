@@ -144,6 +144,18 @@
     <ClInclude Include="src\Becketron\Physics\BT_Physics\aabb.h">
       <Filter>src\Becketron\Physics\BT_Physics</Filter>
     </ClInclude>
+    <ClInclude Include="src\Becketron\Physics\PhysX\AllocatorCallback.h">
+      <Filter>src\Becketron\Physics\PhysX</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Becketron\Physics\PhysX\ErrorCallback.h">
+      <Filter>src\Becketron\Physics\PhysX</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Becketron\Physics\PhysX\PhysXRigidbody.h">
+      <Filter>src\Becketron\Physics\PhysX</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Becketron\Physics\PhysX\PhysXScene.h">
+      <Filter>src\Becketron\Physics\PhysX</Filter>
+    </ClInclude>
     <ClInclude Include="src\Becketron\Physics\PhysX\PhysicsEnginePhysX.h">
       <Filter>src\Becketron\Physics\PhysX</Filter>
     </ClInclude>
@@ -1479,10 +1491,6 @@
     <ClInclude Include="vendor\stb_image\stb_image.h">
       <Filter>vendor\stb_image</Filter>
     </ClInclude>
-    <ClInclude Include="src\Becketron\Physics\PhysX\ErrorCallback.h" />
-    <ClInclude Include="src\Becketron\Physics\PhysX\PhysXScene.h" />
-    <ClInclude Include="src\Becketron\Physics\PhysX\AllocatorCallback.h" />
-    <ClInclude Include="src\Becketron\Physics\PhysX\PhysXRigidbody.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Becketron\Core\Application.cpp">
@@ -1517,6 +1525,12 @@
     </ClCompile>
     <ClCompile Include="src\Becketron\Physics\BT_Physics\aabb.cpp">
       <Filter>src\Becketron\Physics\BT_Physics</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Becketron\Physics\PhysX\PhysXRigidbody.cpp">
+      <Filter>src\Becketron\Physics\PhysX</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Becketron\Physics\PhysX\PhysXScene.cpp">
+      <Filter>src\Becketron\Physics\PhysX</Filter>
     </ClCompile>
     <ClCompile Include="src\Becketron\Physics\PhysX\PhysicsEnginePhysX.cpp">
       <Filter>src\Becketron\Physics\PhysX</Filter>
@@ -1605,7 +1619,5 @@
     <ClCompile Include="vendor\stb_image\stb_image.cpp">
       <Filter>vendor\stb_image</Filter>
     </ClCompile>
-    <ClCompile Include="src\Becketron\Physics\PhysX\PhysXScene.cpp" />
-    <ClCompile Include="src\Becketron\Physics\PhysX\PhysXRigidbody.cpp" />
   </ItemGroup>
 </Project>

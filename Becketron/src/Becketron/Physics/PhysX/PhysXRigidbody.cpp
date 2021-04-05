@@ -10,7 +10,8 @@ namespace Becketron {
 
 		physx::PxTransform Transform(PxPos, PxQua);
 
-		m_Scene->m_Physics->createRigidDynamic(Transform);
+		m_Body = m_Scene->m_Physics->createRigidDynamic(Transform);
+		SetKinematic(false);
 	}
 
 	PhysXRigidbody::~PhysXRigidbody()
@@ -18,4 +19,23 @@ namespace Becketron {
 		m_Scene->m_Physics->release();
 	}
 
+	void PhysXRigidbody::SetKinematic(bool kinematic)
+	{
+		if (kinematic)
+		{
+			m_Body->setRigidBodyFlag(physx::PxRigidBodyFlag::eKINEMATIC, true);
+			m_Kinematic = true;
+		}
+		else if (!kinematic)
+		{
+			m_Body->setRigidBodyFlag(physx::PxRigidBodyFlag::eKINEMATIC, false);
+			m_Kinematic = false;
+		}
+
+	}
+
+	bool PhysXRigidbody::IsKinematic()
+	{
+		return m_Kinematic;
+	}
 }
