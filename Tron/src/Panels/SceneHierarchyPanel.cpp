@@ -365,9 +365,9 @@ namespace Becketron {
 			{
 				auto& tc = entity.GetComponent<TransformComponent>();
 				DrawVec3Control("Translation", tc.Translation);
-				//glm::vec3 rotation = glm::degrees(tc.Rotation);
-				//DrawVec3Control("Rotation", rotation);
-				//tc.Rotation = glm::radians(rotation);
+				glm::vec3 rotation = glm::degrees(tc.Rotation);
+				DrawVec3Control("Rotation", rotation);
+				tc.Rotation = glm::radians(rotation);
 				DrawVec3Control("Scale", tc.Scale, 1.0f);
 
 				ImGui::TreePop();

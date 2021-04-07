@@ -7,7 +7,8 @@
 // Temporary
 #include "Becketron/Physics/BT_Physics/PhysicsEngine.h"
 
-#include "Becketron/Physics/PhysX/PhysXScene.h"
+//#include "Becketron/Physics/PhysX/PhysXScene.h"
+#include "Becketron/Physics/PhysX/PhysXManager.h"
 
 
 namespace Becketron {
@@ -24,14 +25,21 @@ namespace Becketron {
 		void DestroyEntity(Entity entity);
 
 		void OnUpdate(Timestep ts);
+		void OnShutdown();
 		void OnViewportResize(uint32_t width, uint32_t height);
 	public:
-		PhysXScene* m_PhysXScene;
+		//std::shared_ptr<PhysXScene> m_PhysXScene;
+		
+		//Temp
+		physx::PxRigidDynamic* CreateRigidDynamic(physx::PxTransform trans);
+		physx::PxTransform glmToPhysxTransform(const glm::mat4& Transform);
 	private:
 		template<typename T>
 		void OnComponentAdded(Entity entity, T& component);
 		PhysicsEngine m_PhysEng;
+
 	private:
+		//entt::entity m_SceneEntity;
 		entt::registry m_Registry;
 		uint32_t m_ViewportWidth = 0, m_ViewportHeight = 0;
 		bool m_ScenePlay = false;

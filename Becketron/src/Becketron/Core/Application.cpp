@@ -5,6 +5,7 @@
 #include "Becketron/Core/Input.h"
 
 #include "Becketron/Renderer/Renderer.h"
+#include "Becketron/Physics/PhysX/PhysXManager.h"
 
 #include "Becketron/Core/KeyCodes.h"
 
@@ -30,6 +31,7 @@ namespace Becketron {
 
 		// Initializing the Renderer
 		Renderer::Init();
+		PhysXManager::Init();
 
 		// Creating the main GUI layer and pushing it as an overlay
 		m_ImGuiLayer = new ImGuiLayer();
@@ -40,6 +42,7 @@ namespace Becketron {
 	{
 		BT_PROFILE_FUNCTION();
 
+		PhysXManager::Shutdown();
 		//Renderer::Shutdown();
 	}
 

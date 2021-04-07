@@ -42,7 +42,7 @@ namespace Becketron {
 		auto& tc = square.GetComponent<TransformComponent>();
 		tc.Translation = { 0.0f, -3.0f, 0.0f };
 		tc.Scale = { 20.0f, 20.0f, 0.0f };
-		//tc.Rotation = { 90.0f, 0.0f, 0.0f };
+		tc.Rotation = { 90.0f, 0.0f, 0.0f };
 
 		auto redSquare = m_ActiveScene->CreateEntity("Red Square");
 		redSquare.AddComponent<SpriteRendererComponent>(glm::vec4{ 1.0f, 0.0f, 0.0f, 1.0f });
@@ -52,9 +52,15 @@ namespace Becketron {
 
 		auto greenCube = m_ActiveScene->CreateEntity("Green Square");
 		greenCube.AddComponent<CubeRendererComponent>(glm::vec4{ 0.0f, 1.0f, 0.4f, 1.0f });
+		auto& greenCube_tc = greenCube.GetComponent<TransformComponent>();
+		greenCube_tc.Translation = { 2.0f, 5.0f, 0.0f };
+		physx::PxTransform phys_transform = m_ActiveScene->glmToPhysxTransform(greenCube_tc.GetTransform());
+		physx::PxRigidDynamic* r_dynamic = m_ActiveScene->CreateRigidDynamic(phys_transform);
+		greenCube.AddComponent<PhysXRigidDynamicComponent>(r_dynamic, false);
 
 		auto redCube = m_ActiveScene->CreateEntity("Red Cube");
 		redCube.AddComponent<CubeRendererComponent>(glm::vec4{ 1.0f, 0.0f, 0.0f, 1.0f });
+
 
 		redCube.AddComponent<NativeScriptComponent>().Bind<CubeController>();
 

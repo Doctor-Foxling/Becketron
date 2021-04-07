@@ -5,6 +5,9 @@
 
 namespace Becketron
 {
+	extern physx::PxTransform glmToPhysxTransform(const glm::mat4& transform);
+	extern physx::PxRigidDynamic* CreateRigidDynamic(physx::PxTransform trans);
+
 	class EditorLayer : public Layer
 	{
 	public:

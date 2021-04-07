@@ -6,23 +6,83 @@
 #include "Becketron/Renderer/Renderer3D.h"
 
 #include <glm/glm.hpp>
+#include <glm/gtx/matrix_decompose.hpp>
+#include <glm/gtx/quaternion.hpp>
 
 #include "Entity.h"
 
+
+
 //#define BT_PHYSICS
 
-#define PHYSX_PHYSICS
+#define TEMP_TEST
+
+#define USE_PHYSX
+
+//#define USE_OLD_PHYSX
 
 namespace Becketron {
 
-	
+	//Temp makeshift
+	static int sceneCount = 0;
+
+#ifdef USE_PHYSX
+	//static physx::PxDefaultErrorCallback s_PXErrorCallback;
+	//static physx::PxDefaultAllocator s_PXAllocator;
+	//static physx::PxFoundation* s_PXFoundation;
+
+	//static physx::PxPhysics* s_PXPhysicsFactory;
+
+	static physx::PxScene* m_PxScene = NULL;
+
+	static physx::PxMaterial* gMaterial = NULL;
+
+	struct SceneComponent
+	{
+		int SceneID = sceneCount;
+	};
+
+	struct PhysXSceneComponent
+	{
+		physx::PxScene* World;
+	};
+#endif
+
 	Scene::Scene()
 	{
+		//m_SceneEntity = { m_Registry.create(), this };
+		//m_Registry.emplace<SceneComponent>(m_SceneEntity, sceneCount);
+
+#ifdef USE_PHYSX
+		gMaterial = PhysXManager::s_PXPhysicsFactory->createMaterial(0.5F, 0.5F, 0.6F);
+		physx::PxSceneDesc sceneDesc = PhysXManager::CreateSceneDesc();
+		sceneDesc.gravity = physx::PxVec3(0.0F, -9.8F, 0.0F);
+		PhysXManager::s_PXDispatcher = physx::PxDefaultCpuDispatcherCreate(2);
+		sceneDesc.cpuDispatcher = PhysXManager::s_PXDispatcher;
+		sceneDesc.filterShader = physx::PxDefaultSimulationFilterShader;
+		//m_PxScene = PhysXManager::CreateScene(sceneDesc);
+		m_PxScene = PhysXManager::s_PXPhysicsFactory->createScene(sceneDesc);
+		BT_CORE_INFO("physics desc: {0}, {1}, {2}", sceneDesc.gravity.x, sceneDesc.gravity.y, sceneDesc.gravity.z);
+		//BT_CORE_ASSERT(m_PxScene);
+		physx::PxRigidStatic* groundPlane = PxCreatePlane(*PhysXManager::s_PXPhysicsFactory, physx::PxPlane(0, 1, 0, 0), *gMaterial);
+		//m_PxScene->addActor(*groundPlane);
+		//m_PhysXScene = CreateRef<PhysXScene>(this);
+		sceneCount++;
+#endif
 
 	}
 
 	Scene::~Scene()
 	{
+		m_Registry.clear();
+	}
+
+	void Scene::OnShutdown()
+	{
+#ifdef USE_PHYSX
+		//auto physxView = m_Registry.view<PhysXSceneComponent>();
+		m_PxScene->release();
+#endif
 	}
 
 	Entity Scene::CreateEntity(const std::string& name)
@@ -38,6 +98,59 @@ namespace Becketron {
 	{
 		m_Registry.destroy(entity);
 	}
+
+	// Gettting transform with quaternion
+	static std::tuple<glm::vec3, glm::quat, glm::vec3>GetTransformDecomposition(
+		const glm::mat4& transform)
+	{
+		glm::vec3 scale, translation, skew;
+		glm::vec4 perspective;
+		glm::quat orientation;
+		glm::decompose(transform, scale, orientation, translation, skew, perspective);
+
+		return { translation, orientation, scale };
+	}
+
+#ifdef USE_PHYSX
+	// temp physx
+
+
+	static physx::PxRigidDynamic* createDynamic(const physx::PxTransform& t,
+		const physx::PxGeometry& geometry, const physx::PxVec3& velocity = physx::PxVec3(0))
+	{
+		physx::PxRigidDynamic* dynamic = physx::PxCreateDynamic(*PhysXManager::s_PXPhysicsFactory, t, geometry, *gMaterial, 10.0f);
+		dynamic->setAngularDamping(0.5f);
+		dynamic->setLinearVelocity(velocity);
+		m_PxScene->addActor(*dynamic);
+		return dynamic;
+	}
+
+	physx::PxTransform Scene::glmToPhysxTransform(const glm::mat4& Transform)
+	{
+		physx::PxVec3 PxPos;
+		const glm::mat4& transform = Transform;
+		auto [pos, rot, sacle] = GetTransformDecomposition(transform);
+		PxPos.x = pos.x;
+		PxPos.y = pos.y;
+		PxPos.z = pos.z;
+
+		physx::PxQuat PxQua;
+		PxQua.x = rot.x;
+		PxQua.y = rot.y;
+		PxQua.z = rot.z;
+		PxQua.w = rot.w;
+
+		physx::PxTransform PhysXTransform(PxPos, PxQua);
+		return PhysXTransform;
+	}
+
+	physx::PxRigidDynamic* Scene::CreateRigidDynamic(physx::PxTransform trans)
+	{
+		physx::PxRigidDynamic* p_body = PhysXManager::s_PXPhysicsFactory->createRigidDynamic(trans);
+		return p_body;
+	}
+
+#endif
 
 	void Scene::OnUpdate(Timestep ts)
 	{
@@ -56,7 +169,7 @@ namespace Becketron {
 			});
 		}
 
-#ifdef PHYSX_PHYSICS
+#ifdef USE_OLD_PHYSX
 		if (m_SceneRestartLast != m_SceneRestart)
 		{
 			m_SceneRestartLast = m_SceneRestart;
@@ -173,6 +286,79 @@ namespace Becketron {
 			m_PhysEng.HandleCollision(PhysicsEngine::CollisionType::AABB);
 		}
 		
+#endif
+
+#ifdef USE_PHYSX
+		{
+			//auto physxView = m_Registry.view<PhysXSceneComponent>();
+			//physx::PxScene* physxScene = m_Registry.get<PhysXSceneComponent>(physxView.front()).World;
+			if (m_PxScene)
+			{
+				m_PxScene->simulate(ts);
+				m_PxScene->fetchResults(true);
+				/*
+				physx::PxU32 nbActors = m_PxScene->getNbActors(physx::PxActorTypeFlag::eRIGID_DYNAMIC |
+					physx::PxActorTypeFlag::eRIGID_STATIC);
+
+				if (nbActors)
+				{
+					std::vector<physx::PxRigidActor*> actors(nbActors);
+					m_PxScene->getActors(physx::PxActorTypeFlag::eRIGID_DYNAMIC |
+						physx::PxActorTypeFlag::eRIGID_STATIC, reinterpret_cast<physx::PxActor**>(&actors[0]),
+						nbActors);
+					for (uint32_t i = 0; i < nbActors; i++)
+					{
+						auto xpos = actors[i]->getGlobalPose().p.x;
+						auto ypos = actors[i]->getGlobalPose().p.y;
+						auto zpos = actors[i]->getGlobalPose().p.z;
+
+						auto xq = actors[i]->getGlobalPose().q.x;
+						auto yq = actors[i]->getGlobalPose().q.y;
+						auto zq = actors[i]->getGlobalPose().q.z;
+
+						auto pos = glm::mat4(xq * ypos * zpos);
+						auto rot = glm::mat4(xpos * yq * zq);
+
+
+					}
+				}
+				*/
+
+				auto view = m_Registry.view<TransformComponent, PhysXRigidDynamicComponent>();
+				for (auto entity : view)
+				{
+					auto [transform, physX_body] = view.get<TransformComponent, PhysXRigidDynamicComponent>(entity);
+					
+					float xpos = physX_body.m_rDynamic->getGlobalPose().p.x;
+					float ypos = physX_body.m_rDynamic->getGlobalPose().p.y;
+					float zpos = physX_body.m_rDynamic->getGlobalPose().p.z;
+
+					glm::vec3 pos;
+
+					pos.x = xpos;
+					pos.y = ypos;
+					pos.z = zpos;
+
+					auto xq = physX_body.m_rDynamic->getGlobalPose().q.x;
+					auto yq = physX_body.m_rDynamic->getGlobalPose().q.y;
+					auto zq = physX_body.m_rDynamic->getGlobalPose().q.z;
+					auto wq = physX_body.m_rDynamic->getGlobalPose().q.w;
+
+					glm::quat q;
+					q.x = xq;
+					q.y = yq;
+					q.z = zq;
+					q.w = wq;
+					//auto pos = glm::mat4(xq * ypos * zpos);
+					//auto rot = glm::mat4(xpos * yq * zq);
+					
+					glm::vec3 euler = glm::eulerAngles(q);
+					
+					transform.Translation = pos;
+					transform.Rotation = euler;
+				}
+			}
+		}
 #endif
 		// --- Renderering ---
 
@@ -330,10 +516,45 @@ namespace Becketron {
 	{
 	}
 
+#ifdef USE_OLD_PHYSX
 	template<>
 	void Scene::OnComponentAdded<PhysXRigidbodyComponent>(Entity entity, PhysXRigidbodyComponent& component)
 	{
 	}
+#endif
+
+#ifdef USE_PHYSX
+	template<>
+	void Scene::OnComponentAdded<PhysXSceneComponent>(Entity entity, PhysXSceneComponent& component)
+	{
+	}
+
+	template<>
+	void Scene::OnComponentAdded<PhysXRigidDynamicComponent>(Entity entity, PhysXRigidDynamicComponent& component)
+	{
+		physx::PxVec3 PxPos;
+		const glm::mat4& transform = m_Registry.get<TransformComponent>(entity).GetTransform();
+		auto [pos, rot, sacle] = GetTransformDecomposition(transform);
+		PxPos.x = pos.x;
+		PxPos.y = pos.y;
+		PxPos.z = pos.z;
+
+		physx::PxQuat PxQua;
+		PxQua.x = rot.x;
+		PxQua.y = rot.y;
+		PxQua.z = rot.z;
+		PxQua.w = rot.w;
+
+		physx::PxTransform PhysXTransform(PxPos, PxQua);
+
+		physx::PxRigidDynamic* r_dynamic = PhysXManager::s_PXPhysicsFactory->createRigidDynamic(PhysXTransform);
+		//r_dynamic->userData = &component;
+		component.m_rDynamic->setGlobalPose(PhysXTransform);
+
+		m_PxScene->addActor(*component.m_rDynamic);
+	}
+
+#endif
 
 	template<>
 	void Scene::OnComponentAdded<NativeScriptComponent>(Entity entity, NativeScriptComponent& component)
