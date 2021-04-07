@@ -54,9 +54,18 @@ namespace Becketron {
 		greenCube.AddComponent<CubeRendererComponent>(glm::vec4{ 0.0f, 1.0f, 0.4f, 1.0f });
 		auto& greenCube_tc = greenCube.GetComponent<TransformComponent>();
 		greenCube_tc.Translation = { 2.0f, 5.0f, 0.0f };
+		
+		physx::PxMaterial* gMaterial = NULL;
+		gMaterial = PhysXManager::s_PXPhysicsFactory->createMaterial(0.5f, 0.5f, 0.6f);
+		physx::PxReal halfExtent = greenCube_tc.Scale.x / 2;
+		physx::PxShape* shape = PhysXManager::s_PXPhysicsFactory->createShape(physx::PxBoxGeometry(halfExtent, halfExtent,
+			halfExtent), *gMaterial);
 		physx::PxTransform phys_transform = m_ActiveScene->glmToPhysxTransform(greenCube_tc.GetTransform());
 		physx::PxRigidDynamic* r_dynamic = m_ActiveScene->CreateRigidDynamic(phys_transform);
+		r_dynamic->attachShape(*shape);
 		greenCube.AddComponent<PhysXRigidDynamicComponent>(r_dynamic, false);
+
+		shape->release();
 
 		auto redCube = m_ActiveScene->CreateEntity("Red Cube");
 		redCube.AddComponent<CubeRendererComponent>(glm::vec4{ 1.0f, 0.0f, 0.0f, 1.0f });
