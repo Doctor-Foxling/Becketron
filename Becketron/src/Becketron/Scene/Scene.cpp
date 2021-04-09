@@ -10,6 +10,7 @@
 #include <glm/gtx/quaternion.hpp>
 
 #include "Entity.h"
+#include "Becketron/Physics/PhysX/PhysXRigidbody.h"
 
 
 
@@ -330,6 +331,7 @@ namespace Becketron {
 				{
 					auto [transform, physX_body] = view.get<TransformComponent, PhysXRigidDynamicComponent>(entity);
 					
+					/*
 					float xpos = physX_body.m_rDynamic->getGlobalPose().p.x;
 					float ypos = physX_body.m_rDynamic->getGlobalPose().p.y;
 					float zpos = physX_body.m_rDynamic->getGlobalPose().p.z;
@@ -352,10 +354,12 @@ namespace Becketron {
 					q.w = wq;
 					//auto pos = glm::mat4(xq * ypos * zpos);
 					//auto rot = glm::mat4(xpos * yq * zq);
+					*/
 					
+					glm::quat q = physX_body.rigidbody->GetRot();
 					glm::vec3 euler = glm::eulerAngles(q);
 					
-					transform.Translation = pos;
+					transform.Translation = physX_body.rigidbody->GetPos();
 					transform.Rotation = euler;
 				}
 			}
@@ -533,6 +537,7 @@ namespace Becketron {
 	template<>
 	void Scene::OnComponentAdded<PhysXRigidDynamicComponent>(Entity entity, PhysXRigidDynamicComponent& component)
 	{
+		/*
 		physx::PxVec3 PxPos;
 		const glm::mat4& transform = m_Registry.get<TransformComponent>(entity).GetTransform();
 		auto [pos, rot, sacle] = GetTransformDecomposition(transform);
@@ -551,8 +556,23 @@ namespace Becketron {
 		physx::PxRigidDynamic* r_dynamic = PhysXManager::s_PXPhysicsFactory->createRigidDynamic(PhysXTransform);
 		//r_dynamic->userData = &component;
 		component.m_rDynamic->setGlobalPose(PhysXTransform);
+		*/
 
-		m_PxScene->addActor(*component.m_rDynamic);
+		const glm::mat4& transform = m_Registry.get<TransformComponent>(entity).GetTransform();
+		auto [pos, rot, scale] = GetTransformDecomposition(transform);
+
+		if (component.material)
+			component.rigidbody = CreateRef<PhysXRigidbody>(pos, rot, scale, component.material);
+		else
+		{
+			component.material = PhysXManager::s_PXPhysicsFactory->createMaterial(component.staticFriction,
+				component.dynamicFriction, component.staticFriction);
+			
+			component.rigidbody = CreateRef<PhysXRigidbody>(pos, rot, scale, component.material);
+		}
+		
+		m_PxScene->addActor(*component.rigidbody->GetRigidbody());
+
 	}
 
 #endif

@@ -2120,6 +2120,7 @@
     </ClInclude>
     <ClInclude Include="src\Becketron\Physics\PhysX\PhysXManager.h" />
     <ClInclude Include="src\Becketron\Physics\PhysX\PhysXTemp.h" />
+    <ClInclude Include="src\Becketron\Physics\PhysX\PhysXRigidbody.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Becketron\Core\Application.cpp">
@@ -2250,5 +2251,6 @@
     </ClCompile>
     <ClCompile Include="src\Becketron\Physics\PhysX\PhysXManager.cpp" />
     <ClCompile Include="src\Becketron\Physics\PhysX\PhysXTemp.cpp" />
+    <ClCompile Include="src\Becketron\Physics\PhysX\PhysXRigidbody.cpp" />
   </ItemGroup>
 </Project>

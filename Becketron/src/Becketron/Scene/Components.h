@@ -12,6 +12,7 @@
 #include "PhysicsEntity.h"
 //#include "Becketron/Physics/PhysX/PhysXRigidbody.h"
 #include <PhysX/PxRigidActor.h>
+#include "Becketron/Physics/PhysX/PhysXRigidbody.h"
 
 //#define BT_PHYSICS
 
@@ -78,9 +79,30 @@ namespace Becketron {
 
 		physx::PxRigidDynamic* m_rDynamic;
 
+		// Testing
+		//physx::PxTransform m_Transform;
+		physx::PxMaterial* material = NULL;
+		float staticFriction = 0.0f;
+		float dynamicFriction = 0.0f;
+		float restitution = 0.0f;
+		//physx::PxReal m_HalfExtent = physx::PxReal(1.0f);
+		physx::PxShape* shape;
+		Ref<PhysXRigidbody> rigidbody;
+
+		//m_Material = PhysXManager::s_PXPhysicsFactory->createMaterial(0.5f, 0.5f, 0.6f);
+		
+
+			/*= CreateRef<PxRigidBody>(physx::PxTransform PxTF, physx::PxShape * PxShape,
+			physx::PxMaterial * PxMaterial = m_Material);*/
+
 		PhysXRigidDynamicComponent() = default;
 		PhysXRigidDynamicComponent(physx::PxRigidDynamic* m_RDynamic, bool IsKinematic)
 			: m_rDynamic(m_RDynamic), isKinematic(IsKinematic) {}
+		PhysXRigidDynamicComponent(physx::PxMaterial* mat, bool IsKinematic)
+			: material(mat), isKinematic(IsKinematic) {}
+		PhysXRigidDynamicComponent(float StaticFriction, float DynamicFriction, float Restitution, bool IsKinematic)
+			: staticFriction(StaticFriction), dynamicFriction(DynamicFriction), 
+			restitution(Restitution), isKinematic(IsKinematic) {}
 	};
 #endif
 

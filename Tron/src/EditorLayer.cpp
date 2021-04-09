@@ -56,17 +56,8 @@ namespace Becketron {
 		auto& greenCube_tc = greenCube.GetComponent<TransformComponent>();
 		greenCube_tc.Translation = { 2.0f, 10.0f, 0.0f };
 		
-		physx::PxMaterial* gMaterial = NULL;
-		gMaterial = PhysXManager::s_PXPhysicsFactory->createMaterial(0.5f, 0.5f, 0.6f);
-		physx::PxReal halfExtent = greenCube_tc.Scale.x / 2;
-		physx::PxShape* shape = PhysXManager::s_PXPhysicsFactory->createShape(physx::PxBoxGeometry(halfExtent, halfExtent,
-			halfExtent), *gMaterial);
-		physx::PxTransform phys_transform = m_ActiveScene->glmToPhysxTransform(greenCube_tc.GetTransform());
-		physx::PxRigidDynamic* r_dynamic = m_ActiveScene->CreateRigidDynamic(phys_transform);
-		r_dynamic->attachShape(*shape);
-		greenCube.AddComponent<PhysXRigidDynamicComponent>(r_dynamic, false);
-
-		shape->release();
+		greenCube.AddComponent<PhysXRigidDynamicComponent>(0.5, 0.5, 0.5, true);
+		
 
 		auto redCube = m_ActiveScene->CreateEntity("Red Cube");
 		redCube.AddComponent<CubeRendererComponent>(glm::vec4{ 1.0f, 0.0f, 0.0f, 1.0f });
@@ -80,7 +71,7 @@ namespace Becketron {
 		mainLight_tc.Translation = { 5.0f, 4.0f, 21.0f };
 
 		//Ref<Texture2D> checkerboardTex = Texture2D::Create("assets/textures/Chess_board.jpg");
-
+		
 		for (int i = 1; i < 20; i++)
 		{
 			auto texCube = m_ActiveScene->CreateEntity("Tex Cube"+i);
@@ -89,17 +80,7 @@ namespace Becketron {
 			texCube_tc.Translation = { (2.0f+i)/i, 10.0f+i, 0.0f };
 			texCube_tc.Scale = { 1.0f+i, (2.0f+i+i)/i, 3.0f };
 
-			physx::PxMaterial* gTexMaterial = NULL;
-			gTexMaterial = PhysXManager::s_PXPhysicsFactory->createMaterial(0.5f, 0.5f, 0.1f);
-			physx::PxReal halfExtentX = texCube_tc.Scale.x / 2;
-			physx::PxReal halfExtentY = texCube_tc.Scale.y / 2;
-			physx::PxReal halfExtentZ = texCube_tc.Scale.z / 2;
-			physx::PxShape* texShape = PhysXManager::s_PXPhysicsFactory->createShape(physx::PxBoxGeometry(halfExtentX, 
-				halfExtentY, halfExtentZ), *gTexMaterial);
-			physx::PxTransform phys_TexTF = m_ActiveScene->glmToPhysxTransform(texCube_tc.GetTransform());
-			physx::PxRigidDynamic* r_TexDynamic = m_ActiveScene->CreateRigidDynamic(phys_TexTF);
-			r_TexDynamic->attachShape(*texShape);
-			texCube.AddComponent<PhysXRigidDynamicComponent>(r_TexDynamic, false);
+			texCube.AddComponent<PhysXRigidDynamicComponent>(0.5f, 0.5f, 0.1f, false);
 		}
 
 		m_SquareEntity = square;

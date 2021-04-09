@@ -169,6 +169,7 @@
     <ClInclude Include="src\Becketron\Physics\BT_Physics\Plane.h" />
     <ClInclude Include="src\Becketron\Physics\BT_Physics\aabb.h" />
     <ClInclude Include="src\Becketron\Physics\PhysX\PhysXManager.h" />
+    <ClInclude Include="src\Becketron\Physics\PhysX\PhysXRigidbody.h" />
     <ClInclude Include="src\Becketron\Physics\PhysX\PhysXTemp.h" />
     <ClInclude Include="src\Becketron\Physics\PhysX_old\AllocatorCallback.h" />
     <ClInclude Include="src\Becketron\Physics\PhysX_old\ErrorCallback.h" />
@@ -821,6 +822,7 @@
     <ClCompile Include="src\Becketron\Physics\BT_Physics\Plane.cpp" />
     <ClCompile Include="src\Becketron\Physics\BT_Physics\aabb.cpp" />
     <ClCompile Include="src\Becketron\Physics\PhysX\PhysXManager.cpp" />
+    <ClCompile Include="src\Becketron\Physics\PhysX\PhysXRigidbody.cpp" />
     <ClCompile Include="src\Becketron\Physics\PhysX\PhysXTemp.cpp" />
     <ClCompile Include="src\Becketron\Physics\PhysX_old\PhysXRigidbody.cpp" />
     <ClCompile Include="src\Becketron\Physics\PhysX_old\PhysXScene.cpp" />
