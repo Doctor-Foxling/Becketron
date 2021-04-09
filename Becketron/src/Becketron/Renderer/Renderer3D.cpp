@@ -19,6 +19,8 @@ namespace Becketron {
 		float TexIndex;
 		float TilingFactor;
 		glm::vec3 Normal;
+		// probably a bad idea:
+		glm::mat4 ModelMat;
 	};
 
 
@@ -114,7 +116,8 @@ namespace Becketron {
 				{ShaderDataType::Float2, "a_TexCoord"},
 				{ShaderDataType::Float, "a_TexIndex"},
 				{ShaderDataType::Float, "a_TilingFactor"},
-				{ShaderDataType::Float3, "a_Normal"}
+				{ShaderDataType::Float3, "a_Normal"},
+				{ShaderDataType::Mat4, "a_Model"}
 			});
 		s_Data3D.CubeVertexArray->AddVertexBuffer(s_Data3D.CubeVertexBuffer);
 
@@ -408,6 +411,7 @@ namespace Becketron {
 		s_Data3D.TextureShader->SetMat4("u_ViewProjection", camera.GetViewProjectionMatrix());
 		s_Data3D.TextureShader->SetFloat3("lightPos", s_Data3D.lightPos);
 		s_Data3D.TextureShader->SetFloat4("lightColor", s_Data3D.lightColor);
+		s_Data3D.TextureShader->SetFloat3("u_ViewPos", camera.GetPosition());
 
 		s_Data3D.CubeIndexCount = 0;
 		s_Data3D.CubeVertexBufferPtr = s_Data3D.CubeVertexBufferBase;
@@ -429,6 +433,7 @@ namespace Becketron {
 		s_Data3D.TextureShader->SetMat4("u_ViewProjection", viewProj);
 		s_Data3D.TextureShader->SetFloat3("lightPos", s_Data3D.lightPos);
 		s_Data3D.TextureShader->SetFloat4("lightColor", s_Data3D.lightColor);
+		//s_Data3D.TextureShader->SetFloat3("u_ViewPos", camera.;
 
 		s_Data3D.CubeIndexCount = 0;
 		s_Data3D.CubeVertexBufferPtr = s_Data3D.CubeVertexBufferBase;
@@ -447,6 +452,7 @@ namespace Becketron {
 		s_Data3D.TextureShader->SetMat4("u_ViewProjection", camera.GetViewProjectionMatrix());
 		s_Data3D.TextureShader->SetFloat3("lightPos", s_Data3D.lightPos);
 		s_Data3D.TextureShader->SetFloat4("lightColor", s_Data3D.lightColor);
+		s_Data3D.TextureShader->SetFloat3("u_ViewPos", camera.GetPosition());
 
 		s_Data3D.CubeIndexCount = 0;
 		s_Data3D.CubeVertexBufferPtr = s_Data3D.CubeVertexBufferBase;
@@ -527,6 +533,7 @@ namespace Becketron {
 		s_Data3D.lightVertexArray->GetIndexBuffer()->Bind();
 
 		s_Data3D.lightPos.x = sin(glfwGetTime()) * 50;
+		//s_Data3D.lightPos = glm::vec3(1.0f, 3.0f, 10.0f);
 		//s_Data3D.lightColor.r = cos(glfwGetTime());
 		//s_Data3D.lightColor.g = sin(glfwGetTime());
 		DrawLightCube(s_Data3D.lightPos, glm::vec3(2.0f), s_Data3D.lightColor, camera);
@@ -634,6 +641,8 @@ namespace Becketron {
 			s_Data3D.CubeVertexBufferPtr->TexIndex = textureIndex;
 			s_Data3D.CubeVertexBufferPtr->TilingFactor = tilingFactor;
 			s_Data3D.CubeVertexBufferPtr->Normal = s_Data3D.CubeNormalCoordinates[i];
+			s_Data3D.CubeVertexBufferPtr->ModelMat = transform;
+
 			s_Data3D.CubeVertexBufferPtr++;
 		}
 
@@ -696,6 +705,8 @@ namespace Becketron {
 			s_Data3D.CubeVertexBufferPtr->TexIndex = textureIndex;
 			s_Data3D.CubeVertexBufferPtr->TilingFactor = tilingFactor;
 			s_Data3D.CubeVertexBufferPtr->Normal = s_Data3D.CubeNormalCoordinates[i];
+			s_Data3D.CubeVertexBufferPtr->ModelMat = transform;
+
 			s_Data3D.CubeVertexBufferPtr++;
 		}
 

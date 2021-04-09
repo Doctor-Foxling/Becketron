@@ -4,7 +4,7 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
-#include "Becketron/Physics/PhysicsEngine.h"
+//#include "Becketron/Physics/PhysicsEngine.h"
 //#include <PhysX/include/PhysX/PxPhysicsAPI.h>
 
 //#include "Becketron/Physics/PhysX/PhysXScene.h"
@@ -56,7 +56,23 @@ void Sandbox3D::OnUpdate(Becketron::Timestep ts)
 
 		//Becketron::Renderer3D::DrawQuad({ -1.0f, 0.0f }, { 0.8f, 1.0f }, m_SquareColor);
 		Becketron::Renderer3D::DrawCube({ 0.5f, -0.5f, -5.0f }, { 0.5f, 0.5f, 0.5f }, m_SquareColor);
-		Becketron::Renderer3D::DrawCube({ 0.5f, 0.7f, -5.0f }, { 1.0f, 1.0f, 1.0f }, m_CheckerboardTexture, 1.0f);
+
+		glm::vec3 Rotation = glm::vec3(0.0f, 0.0f, 0.0f);
+		glm::mat4 rotation_mat = glm::rotate(glm::mat4(1.0f), Rotation.x, { 1, 0, 0 })
+			* glm::rotate(glm::mat4(1.0f), Rotation.y, { 0, 1, 0 })
+			* glm::rotate(glm::mat4(1.0f), Rotation.z, { 0, 0, 1 });
+
+		glm::vec3 Translation = glm::vec3(0.5f, 0.7f, -5.0f);
+		glm::vec3 Scale = glm::vec3(1.0f);
+
+		glm::mat4 Transform = glm::translate(glm::mat4(1.0f), Translation)
+			* rotation_mat
+			* glm::scale(glm::mat4(1.0f), Scale);
+
+		Becketron::Renderer3D::DrawCube(Transform, m_CheckerboardTexture, 1.0f);
+		//Becketron::Renderer3D::DrawCube({ 0.5f, 0.7f, -5.0f }, { 1.0f, 1.0f, 1.0f }, m_CheckerboardTexture, 1.0f);
+
+
 		//Becketron::Renderer2D::EndScene();
 
 		//Becketron::Renderer2D::BeginScene(m_CameraController.GetCamera());

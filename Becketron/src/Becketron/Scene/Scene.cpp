@@ -56,7 +56,7 @@ namespace Becketron {
 #ifdef USE_PHYSX
 		gMaterial = PhysXManager::s_PXPhysicsFactory->createMaterial(0.5F, 0.5F, 0.6F);
 		physx::PxSceneDesc sceneDesc = PhysXManager::CreateSceneDesc();
-		sceneDesc.gravity = physx::PxVec3(0.0F, -0.8F, 0.0F);
+		sceneDesc.gravity = physx::PxVec3(0.0F, -9.8F, 0.0F);
 		PhysXManager::s_PXDispatcher = physx::PxDefaultCpuDispatcherCreate(2);
 		sceneDesc.cpuDispatcher = PhysXManager::s_PXDispatcher;
 		sceneDesc.filterShader = physx::PxDefaultSimulationFilterShader;
@@ -64,8 +64,9 @@ namespace Becketron {
 		m_PxScene = PhysXManager::s_PXPhysicsFactory->createScene(sceneDesc);
 		BT_CORE_INFO("physics desc: {0}, {1}, {2}", sceneDesc.gravity.x, sceneDesc.gravity.y, sceneDesc.gravity.z);
 		//BT_CORE_ASSERT(m_PxScene);
-		physx::PxRigidStatic* groundPlane = PxCreatePlane(*PhysXManager::s_PXPhysicsFactory, physx::PxPlane(0, 1, 0, 0), *gMaterial);
-		m_PxScene->addActor(*groundPlane);
+		m_Ground = PxCreatePlane(*PhysXManager::s_PXPhysicsFactory, physx::PxPlane(0, 1, 0, 3), *gMaterial);
+		//m_Ground->setGlobalPose(glmToPhysxTransform(m_Ground_TF));
+		m_PxScene->addActor(*m_Ground);
 		//m_PhysXScene = CreateRef<PhysXScene>(this);
 		sceneCount++;
 #endif

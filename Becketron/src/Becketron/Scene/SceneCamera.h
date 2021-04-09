@@ -12,6 +12,8 @@ namespace Becketron {
 		SceneCamera();
 		virtual ~SceneCamera() = default;
 
+		//virtual glm::vec3 GetPosition() const override;
+		
 		void SetOrthographic(float size, float nearClip, float farClip);
 		void SetPerspective(float verticalFOV, float nearClip, float farClip);
 

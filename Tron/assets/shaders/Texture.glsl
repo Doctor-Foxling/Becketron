@@ -6,6 +6,7 @@ layout(location = 2) in vec2 a_TexCoord;
 layout(location = 3) in float a_TexIndex;
 layout(location = 4) in float a_TilingFactor;
 layout(location = 5) in vec3 a_Normal;
+layout(location = 6) in mat4 a_Model;
 
 uniform mat4 u_ViewProjection;
 
@@ -23,7 +24,7 @@ void main()
 	v_TexCoord = a_TexCoord;
 	v_TexIndex = a_TexIndex;
 	v_TilingFactor = a_TilingFactor;
-	v_Normal = a_Normal;
+	v_Normal = a_Normal;   //mat3(transpose(inverse(a_Model))) * a_Normal;
 	FragPos = a_Position;
 	gl_Position = u_ViewProjection * vec4(a_Position, 1.0);
 }		
@@ -47,9 +48,11 @@ uniform vec3 lightPos;
 
 void main()
 {
+	// ambient
 	float ambientStrength = 0.5;
 	vec3 ambient = ambientStrength * vec3(lightColor);
 
+	//diffuse
 	vec3 norm = normalize(v_Normal);
 	vec3 lightDir = normalize(lightPos - FragPos);
 	float diff = max(dot(norm, lightDir), 0.0);

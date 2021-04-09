@@ -23,6 +23,7 @@ namespace Becketron {
 		float TexIndex;
 		float TilingFactor;
 		glm::vec3 Normal;
+		glm::mat4 ModelMat;
 	};
 
 	struct Renderer2DData
@@ -66,7 +67,8 @@ namespace Becketron {
 				{ShaderDataType::Float2, "a_TexCoord"},
 				{ShaderDataType::Float, "a_TexIndex"},
 				{ShaderDataType::Float, "a_TilingFactor"},
-				{ShaderDataType::Float3, "a_Normal"}
+				{ShaderDataType::Float3, "a_Normal"},
+				{ShaderDataType::Mat4, "a_Model"}
 			});
 		s_Data.QuadVertexArray->AddVertexBuffer(s_Data.QuadVertexBuffer);
 
@@ -271,6 +273,8 @@ namespace Becketron {
 			s_Data.QuadVertexBufferPtr->TexIndex = textureIndex;
 			s_Data.QuadVertexBufferPtr->TilingFactor = tilingFactor;
 			s_Data.QuadVertexBufferPtr->Normal = s_Data.QuadVertexNormal[i];
+			s_Data.QuadVertexBufferPtr->ModelMat = transform;
+
 			s_Data.QuadVertexBufferPtr++;
 		}
 
@@ -344,6 +348,8 @@ namespace Becketron {
 			s_Data.QuadVertexBufferPtr->TexIndex = textureIndex;
 			s_Data.QuadVertexBufferPtr->TilingFactor = tilingFactor;
 			s_Data.QuadVertexBufferPtr->Normal = s_Data.QuadVertexNormal[i];
+			s_Data.QuadVertexBufferPtr->ModelMat = transform;
+
 			s_Data.QuadVertexBufferPtr++;
 		}
 

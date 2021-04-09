@@ -37,12 +37,13 @@ namespace Becketron {
 		m_ActiveScene = CreateRef<Scene>();
 
 		// Entity
-		auto square = m_ActiveScene->CreateEntity("Green Square");
+		auto square = m_ActiveScene->CreateEntity("Ground");
 		square.AddComponent<SpriteRendererComponent>(glm::vec4{ 0.0f, 1.0f, 1.0f, 0.5f });
 		auto& tc = square.GetComponent<TransformComponent>();
-		tc.Translation = { 0.0f, -3.0f, 0.0f };
-		tc.Scale = { 20.0f, 20.0f, 0.0f };
-		tc.Rotation = { 90.0f, 0.0f, 0.0f };
+		tc.Translation = { 0.0f, -3.14f, 0.0f };
+		tc.Scale = { 50.0f, 50.0f, 0.0f };
+		tc.Rotation = { glm::radians(90.0f), 0.0f, 0.0f };
+		m_ActiveScene->SetGroundTransform(tc.GetTransform());
 
 		auto redSquare = m_ActiveScene->CreateEntity("Red Square");
 		redSquare.AddComponent<SpriteRendererComponent>(glm::vec4{ 1.0f, 0.0f, 0.0f, 1.0f });
@@ -53,7 +54,7 @@ namespace Becketron {
 		auto greenCube = m_ActiveScene->CreateEntity("Green Square");
 		greenCube.AddComponent<CubeRendererComponent>(glm::vec4{ 0.0f, 1.0f, 0.4f, 1.0f });
 		auto& greenCube_tc = greenCube.GetComponent<TransformComponent>();
-		greenCube_tc.Translation = { 2.0f, 5.0f, 0.0f };
+		greenCube_tc.Translation = { 2.0f, 10.0f, 0.0f };
 		
 		physx::PxMaterial* gMaterial = NULL;
 		gMaterial = PhysXManager::s_PXPhysicsFactory->createMaterial(0.5f, 0.5f, 0.6f);
@@ -74,20 +75,39 @@ namespace Becketron {
 		redCube.AddComponent<NativeScriptComponent>().Bind<CubeController>();
 
 		auto mainLight = m_ActiveScene->CreateEntity("Main Light");
-		mainLight.AddComponent<LightCubeComponent>(glm::vec4{ 0.5f, 0.8f, 0.2f, 1.0f });
+		mainLight.AddComponent<LightCubeComponent>(glm::vec4{ 1.0f, 1.0f, 1.0f, 1.0f });
 		auto& mainLight_tc = mainLight.GetComponent<TransformComponent>();
 		mainLight_tc.Translation = { 5.0f, 4.0f, 21.0f };
 
 		//Ref<Texture2D> checkerboardTex = Texture2D::Create("assets/textures/Chess_board.jpg");
-		auto texCube = m_ActiveScene->CreateEntity("Tex Cube");
-		texCube.AddComponent<TexturedCubeComponent>(m_CheckerboardTexture, 1.0f, glm::vec4{ 1.0f, 1.0f, 1.0f, 1.0f });
+
+		for (int i = 1; i < 20; i++)
+		{
+			auto texCube = m_ActiveScene->CreateEntity("Tex Cube"+i);
+			texCube.AddComponent<TexturedCubeComponent>(m_CheckerboardTexture, 1.0f, glm::vec4{ 1.0f, (1.0f+i)/i, 1.0f, 1.0f });
+			auto& texCube_tc = texCube.GetComponent<TransformComponent>();
+			texCube_tc.Translation = { (2.0f+i)/i, 10.0f+i, 0.0f };
+			texCube_tc.Scale = { 1.0f+i, (2.0f+i+i)/i, 3.0f };
+
+			physx::PxMaterial* gTexMaterial = NULL;
+			gTexMaterial = PhysXManager::s_PXPhysicsFactory->createMaterial(0.5f, 0.5f, 0.1f);
+			physx::PxReal halfExtentX = texCube_tc.Scale.x / 2;
+			physx::PxReal halfExtentY = texCube_tc.Scale.y / 2;
+			physx::PxReal halfExtentZ = texCube_tc.Scale.z / 2;
+			physx::PxShape* texShape = PhysXManager::s_PXPhysicsFactory->createShape(physx::PxBoxGeometry(halfExtentX, 
+				halfExtentY, halfExtentZ), *gTexMaterial);
+			physx::PxTransform phys_TexTF = m_ActiveScene->glmToPhysxTransform(texCube_tc.GetTransform());
+			physx::PxRigidDynamic* r_TexDynamic = m_ActiveScene->CreateRigidDynamic(phys_TexTF);
+			r_TexDynamic->attachShape(*texShape);
+			texCube.AddComponent<PhysXRigidDynamicComponent>(r_TexDynamic, false);
+		}
 
 		m_SquareEntity = square;
 
 		m_CameraEntity = m_ActiveScene->CreateEntity("Camera A");
 		auto& cameraA = m_CameraEntity.AddComponent<CameraComponent>();
 		auto& camA_tc = m_CameraEntity.GetComponent<TransformComponent>();
-		camA_tc.Translation = { 0.0f, 5.0f, 20.0f };
+		camA_tc.Translation = { 0.0f, 5.0f, 40.0f };
 
 		m_SecondCamera = m_ActiveScene->CreateEntity("Camera B");
 		auto& cc = m_SecondCamera.AddComponent<CameraComponent>();

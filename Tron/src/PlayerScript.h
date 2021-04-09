@@ -30,9 +30,9 @@ namespace Becketron {
 				translation.y += speed * ts;
 			else if (Input::IsKeyPressed(BT_KEY_DOWN))
 				translation.y -= speed * ts;
-			if ((Input::IsKeyPressed(BT_KEY_LEFT_CONTROL)|| Input::IsKeyPressed(BT_KEY_RIGHT_CONTROL)) && Input::IsKeyPressed(BT_KEY_UP))
+			if ((Input::IsKeyPressed(BT_KEY_LEFT_CONTROL)|| Input::IsKeyPressed(BT_KEY_RIGHT_CONTROL)) && Input::IsKeyPressed(BT_KEY_Z)) //Input::IsKeyPressed(BT_KEY_UP))
 				translation.z -= speed * ts;
-			if ((Input::IsKeyPressed(BT_KEY_LEFT_CONTROL)|| Input::IsKeyPressed(BT_KEY_RIGHT_CONTROL)) && Input::IsKeyPressed(BT_KEY_DOWN))
+			else if ((Input::IsKeyPressed(BT_KEY_LEFT_CONTROL)|| Input::IsKeyPressed(BT_KEY_RIGHT_CONTROL)) && Input::IsKeyPressed(BT_KEY_X))
 				translation.z += speed * ts;
 
 

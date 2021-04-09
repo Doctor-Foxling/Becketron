@@ -29,7 +29,7 @@ namespace Becketron {
 		void OnViewportResize(uint32_t width, uint32_t height);
 	public:
 		//std::shared_ptr<PhysXScene> m_PhysXScene;
-		
+		void SetGroundTransform(const glm::mat4& tc) { m_Ground_TF = tc; }
 		//Temp
 		physx::PxRigidDynamic* CreateRigidDynamic(physx::PxTransform trans);
 		physx::PxTransform glmToPhysxTransform(const glm::mat4& Transform);
@@ -42,6 +42,10 @@ namespace Becketron {
 		//entt::entity m_SceneEntity;
 		entt::registry m_Registry;
 		uint32_t m_ViewportWidth = 0, m_ViewportHeight = 0;
+
+		physx::PxRigidStatic* m_Ground;
+		glm::mat4 m_Ground_TF;
+
 		bool m_ScenePlay = false;
 		bool m_ScenePlayLast = false;
 		bool m_SceneRestart = false;
