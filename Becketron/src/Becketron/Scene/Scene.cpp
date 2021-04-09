@@ -12,7 +12,7 @@
 #include "Entity.h"
 #include "Becketron/Physics/PhysX/PhysXRigidbody.h"
 
-
+#include "Becketron/Physics/PhysX/PxHelper.h"
 
 //#define BT_PHYSICS
 
@@ -61,14 +61,10 @@ namespace Becketron {
 		PhysXManager::s_PXDispatcher = physx::PxDefaultCpuDispatcherCreate(2);
 		sceneDesc.cpuDispatcher = PhysXManager::s_PXDispatcher;
 		sceneDesc.filterShader = physx::PxDefaultSimulationFilterShader;
-		//m_PxScene = PhysXManager::CreateScene(sceneDesc);
-		m_PxScene = PhysXManager::s_PXPhysicsFactory->createScene(sceneDesc);
-		BT_CORE_INFO("physics desc: {0}, {1}, {2}", sceneDesc.gravity.x, sceneDesc.gravity.y, sceneDesc.gravity.z);
-		//BT_CORE_ASSERT(m_PxScene);
+		m_PxScene = PhysXManager::CreateScene(sceneDesc);
+		BT_CORE_ASSERT(m_PxScene);
 		m_Ground = PxCreatePlane(*PhysXManager::s_PXPhysicsFactory, physx::PxPlane(0, 1, 0, 3), *gMaterial);
-		//m_Ground->setGlobalPose(glmToPhysxTransform(m_Ground_TF));
 		m_PxScene->addActor(*m_Ground);
-		//m_PhysXScene = CreateRef<PhysXScene>(this);
 		sceneCount++;
 #endif
 
@@ -101,22 +97,10 @@ namespace Becketron {
 		m_Registry.destroy(entity);
 	}
 
-	// Gettting transform with quaternion
-	static std::tuple<glm::vec3, glm::quat, glm::vec3>GetTransformDecomposition(
-		const glm::mat4& transform)
-	{
-		glm::vec3 scale, translation, skew;
-		glm::vec4 perspective;
-		glm::quat orientation;
-		glm::decompose(transform, scale, orientation, translation, skew, perspective);
-
-		return { translation, orientation, scale };
-	}
-
 #ifdef USE_PHYSX
 	// temp physx
 
-
+	/*
 	static physx::PxRigidDynamic* createDynamic(const physx::PxTransform& t,
 		const physx::PxGeometry& geometry, const physx::PxVec3& velocity = physx::PxVec3(0))
 	{
@@ -126,31 +110,8 @@ namespace Becketron {
 		m_PxScene->addActor(*dynamic);
 		return dynamic;
 	}
+	*/
 
-	physx::PxTransform Scene::glmToPhysxTransform(const glm::mat4& Transform)
-	{
-		physx::PxVec3 PxPos;
-		const glm::mat4& transform = Transform;
-		auto [pos, rot, sacle] = GetTransformDecomposition(transform);
-		PxPos.x = pos.x;
-		PxPos.y = pos.y;
-		PxPos.z = pos.z;
-
-		physx::PxQuat PxQua;
-		PxQua.x = rot.x;
-		PxQua.y = rot.y;
-		PxQua.z = rot.z;
-		PxQua.w = rot.w;
-
-		physx::PxTransform PhysXTransform(PxPos, PxQua);
-		return PhysXTransform;
-	}
-
-	physx::PxRigidDynamic* Scene::CreateRigidDynamic(physx::PxTransform trans)
-	{
-		physx::PxRigidDynamic* p_body = PhysXManager::s_PXPhysicsFactory->createRigidDynamic(trans);
-		return p_body;
-	}
 
 #endif
 
@@ -298,63 +259,11 @@ namespace Becketron {
 			{
 				m_PxScene->simulate(ts);
 				m_PxScene->fetchResults(true);
-				/*
-				physx::PxU32 nbActors = m_PxScene->getNbActors(physx::PxActorTypeFlag::eRIGID_DYNAMIC |
-					physx::PxActorTypeFlag::eRIGID_STATIC);
-
-				if (nbActors)
-				{
-					std::vector<physx::PxRigidActor*> actors(nbActors);
-					m_PxScene->getActors(physx::PxActorTypeFlag::eRIGID_DYNAMIC |
-						physx::PxActorTypeFlag::eRIGID_STATIC, reinterpret_cast<physx::PxActor**>(&actors[0]),
-						nbActors);
-					for (uint32_t i = 0; i < nbActors; i++)
-					{
-						auto xpos = actors[i]->getGlobalPose().p.x;
-						auto ypos = actors[i]->getGlobalPose().p.y;
-						auto zpos = actors[i]->getGlobalPose().p.z;
-
-						auto xq = actors[i]->getGlobalPose().q.x;
-						auto yq = actors[i]->getGlobalPose().q.y;
-						auto zq = actors[i]->getGlobalPose().q.z;
-
-						auto pos = glm::mat4(xq * ypos * zpos);
-						auto rot = glm::mat4(xpos * yq * zq);
-
-
-					}
-				}
-				*/
 
 				auto view = m_Registry.view<TransformComponent, PhysXRigidDynamicComponent>();
 				for (auto entity : view)
 				{
 					auto [transform, physX_body] = view.get<TransformComponent, PhysXRigidDynamicComponent>(entity);
-					
-					/*
-					float xpos = physX_body.m_rDynamic->getGlobalPose().p.x;
-					float ypos = physX_body.m_rDynamic->getGlobalPose().p.y;
-					float zpos = physX_body.m_rDynamic->getGlobalPose().p.z;
-
-					glm::vec3 pos;
-
-					pos.x = xpos;
-					pos.y = ypos;
-					pos.z = zpos;
-
-					auto xq = physX_body.m_rDynamic->getGlobalPose().q.x;
-					auto yq = physX_body.m_rDynamic->getGlobalPose().q.y;
-					auto zq = physX_body.m_rDynamic->getGlobalPose().q.z;
-					auto wq = physX_body.m_rDynamic->getGlobalPose().q.w;
-
-					glm::quat q;
-					q.x = xq;
-					q.y = yq;
-					q.z = zq;
-					q.w = wq;
-					//auto pos = glm::mat4(xq * ypos * zpos);
-					//auto rot = glm::mat4(xpos * yq * zq);
-					*/
 					
 					glm::quat q = physX_body.rigidbody->GetRot();
 					glm::vec3 euler = glm::eulerAngles(q);
@@ -450,20 +359,6 @@ namespace Becketron {
 		}
 	}
 
-	/*Renderer3D::BeginScene(mainCamera->GetProjection(), cameraTransform);
-
-			for (auto entity : group)
-			{
-
-				auto [transform, cube] = group.get<TransformComponent, CubeRendererComponent>(entity);
-
-				Renderer3D::DrawCube(transform.GetTransform(), cube.Color);
-			}
-
-			Renderer3D::EndScene();*/
-
-			//			auto group = m_Registry.group<TransformComponent>(entt::get<SpriteRendererComponent>);
-
 	void Scene::OnViewportResize(uint32_t width, uint32_t height)
 	{
 		m_ViewportWidth = width;
@@ -537,29 +432,9 @@ namespace Becketron {
 	template<>
 	void Scene::OnComponentAdded<PhysXRigidDynamicComponent>(Entity entity, PhysXRigidDynamicComponent& component)
 	{
-		/*
-		physx::PxVec3 PxPos;
-		const glm::mat4& transform = m_Registry.get<TransformComponent>(entity).GetTransform();
-		auto [pos, rot, sacle] = GetTransformDecomposition(transform);
-		PxPos.x = pos.x;
-		PxPos.y = pos.y;
-		PxPos.z = pos.z;
-
-		physx::PxQuat PxQua;
-		PxQua.x = rot.x;
-		PxQua.y = rot.y;
-		PxQua.z = rot.z;
-		PxQua.w = rot.w;
-
-		physx::PxTransform PhysXTransform(PxPos, PxQua);
-
-		physx::PxRigidDynamic* r_dynamic = PhysXManager::s_PXPhysicsFactory->createRigidDynamic(PhysXTransform);
-		//r_dynamic->userData = &component;
-		component.m_rDynamic->setGlobalPose(PhysXTransform);
-		*/
 
 		const glm::mat4& transform = m_Registry.get<TransformComponent>(entity).GetTransform();
-		auto [pos, rot, scale] = GetTransformDecomposition(transform);
+		auto [pos, rot, scale] = PxHelper::GetTransformDecomposition(transform);
 
 		if (component.material)
 			component.rigidbody = CreateRef<PhysXRigidbody>(pos, rot, scale, component.material);

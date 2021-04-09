@@ -168,6 +168,7 @@
     <ClInclude Include="src\Becketron\Physics\BT_Physics\PhysicsObject.h" />
     <ClInclude Include="src\Becketron\Physics\BT_Physics\Plane.h" />
     <ClInclude Include="src\Becketron\Physics\BT_Physics\aabb.h" />
+    <ClInclude Include="src\Becketron\Physics\PhysX\PxHelper.h" />
     <ClInclude Include="src\Becketron\Physics\PhysX\PhysXManager.h" />
     <ClInclude Include="src\Becketron\Physics\PhysX\PhysXRigidbody.h" />
     <ClInclude Include="src\Becketron\Physics\PhysX\PhysXTemp.h" />
@@ -821,6 +822,7 @@
     <ClCompile Include="src\Becketron\Physics\BT_Physics\PhysicsObject.cpp" />
     <ClCompile Include="src\Becketron\Physics\BT_Physics\Plane.cpp" />
     <ClCompile Include="src\Becketron\Physics\BT_Physics\aabb.cpp" />
+    <ClCompile Include="src\Becketron\Physics\PhysX\PxHelper.cpp" />
     <ClCompile Include="src\Becketron\Physics\PhysX\PhysXManager.cpp" />
     <ClCompile Include="src\Becketron\Physics\PhysX\PhysXRigidbody.cpp" />
     <ClCompile Include="src\Becketron\Physics\PhysX\PhysXTemp.cpp" />

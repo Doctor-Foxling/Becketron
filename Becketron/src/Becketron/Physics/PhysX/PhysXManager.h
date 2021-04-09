@@ -13,7 +13,8 @@ namespace Becketron {
 
 		static physx::PxSceneDesc CreateSceneDesc();
 		static physx::PxScene* CreateScene(const physx::PxSceneDesc& sceneDesc);
-
+		
+	public:
 		static physx::PxDefaultErrorCallback s_PXErrorCallback;
 		static physx::PxDefaultAllocator s_PXAllocator;
 		static physx::PxFoundation* s_PXFoundation;
