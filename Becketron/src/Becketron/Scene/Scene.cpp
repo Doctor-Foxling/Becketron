@@ -257,8 +257,11 @@ namespace Becketron {
 			//physx::PxScene* physxScene = m_Registry.get<PhysXSceneComponent>(physxView.front()).World;
 			if (m_PxScene)
 			{
-				m_PxScene->simulate(ts);
-				m_PxScene->fetchResults(true);
+				if (m_ScenePlay)
+				{
+					m_PxScene->simulate(ts);
+					m_PxScene->fetchResults(true);
+				}
 
 				auto view = m_Registry.view<TransformComponent, PhysXRigidDynamicComponent>();
 				for (auto entity : view)
@@ -267,10 +270,17 @@ namespace Becketron {
 					
 					glm::quat q = physX_body.rigidbody->GetRot();
 					glm::vec3 euler = glm::eulerAngles(q);
+
+					if (m_SceneRestart)
+						physX_body.rigidbody->BodyReset();
 					
 					transform.Translation = physX_body.rigidbody->GetPos();
 					transform.Rotation = euler;
 				}
+
+				// If reset button was pressed, set back to inactive
+				if (m_SceneRestart)
+					m_SceneRestart = false;
 			}
 		}
 #endif
@@ -445,9 +455,11 @@ namespace Becketron {
 			
 			component.rigidbody = CreateRef<PhysXRigidbody>(pos, rot, scale, component.material);
 		}
-		
+
+
 		m_PxScene->addActor(*component.rigidbody->GetRigidbody());
 
+		//component.rigidbody->SetKinematic(component.isKinematic);
 	}
 
 #endif

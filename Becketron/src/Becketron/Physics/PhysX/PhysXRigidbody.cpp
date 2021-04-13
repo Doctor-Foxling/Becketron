@@ -18,7 +18,12 @@ namespace Becketron {
 		PxQua.z = rot.z;
 		PxQua.w = rot.w;
 
+
 		physx::PxTransform Transform(PxPos, PxQua);
+		
+		// For restting purposes
+		InitialTrans = Transform;
+		// --
 
 		m_Body = PhysXManager::s_PXPhysicsFactory->createRigidDynamic(Transform);
 		
@@ -89,11 +94,17 @@ namespace Becketron {
 
 	}
 
+	void PhysXRigidbody::BodyReset()
+	{
+		m_Body->setGlobalPose(InitialTrans);
+	}
+
 	void PhysXRigidbody::SetKinematic(bool kinematic)
 	{
 		m_Body->setRigidBodyFlag(physx::PxRigidBodyFlag::eKINEMATIC, kinematic);
 		m_Kinematic = kinematic;
-
+		
+		/*
 		if (kinematic)
 		{
 			const glm::vec3 position = GetPos();
@@ -101,6 +112,7 @@ namespace Becketron {
 
 			m_Body->setKinematicTarget(physx::PxTransform(position.x, position.y, position.z, physx::PxQuat(rotation.x, rotation.y, rotation.z, rotation.w)));
 		}
+		*/
 	}
 
 

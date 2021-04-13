@@ -26,6 +26,15 @@ namespace Becketron {
 
 		glm::quat GetRot();
 
+		void SetMass(float mass);
+		void SetDensity(float density);
+		void SetLinearVelocity(physx::PxVec3 l_Velocity);
+		void SetAngularVelocity(physx::PxVec3 a_Velocity);
+		void addForce();
+		void EnableGravity(bool en_Gravity);
+
+		void BodyReset();
+
 		void SetKinematic(bool kinematic);
 
 		bool IsKinematic();
@@ -35,6 +44,8 @@ namespace Becketron {
 	private:
 		physx::PxRigidDynamic* m_Body;
 		bool m_Kinematic = false;
+
+		physx::PxTransform InitialTrans;
 	};
 
 }

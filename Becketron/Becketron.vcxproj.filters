@@ -2119,7 +2119,6 @@
       <Filter>vendor\stb_image</Filter>
     </ClInclude>
     <ClInclude Include="src\Becketron\Physics\PhysX\PhysXManager.h" />
-    <ClInclude Include="src\Becketron\Physics\PhysX\PhysXTemp.h" />
     <ClInclude Include="src\Becketron\Physics\PhysX\PhysXRigidbody.h" />
     <ClInclude Include="src\Becketron\Physics\PhysX\PxHelper.h" />
   </ItemGroup>
@@ -2251,7 +2250,6 @@
       <Filter>vendor\stb_image</Filter>
     </ClCompile>
     <ClCompile Include="src\Becketron\Physics\PhysX\PhysXManager.cpp" />
-    <ClCompile Include="src\Becketron\Physics\PhysX\PhysXTemp.cpp" />
     <ClCompile Include="src\Becketron\Physics\PhysX\PhysXRigidbody.cpp" />
     <ClCompile Include="src\Becketron\Physics\PhysX\PxHelper.cpp" />
   </ItemGroup>

@@ -79,7 +79,7 @@ namespace Becketron {
 			texCube_tc.Translation = { (2.0f+i)/i, 10.0f+i, 0.0f };
 			texCube_tc.Scale = { 1.0f+i, (2.0f+i+i)/i, 3.0f };
 
-			texCube.AddComponent<PhysXRigidDynamicComponent>(0.5f, 0.5f, 0.1f, false);
+			texCube.AddComponent<PhysXRigidDynamicComponent>(0.5f, 0.5f, 0.1f, true);
 		}
 
 		m_SquareEntity = square;

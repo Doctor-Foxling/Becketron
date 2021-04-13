@@ -77,14 +77,13 @@ namespace Becketron {
 	{
 		bool isKinematic;
 
-		physx::PxRigidDynamic* m_rDynamic;
-
 		// Testing
 		//physx::PxTransform m_Transform;
 		physx::PxMaterial* material = NULL;
-		float staticFriction = 0.0f;
-		float dynamicFriction = 0.0f;
-		float restitution = 0.0f;
+		float staticFriction = 0.5f;
+		float dynamicFriction = 0.5f;
+		float restitution = 0.5f;
+		float mass = 1.0f;
 		//physx::PxReal m_HalfExtent = physx::PxReal(1.0f);
 		physx::PxShape* shape;
 		Ref<PhysXRigidbody> rigidbody;
@@ -96,13 +95,13 @@ namespace Becketron {
 			physx::PxMaterial * PxMaterial = m_Material);*/
 
 		PhysXRigidDynamicComponent() = default;
-		PhysXRigidDynamicComponent(physx::PxRigidDynamic* m_RDynamic, bool IsKinematic)
-			: m_rDynamic(m_RDynamic), isKinematic(IsKinematic) {}
+
 		PhysXRigidDynamicComponent(physx::PxMaterial* mat, bool IsKinematic)
 			: material(mat), isKinematic(IsKinematic) {}
-		PhysXRigidDynamicComponent(float StaticFriction, float DynamicFriction, float Restitution, bool IsKinematic)
+		PhysXRigidDynamicComponent(float StaticFriction = 0.5f, float DynamicFriction = 0.5f, 
+			float Restitution = 0.5f, float Mass = 1.0f, bool IsKinematic = false)
 			: staticFriction(StaticFriction), dynamicFriction(DynamicFriction), 
-			restitution(Restitution), isKinematic(IsKinematic) {}
+			restitution(Restitution), mass(Mass), isKinematic(IsKinematic) {}
 	};
 #endif
 
