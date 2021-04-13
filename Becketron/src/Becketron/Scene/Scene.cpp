@@ -310,7 +310,6 @@ namespace Becketron {
 		{
 			Renderer2D::BeginScene(mainCamera->GetProjection(), cameraTransform);
 
-
 			auto view = m_Registry.view<TransformComponent, SpriteRendererComponent>();
 			for (auto entity : view)
 			{
@@ -442,7 +441,6 @@ namespace Becketron {
 	template<>
 	void Scene::OnComponentAdded<PhysXRigidDynamicComponent>(Entity entity, PhysXRigidDynamicComponent& component)
 	{
-
 		const glm::mat4& transform = m_Registry.get<TransformComponent>(entity).GetTransform();
 		auto [pos, rot, scale] = PxHelper::GetTransformDecomposition(transform);
 
@@ -469,10 +467,15 @@ namespace Becketron {
 	{
 	}
 
+#ifdef BT_PHYSICS
+
 	template<>
 	void Scene::OnComponentAdded<PhysicsComponent>(Entity entity, PhysicsComponent& component)
 	{
 		m_PhysEng.AddObject(component.physicsObject);
 	}
+
+#endif
+
 }
 

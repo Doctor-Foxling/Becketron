@@ -22,8 +22,20 @@
 
 namespace Becketron {
 
+	// -- define component types
+	enum class ComponentType
+	{
+		Basic = 0,
+		Cam,
+		VisualA,
+		Physics,
+		Script
+	};
+	//
+
 	struct TagComponent
 	{
+		ComponentType type = ComponentType::Basic;
 		std::string Tag;
 
 		TagComponent() = default;
@@ -34,6 +46,7 @@ namespace Becketron {
 
 	struct TransformComponent
 	{
+		ComponentType type = ComponentType::Basic;
 		glm::vec3 Translation = { 0.0f, 0.0f, 0.0f };
 		glm::vec3 Rotation = { 0.0f, 0.0f, 0.0f };
 		glm::vec3 Scale = { 1.0f, 1.0f, 1.0f };
@@ -60,6 +73,7 @@ namespace Becketron {
 
 	struct PhysXRigidbodyComponent
 	{
+		ComponentType type = ComponentType::Physics;
 		bool isKinematic;
 
 		PhysXRigidbody* m_body;
@@ -75,6 +89,7 @@ namespace Becketron {
 
 	struct PhysXRigidDynamicComponent
 	{
+		ComponentType type = ComponentType::Physics;
 		bool isKinematic;
 
 		// Testing
@@ -107,6 +122,7 @@ namespace Becketron {
 
 	struct SpriteRendererComponent
 	{
+		ComponentType type = ComponentType::VisualA;
 		glm::vec4 Color{ 1.0f, 1.0f, 1.0f, 1.0f };
 
 		SpriteRendererComponent() = default;
@@ -117,6 +133,7 @@ namespace Becketron {
 
 	struct CubeRendererComponent
 	{
+		ComponentType type = ComponentType::VisualA;
 		glm::vec4 Color{ 1.0f, 1.0f, 1.0f, 1.0f };
 
 		CubeRendererComponent() = default;
@@ -127,6 +144,7 @@ namespace Becketron {
 
 	struct TexturedCubeComponent
 	{
+		ComponentType type = ComponentType::VisualA;
 		Ref<Texture2D> texture;
 		float tiling_factor;
 		glm::vec4 Color{ 1.0f, 1.0f, 1.0f, 1.0f };
@@ -139,6 +157,7 @@ namespace Becketron {
 
 	struct LightCubeComponent
 	{
+		ComponentType type = ComponentType::VisualA;
 		glm::vec4 Color{ 1.0f, 1.0f, 1.0f, 1.0f };
 
 		LightCubeComponent() = default;
@@ -150,6 +169,7 @@ namespace Becketron {
 	struct CameraComponent
 	{
 		SceneCamera Camera;
+		ComponentType type = ComponentType::Cam;
 		bool Primary = true;  // TODO: think about moving to Scene
 		bool FixedAspectRatio = false;
 
@@ -157,8 +177,11 @@ namespace Becketron {
 		CameraComponent(const CameraComponent&) = default;
 	};
 
+#ifdef BT_PHYSICS
+
 	struct PhysicsComponent
 	{
+		ComponentType type = Physics;
 		PhysicsObject* physicsObject;
 		bool controllable = false;
 
@@ -168,8 +191,11 @@ namespace Becketron {
 			: physicsObject(physObj) {}
 	};
 
+#endif
+
 	struct NativeScriptComponent
 	{
+		ComponentType type = ComponentType::Script;
 		ScriptableEntity* Instance = nullptr;
 
 		// Using function pointers instead of std::function

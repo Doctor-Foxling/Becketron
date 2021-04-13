@@ -7,6 +7,8 @@
 
 namespace Becketron {
 
+	enum class ComponentType;
+
 	class SceneHierarchyPanel
 	{
 	public:
@@ -20,6 +22,7 @@ namespace Becketron {
 		void DrawEntityNode(Entity entity);
 		void DrawComponents(Entity entity);
 		void SceneOptions();
+		bool EntityHasComponentType(Entity entity, ComponentType type);
 	private:
 		Ref<Scene> m_Context;
 		Entity m_SelectionContext;

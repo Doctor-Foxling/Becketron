@@ -67,27 +67,26 @@ namespace Becketron {
 
 				// TODO: Need to find a better solution than just checking against every component
 
-				if (!m_SelectionContext.HasComponent<CubeRendererComponent>() &&
+				/*if (!m_SelectionContext.HasComponent<CubeRendererComponent>() &&
 					!m_SelectionContext.HasComponent<SpriteRendererComponent>() 
-					&& ImGui::MenuItem("Sprite Renderer"))
+					&& ImGui::MenuItem("Sprite Renderer"))*/
+				if (!EntityHasComponentType(m_SelectionContext, ComponentType::VisualA) && ImGui::MenuItem("Sprite Renderer"))
 				{
 					m_SelectionContext.AddComponent<SpriteRendererComponent>();
 					ImGui::CloseCurrentPopup();
 				}
 
-				if (!m_SelectionContext.HasComponent<CubeRendererComponent>() &&
-					!m_SelectionContext.HasComponent<SpriteRendererComponent>()
-					&& ImGui::MenuItem("3D Cube"))
+				if (!EntityHasComponentType(m_SelectionContext, ComponentType::VisualA) && ImGui::MenuItem("3D Cube"))
 				{
 					m_SelectionContext.AddComponent<CubeRendererComponent>();
 					ImGui::CloseCurrentPopup();
 				}
 
-				//if (ImGui::MenuItem("3DTextured Cube"))
-				//{
-				//	m_SelectionContext.AddComponent<TexturedCubeComponent>();
-				//	ImGui::CloseCurrentPopup();
-				//}
+				if (!EntityHasComponentType(m_SelectionContext, ComponentType::VisualA) &&  ImGui::MenuItem("3DTextured Cube"))
+				{
+					m_SelectionContext.AddComponent<TexturedCubeComponent>();
+					ImGui::CloseCurrentPopup();
+				}
 
 				ImGui::EndPopup();
 			}
@@ -336,7 +335,10 @@ namespace Becketron {
 		}
 
 		if (removeComponent)
+		{
+			if (entity.GetComponent<T>().type == ComponentType::VisualA)
 			entity.RemoveComponent<T>();
+		}
 	}
 
 	void SceneHierarchyPanel::DrawComponents(Entity entity)
@@ -460,6 +462,43 @@ namespace Becketron {
 			AddComponentProps<LightCubeComponent>(entity, treeNodeFlags, "Light cube");
 		}
 
+	}
+
+	bool SceneHierarchyPanel::EntityHasComponentType(Entity entity, ComponentType type)
+	{
+		if (type == ComponentType::Basic)
+		{
+			if (entity.HasComponent<TagComponent>() ||
+				entity.HasComponent<TransformComponent>())
+				return true;
+		}
+		else if (type == ComponentType::Cam)
+		{
+			if (entity.HasComponent<CameraComponent>())
+				return true;
+		}
+		else if (type == ComponentType::VisualA)
+		{
+			if (entity.HasComponent<CubeRendererComponent>() ||
+				entity.HasComponent<SpriteRendererComponent>() ||
+				entity.HasComponent<TexturedCubeComponent>() ||
+				entity.HasComponent<LightCubeComponent>())
+				return true;
+		}
+		else if (type == ComponentType::Physics)
+		{
+			if (entity.HasComponent<PhysXRigidDynamicComponent>())
+				//	|| entity.HasComponent<PhysicsComponent>())
+				return true;
+		}
+		else if (type == ComponentType::Script)
+		{
+			if (entity.HasComponent<NativeScriptComponent>())
+				return true;
+		}
+		else
+			return false;
+	
 	}
 
 }

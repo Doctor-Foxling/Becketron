@@ -104,6 +104,7 @@ namespace Becketron {
 		m_Body->setRigidBodyFlag(physx::PxRigidBodyFlag::eKINEMATIC, kinematic);
 		m_Kinematic = kinematic;
 		
+		//m_Body->setLinearVelocity(physx::PxVec3(20.0f));
 		/*
 		if (kinematic)
 		{
