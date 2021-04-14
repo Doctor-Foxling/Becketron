@@ -12,6 +12,7 @@
 #include "Becketron/Physics/BT_Physics/PhysicsEngine.h"
 
 #include "PlayerScript.h"
+#include "RigidbodyController.h"
 
 // Temporary??
 #include "Becketron/Renderer/Texture.h"
@@ -61,8 +62,9 @@ namespace Becketron {
 		auto redCube = m_ActiveScene->CreateEntity("Red Cube");
 		redCube.AddComponent<CubeRendererComponent>(glm::vec4{ 1.0f, 0.0f, 0.0f, 1.0f });
 
-
-		redCube.AddComponent<NativeScriptComponent>().Bind<CubeController>();
+		auto& red_rigid = redCube.AddComponent<PhysXRigidDynamicComponent>(0.5f, 0.5f, 0.1f, true);
+		redCube.AddComponent<NativeScriptComponent>().Bind<RigidbodyController>();
+		
 
 		auto mainLight = m_ActiveScene->CreateEntity("Main Light");
 		mainLight.AddComponent<LightCubeComponent>(glm::vec4{ 1.0f, 1.0f, 1.0f, 1.0f });
@@ -73,13 +75,16 @@ namespace Becketron {
 		
 		for (int i = 1; i < 20; i++)
 		{
+			if (i / 5 == 0)
+			{
 			auto texCube = m_ActiveScene->CreateEntity("Tex Cube"+i);
 			texCube.AddComponent<TexturedCubeComponent>(m_CheckerboardTexture, 1.0f, glm::vec4{ 1.0f, (1.0f+i)/i, 1.0f, 1.0f });
 			auto& texCube_tc = texCube.GetComponent<TransformComponent>();
-			texCube_tc.Translation = { (2.0f+i)/i, 10.0f+i, 0.0f };
-			texCube_tc.Scale = { 1.0f+i, (2.0f+i+i)/i, 3.0f };
+			texCube_tc.Translation = { (2.0f+i+i+i+i)/i, 10.0f+ 5.0f * i, 0.0f };
+			texCube_tc.Scale = { 1.0f+i, (2.0f+i)/i, 3.0f };
 
 			texCube.AddComponent<PhysXRigidDynamicComponent>(0.5f, 0.5f, 0.1f, true);
+			}
 		}
 
 		m_SquareEntity = square;

@@ -276,6 +276,8 @@ namespace Becketron {
 					
 					transform.Translation = physX_body.rigidbody->GetPos();
 					transform.Rotation = euler;
+
+					physX_body.rigidbody->SetMass(physX_body.mass);
 				}
 
 				// If reset button was pressed, set back to inactive

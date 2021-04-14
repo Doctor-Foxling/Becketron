@@ -222,6 +222,29 @@ namespace Becketron {
 		}
 	}
 
+	static void DrawFloatControl(const std::string& label, float& value, const std::string& unit, float resetValue = 0.0f,
+		float columnWidth = 100.0f)
+	{
+		ImGui::PushID(label.c_str());
+		ImGui::Text(label.c_str());
+
+		float lineHeight = GImGui->Font->FontSize + GImGui->Style.FramePadding.y * 2.0f;
+		ImVec2 buttonSize = { lineHeight + 3.0f, lineHeight };
+
+		ImGui::PushStyleColor(ImGuiCol_Button, ImVec4{ 0.8f, 0.1f, 0.15f, 1.0f });
+		ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4{ 0.9f, 0.2f, 0.2f, 1.0f });
+		ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4{ 0.8f, 0.1f, 0.15f, 1.0f });
+		if (ImGui::Button(unit.c_str(), buttonSize))
+			value = resetValue;
+		ImGui::PopStyleColor(3);
+
+		ImGui::SameLine();
+		ImGui::DragFloat(unit.c_str(), &value, 0.1f, 0.0f, 0.0f, "%.2f");
+		//ImGui::PopItemWidth();
+
+		ImGui::PopID();
+	}
+
 	static void DrawVec3Control(const std::string& label, glm::vec3& values, float resetValue = 0.0f, float columnWidth = 100.0f)
 	{
 		ImGui::PushID(label.c_str());
@@ -326,17 +349,12 @@ namespace Becketron {
 				auto& src = entity.GetComponent<TexturedCubeComponent>();
 				src.texture = newTex;
 				BT_TRACE("Image Relative Path: {0}", (fileDialog.GetSelected().relative_path().string()));
-				BT_TRACE("Image string: {0}", fileDialog.GetSelected().string());
-				BT_TRACE("Image parent path: {0}", fileDialog.GetSelected().parent_path().string());
-				BT_TRACE("Image Root Path: {0}", fileDialog.GetSelected().root_path().string());
-				BT_TRACE("Image Root name: {0}", fileDialog.GetSelected().root_name().string());
 				fileDialog.ClearSelected();
 			}
 		}
 
 		if (removeComponent)
 		{
-			if (entity.GetComponent<T>().type == ComponentType::VisualA)
 			entity.RemoveComponent<T>();
 		}
 	}
@@ -460,6 +478,12 @@ namespace Becketron {
 		if (entity.HasComponent<LightCubeComponent>())
 		{
 			AddComponentProps<LightCubeComponent>(entity, treeNodeFlags, "Light cube");
+		}
+
+		if (entity.HasComponent<PhysXRigidDynamicComponent>())
+		{
+			auto& r_body = entity.GetComponent<PhysXRigidDynamicComponent>();
+			DrawFloatControl("Mass", r_body.mass, "Kg");
 		}
 
 	}

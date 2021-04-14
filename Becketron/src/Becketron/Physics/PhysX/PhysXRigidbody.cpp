@@ -99,6 +99,36 @@ namespace Becketron {
 		m_Body->setGlobalPose(InitialTrans);
 	}
 
+	void PhysXRigidbody::SetMass(float mass)
+	{
+		m_Body->setMass(mass);
+	}
+
+	void PhysXRigidbody::SetDensity(float density)
+	{
+		physx::PxRigidBodyExt::updateMassAndInertia(*m_Body, density);
+	}
+
+	void PhysXRigidbody::SetLinearVelocity(physx::PxVec3 l_Velocity)
+	{
+		m_Body->setLinearVelocity(l_Velocity);
+	}
+
+	void PhysXRigidbody::SetAngularVelocity(physx::PxVec3 a_Velocity)
+	{
+		m_Body->setAngularVelocity(a_Velocity);
+	}
+
+	void PhysXRigidbody::addForce()
+	{
+
+	}
+
+	void PhysXRigidbody::EnableGravity(bool en_Gravity)
+	{
+		m_Body->setActorFlag(physx::PxActorFlag::eDISABLE_GRAVITY, en_Gravity);
+	}
+
 	void PhysXRigidbody::SetKinematic(bool kinematic)
 	{
 		m_Body->setRigidBodyFlag(physx::PxRigidBodyFlag::eKINEMATIC, kinematic);

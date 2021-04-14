@@ -97,6 +97,24 @@ namespace Becketron {
 	{
 		return m_Body->getRigidBodyFlags().isSet(physx::PxRigidBodyFlag::eKINEMATIC);
 	}
+	void PhysXRigidbody::SetMass(float mass)
+	{
+	}
+	void PhysXRigidbody::SetDensity(float density)
+	{
+	}
+	void PhysXRigidbody::SetLinearVelocity(physx::PxVec3 l_Velocity)
+	{
+	}
+	void PhysXRigidbody::SetAngularVelocity(physx::PxVec3 a_Velocity)
+	{
+	}
+	void PhysXRigidbody::addForce()
+	{
+	}
+	void PhysXRigidbody::EnableGravity(bool en_Gravity)
+	{
+	}
 }
 
 #endif

@@ -33,6 +33,8 @@ namespace Becketron {
 		void addForce();
 		void EnableGravity(bool en_Gravity);
 
+		//void GetLinearVelocity()
+
 		void BodyReset();
 
 		void SetKinematic(bool kinematic);
