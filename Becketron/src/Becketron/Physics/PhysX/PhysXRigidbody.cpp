@@ -5,19 +5,18 @@
 namespace Becketron {
 
 	PhysXRigidbody::PhysXRigidbody(glm::vec3 pos, glm::quat rot, glm::vec3 scale, physx::PxMaterial* material)
+		: m_Material(material)
 	{
 		physx::PxVec3 PxPos;
 		PxPos.x = pos.x;
 		PxPos.y = pos.y;
 		PxPos.z = pos.z;
 
-
 		physx::PxQuat PxQua;
 		PxQua.x = rot.x;
 		PxQua.y = rot.y;
 		PxQua.z = rot.z;
 		PxQua.w = rot.w;
-
 
 		physx::PxTransform Transform(PxPos, PxQua);
 		
@@ -31,18 +30,21 @@ namespace Becketron {
 		physx::PxReal halfExtentY = scale.y / 2;
 		physx::PxReal halfExtentZ = scale.z / 2;
 
-		physx::PxShape* shape = PhysXManager::s_PXPhysicsFactory->createShape(physx::PxBoxGeometry(
+		m_Shape = PhysXManager::s_PXPhysicsFactory->createShape(physx::PxBoxGeometry(
 			halfExtentX, halfExtentY, halfExtentZ), *material);
-
-		m_Body->attachShape(*shape);
+		
+		m_Body->attachShape(*m_Shape);
+		//physx::PxMaterial* material2 = PhysXManager::s_PXPhysicsFactory->createMaterial(0.1f, 0.4f, 1.0f);
+		//m_Shape->setMaterials(&material2, 1);
+		m_Body->attachShape(*m_Shape);
+		m_Body->setMass(1.0f);
 		m_Body->userData = this;
-		shape->release();
 		//m_Body->setActorFlag(physx::PxActorFlag::eVISUALIZATION, true);
 	}
 
 	PhysXRigidbody::~PhysXRigidbody()
 	{
-	
+		//m_Shape->release();
 		//m_Scene->m_Physics->release();
 	}
 
@@ -119,9 +121,57 @@ namespace Becketron {
 		m_Body->setAngularVelocity(a_Velocity);
 	}
 
-	void PhysXRigidbody::addForce()
+	void PhysXRigidbody::SetLinearDamping(physx::PxReal linDamp)
 	{
+		m_Body->setLinearDamping(linDamp);
+	}
 
+	void PhysXRigidbody::SetAngularDamping(physx::PxReal angDamp)
+	{
+		m_Body->setAngularDamping(angDamp);
+	}
+
+	void PhysXRigidbody::SetScale(glm::vec3 scale)
+	{
+		physx::PxReal halfExtentX = scale.x / 2;
+		physx::PxReal halfExtentY = scale.y / 2;
+		physx::PxReal halfExtentZ = scale.z / 2;
+
+		m_Body->detachShape(*m_Shape);
+		m_Shape->release();
+
+		m_Shape = PhysXManager::s_PXPhysicsFactory->createShape(physx::PxBoxGeometry(
+			halfExtentX, halfExtentY, halfExtentZ), *m_Material);
+
+		m_Body->attachShape(*m_Shape);
+	}
+
+	void PhysXRigidbody::SetMaterial(physx::PxMaterial* mat) // a pointer to const pointer to a PxMaterial
+	{
+		m_Body->detachShape(*m_Shape);
+
+		physx::PxMaterial* materials[] = { mat };
+		m_Shape->setMaterials(materials, 1);
+
+		m_Body->attachShape(*m_Shape);
+
+		//m_Body->attachShape(*m_Shape);
+	}
+
+	void PhysXRigidbody::SetMaterial(float staticFric, float dynamicFric, float restitution)
+	{
+		physx::PxMaterial* material = PhysXManager::s_PXPhysicsFactory->createMaterial(staticFric,
+			dynamicFric, restitution);
+	}
+
+	void PhysXRigidbody::AddForce(physx::PxVec3& force)
+	{
+		m_Body->addForce(force);
+	}
+
+	void PhysXRigidbody::AddTorque(physx::PxVec3& torque)
+	{
+		m_Body->addTorque(torque);
 	}
 
 	void PhysXRigidbody::EnableGravity(bool en_Gravity)

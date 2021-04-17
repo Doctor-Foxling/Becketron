@@ -46,7 +46,7 @@ namespace Becketron {
 
 			ImGui::EndPopup();
 		}
-
+		
 		ImGui::End();
 
 		ImGui::Begin("Properties");
@@ -171,17 +171,14 @@ namespace Becketron {
 			else
 				ImGui::Text(" Play");
 			ImGui::SameLine();
-			if (!m_Context->m_SceneRestart && m_Context->m_ScenePlay)
+
+			if (m_Context->m_ScenePlay)
 				ImGui::Text("Restart");
+			else
+				ImGui::Text(" Restart");
 
-			if (!m_Context->m_SceneFirstStart && !m_Context->m_SceneRestart)
-			{
-				ImGui::Text("  Start");
-			}
-			//else if (m_Context->m_ScenePlay)
-			//	ImGui::Text("  -----");
 
-			//ImGui::SameLine();
+
 	}
 
 	void SceneHierarchyPanel::DrawEntityNode(Entity entity)
@@ -223,7 +220,7 @@ namespace Becketron {
 	}
 
 	static void DrawFloatControl(const std::string& label, float& value, const std::string& unit, float resetValue = 0.0f,
-		float columnWidth = 100.0f)
+		float min= 0.0f, float max = 1.0f, float columnWidth = 100.0f)
 	{
 		ImGui::PushID(label.c_str());
 		ImGui::Text(label.c_str());
@@ -231,21 +228,23 @@ namespace Becketron {
 		float lineHeight = GImGui->Font->FontSize + GImGui->Style.FramePadding.y * 2.0f;
 		ImVec2 buttonSize = { lineHeight + 3.0f, lineHeight };
 
-		ImGui::PushStyleColor(ImGuiCol_Button, ImVec4{ 0.8f, 0.1f, 0.15f, 1.0f });
-		ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4{ 0.9f, 0.2f, 0.2f, 1.0f });
-		ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4{ 0.8f, 0.1f, 0.15f, 1.0f });
+		ImGui::PushStyleColor(ImGuiCol_Button, ImVec4{ 0.2f, 0.1f, 0.4f, 1.0f });
+		ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4{ 0.3f, 0.2f, 0.5f, 1.0f });
+		ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4{ 0.2f, 0.1f, 0.4f, 1.0f });
 		if (ImGui::Button(unit.c_str(), buttonSize))
 			value = resetValue;
 		ImGui::PopStyleColor(3);
 
 		ImGui::SameLine();
-		ImGui::DragFloat(unit.c_str(), &value, 0.1f, 0.0f, 0.0f, "%.2f");
+		ImGui::DragFloat("##X", &value, 0.1f, min, max, "%.2f");
 		//ImGui::PopItemWidth();
 
 		ImGui::PopID();
 	}
 
-	static void DrawVec3Control(const std::string& label, glm::vec3& values, float resetValue = 0.0f, float columnWidth = 100.0f)
+	static void DrawVec3Control(const std::string& label, glm::vec3& values, float resetValue = 0.0f,
+		float min = 0.0f, float max = 1.0f, const char* X_val = "X", const char* Y_val = "Y", 
+		const char* Z_val = "Z", float columnWidth = 100.0f)
 	{
 		ImGui::PushID(label.c_str());
 
@@ -263,36 +262,36 @@ namespace Becketron {
 		ImGui::PushStyleColor(ImGuiCol_Button, ImVec4{ 0.8f, 0.1f, 0.15f, 1.0f });
 		ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4{ 0.9f, 0.2f, 0.2f, 1.0f });
 		ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4{ 0.8f, 0.1f, 0.15f, 1.0f });
-		if (ImGui::Button("X", buttonSize))
+		if (ImGui::Button(X_val, buttonSize))
 			values.x = resetValue;
 		ImGui::PopStyleColor(3);
 
 		ImGui::SameLine();
-		ImGui::DragFloat("##X", &values.x, 0.1f, 0.0f, 0.0f, "%.2f");
+		ImGui::DragFloat("##X", &values.x, 0.1f, min, max, "%.2f");
 		ImGui::PopItemWidth();
 		ImGui::SameLine();
 
 		ImGui::PushStyleColor(ImGuiCol_Button, ImVec4{ 0.2f, 0.7f, 0.2f, 1.0f });
 		ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4{ 0.3f, 0.8f, 0.3f, 1.0f });
 		ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4{ 0.2f, 0.7f, 0.2f, 1.0f });
-		if (ImGui::Button("Y", buttonSize))
+		if (ImGui::Button(Y_val, buttonSize))
 			values.y = resetValue;
 		ImGui::PopStyleColor(3);
 
 		ImGui::SameLine();
-		ImGui::DragFloat("##Y", &values.y, 0.1f, 0.0f, 0.0f, "%.2f");
+		ImGui::DragFloat("##Y", &values.y, 0.1f, min, max, "%.2f");
 		ImGui::PopItemWidth();
 		ImGui::SameLine();
 
 		ImGui::PushStyleColor(ImGuiCol_Button, ImVec4{ 0.1f, 0.25f, 0.8f, 1.0f });
 		ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4{ 0.2f, 0.35f, 0.9f, 1.0f });
 		ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4{ 0.1f, 0.25f, 0.8f, 1.0f });
-		if (ImGui::Button("Z", buttonSize))
+		if (ImGui::Button(Z_val, buttonSize))
 			values.z = resetValue;
 		ImGui::PopStyleColor(3);
 
 		ImGui::SameLine();
-		ImGui::DragFloat("##Z", &values.z, 0.1f, 0.0f, 0.0f, "%.2f");
+		ImGui::DragFloat("##Z", &values.z, 0.1f, min, max, "%.2f");
 		ImGui::PopItemWidth();
 
 		ImGui::PopStyleVar();
@@ -384,11 +383,11 @@ namespace Becketron {
 			if (open)
 			{
 				auto& tc = entity.GetComponent<TransformComponent>();
-				DrawVec3Control("Translation", tc.Translation);
+				DrawVec3Control("Translation", tc.Translation, 0.0f, 500.0f, 500.0f);
 				glm::vec3 rotation = glm::degrees(tc.Rotation);
-				DrawVec3Control("Rotation", rotation);
+				DrawVec3Control("Rotation", rotation, 0.0f, -720.0f, 720.0f);
 				tc.Rotation = glm::radians(rotation);
-				DrawVec3Control("Scale", tc.Scale, 1.0f);
+				DrawVec3Control("Scale", tc.Scale, 1.0f, 0.5f, 200.0f);
 
 				ImGui::TreePop();
 			}
@@ -483,9 +482,13 @@ namespace Becketron {
 		if (entity.HasComponent<PhysXRigidDynamicComponent>())
 		{
 			auto& r_body = entity.GetComponent<PhysXRigidDynamicComponent>();
-			DrawFloatControl("Mass", r_body.mass, "Kg");
-		}
+			DrawFloatControl("Mass", r_body.mass, "Kg", 1.0f, 0.1f, 20.0f);
 
+			DrawFloatControl("Static Friction", r_body.staticFriction, "N", 0.5f, 0.0f, 100.0f);
+			DrawFloatControl("Dynamic Friction", r_body.dynamicFriction, "N", 0.5f, 0.0f, 1.0f);
+			DrawFloatControl("Restitution", r_body.restitution, "_", 0.5f, 0.0f, 1.0f);
+			DrawFloatControl("Density", r_body.density, "_", 0.5f, 0.1f, 50.0f);
+		}
 	}
 
 	bool SceneHierarchyPanel::EntityHasComponentType(Entity entity, ComponentType type)

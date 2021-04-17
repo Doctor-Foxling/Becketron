@@ -26,11 +26,17 @@ namespace Becketron {
 
 		glm::quat GetRot();
 
+		void SetScale(glm::vec3 scale);
 		void SetMass(float mass);
 		void SetDensity(float density);
 		void SetLinearVelocity(physx::PxVec3 l_Velocity);
 		void SetAngularVelocity(physx::PxVec3 a_Velocity);
-		void addForce();
+		void SetLinearDamping(physx::PxReal linDamp);
+		void SetAngularDamping(physx::PxReal angDamp);
+		void SetMaterial(physx::PxMaterial* mat);
+		void SetMaterial(float staticFric, float dynamicFric, float restitution);
+		void AddForce(physx::PxVec3& force);
+		void AddTorque(physx::PxVec3& torque);
 		void EnableGravity(bool en_Gravity);
 
 		//void GetLinearVelocity()
@@ -48,6 +54,8 @@ namespace Becketron {
 		bool m_Kinematic = false;
 
 		physx::PxTransform InitialTrans;
+		physx::PxMaterial* m_Material;
+		physx::PxShape* m_Shape;
 	};
 
 }

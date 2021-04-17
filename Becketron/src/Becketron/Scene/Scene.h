@@ -40,9 +40,9 @@ namespace Becketron {
 		physx::PxRigidStatic* m_Ground;
 
 		bool m_ScenePlay = false;
-		bool m_ScenePlayLast = false;
+		//bool m_ScenePlayLast = false;
 		bool m_SceneRestart = false;
-		bool m_SceneRestartLast = false;
+		//bool m_SceneRestartLast = false;
 
 		bool m_SceneFirstStart = false;
 

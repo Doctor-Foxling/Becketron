@@ -97,11 +97,30 @@ namespace Becketron {
 		physx::PxMaterial* material = NULL;
 		float staticFriction = 0.5f;
 		float dynamicFriction = 0.5f;
-		float restitution = 0.5f;
+		float restitution = 0.0f;
+		
 		float mass = 1.0f;
+		float density = 1.0f;
+		float linearVelocity = 0.0f;
+		float angularVelocity = 0.0f;
+		float linearDamping = 0.0f;
+		float angularDamping = 0.0f;
+
+		glm::vec3 scale ; // will be used to check if the object scale has been changed
 		//physx::PxReal m_HalfExtent = physx::PxReal(1.0f);
 		physx::PxShape* shape;
 		Ref<PhysXRigidbody> rigidbody;
+
+		// old values
+		float old_staticFriction = 0.5f;
+		float old_dynamicFriction = 0.5f;
+		float old_restitution = 0.5f;
+		float old_mass = 1.0f;
+		float old_density = 1.0f;
+		float old_linearVelocity = 0.0f;
+		float old_angularVelocity = 0.0f;
+		float old_linearDamping = 0.0f;
+		float old_angularDamping = 0.0f;
 
 		//m_Material = PhysXManager::s_PXPhysicsFactory->createMaterial(0.5f, 0.5f, 0.6f);
 		
@@ -145,8 +164,8 @@ namespace Becketron {
 	struct TexturedCubeComponent
 	{
 		ComponentType type = ComponentType::VisualA;
-		Ref<Texture2D> texture;
-		float tiling_factor;
+		Ref<Texture2D> texture = nullptr;
+		float tiling_factor = 1.0f;
 		glm::vec4 Color{ 1.0f, 1.0f, 1.0f, 1.0f };
 
 		TexturedCubeComponent() = default;

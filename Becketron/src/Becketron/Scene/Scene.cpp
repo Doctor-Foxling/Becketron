@@ -277,7 +277,49 @@ namespace Becketron {
 					transform.Translation = physX_body.rigidbody->GetPos();
 					transform.Rotation = euler;
 
-					physX_body.rigidbody->SetMass(physX_body.mass);
+
+
+					// Update rigidbody prperties 
+					auto& rb = physX_body.rigidbody;
+
+					if (physX_body.scale != transform.Scale)
+					{
+						rb->SetScale(transform.Scale);
+						physX_body.scale = transform.Scale;
+					}
+
+					if (physX_body.old_staticFriction != physX_body.staticFriction ||
+						physX_body.old_dynamicFriction != physX_body.dynamicFriction ||
+						physX_body.old_restitution != physX_body.restitution)
+					{
+						physx::PxMaterial* mat = PhysXManager::s_PXPhysicsFactory->createMaterial(physX_body.staticFriction,
+							physX_body.dynamicFriction, physX_body.restitution);
+
+						rb->SetMaterial(mat);
+
+						physX_body.old_staticFriction = physX_body.staticFriction;
+						physX_body.old_dynamicFriction = physX_body.dynamicFriction;
+						physX_body.old_restitution = physX_body.restitution;
+					}
+
+					if (physX_body.old_mass != physX_body.mass)
+					{
+						rb->SetMass(physX_body.mass);
+						physX_body.old_mass = physX_body.mass;
+					}
+
+					if (physX_body.old_density != physX_body.density)
+					{
+						rb->SetDensity(physX_body.density);
+						physX_body.old_density = physX_body.density;
+					}
+
+					if (physX_body.old_linearVelocity != physX_body.linearVelocity)
+					{
+						//rb->SetLinearVelocity(physX_body.linearVelocity);
+						//physX_body.old_linearVelocity = physX_body.linearVelocity;
+					}
+					//rb->
 				}
 
 				// If reset button was pressed, set back to inactive
@@ -310,7 +352,7 @@ namespace Becketron {
 		// Quad
 		if (mainCamera)
 		{
-			Renderer2D::BeginScene(mainCamera->GetProjection(), cameraTransform);
+		 	Renderer2D::BeginScene(mainCamera->GetProjection(), cameraTransform);
 
 			auto view = m_Registry.view<TransformComponent, SpriteRendererComponent>();
 			for (auto entity : view)
@@ -415,6 +457,10 @@ namespace Becketron {
 	template<>
 	void Scene::OnComponentAdded<TexturedCubeComponent>(Entity entity, TexturedCubeComponent& component)
 	{
+		if (component.texture == nullptr)
+		{
+			component.texture = Texture2D::Create("c:/Devz/BT_3D/Becketron/src/Becketron/Scene/Chess_board.jpg");
+		}
 	}
 
 	template<>
@@ -451,7 +497,7 @@ namespace Becketron {
 		else
 		{
 			component.material = PhysXManager::s_PXPhysicsFactory->createMaterial(component.staticFriction,
-				component.dynamicFriction, component.staticFriction);
+				component.dynamicFriction, component.restitution);
 			
 			component.rigidbody = CreateRef<PhysXRigidbody>(pos, rot, scale, component.material);
 		}

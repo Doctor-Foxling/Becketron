@@ -27,19 +27,30 @@ namespace Becketron {
 
 	void LayerStack::PopLayer(Layer* layer)
 	{
-		auto it = std::find(m_Layers.begin(), m_Layers.end(), layer);
-		if (it != m_Layers.end())
+		auto it = std::remove(m_Layers.begin(), m_Layers.begin() + m_LayerInsertIndex, layer);
+		//auto it = std::find(m_Layers.begin(), m_Layers.begin() + m_LayerInsertIndex, layer);
+		if (it != m_Layers.begin() + m_LayerInsertIndex)
 		{
-			m_Layers.erase(it);
+			layer->OnDetach();
+			it = m_Layers.erase(it);
+			//if (it != m_Layers.begin())
+				//it = std::prev(it);
 			m_LayerInsertIndex--;
 		}
 	}
 
 	void LayerStack::PopOverlay(Layer* overlay)
 	{
-		auto it = std::find(m_Layers.begin(), m_Layers.end(), overlay);
+		auto it = std::find(m_Layers.begin() + m_LayerInsertIndex, m_Layers.end(), overlay);
 		if (it != m_Layers.end())
-			m_Layers.erase(it);
+		{
+			overlay->OnDetach();
+			it = m_Layers.erase(it);
+			size_t remaining = std::distance(m_Layers.begin(), it);
+			BT_TRACE("Remaining layers {0}", remaining);
+			/*if (it != m_Layers.begin())
+				it = std::prev(it);*/
+		}
 	}
 
 }

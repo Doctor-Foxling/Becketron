@@ -54,12 +54,26 @@ namespace Becketron {
 		layer->OnAttach();
 	}
 
+	void Application::PopLayer(Layer* layer)
+	{
+		BT_PROFILE_FUNCTION();
+
+		m_LayerStack.PopLayer(layer);
+	}
+
 	void Application::PushOverlay(Layer* layer)
 	{
 		BT_PROFILE_FUNCTION();
 
 		m_LayerStack.PushOverlay(layer);
 		layer->OnAttach();
+	}
+
+	void Application::PopOverlay(Layer* layer)
+	{
+		BT_PROFILE_FUNCTION();
+
+		m_LayerStack.PopOverlay(layer);
 	}
 
 	void Application::Close()
@@ -99,20 +113,31 @@ namespace Becketron {
 			Timestep timestep = time - m_LastFrameTime;
 			m_LastFrameTime = time;
 
+			/* Creating a copy because the using the erase function (see layerStack) on a given vector 
+			   invalidates the iterators, so using the vetor object directly to iterate over doesn't work */ 
+			std::vector<Layer*>& localLayers = m_LayerStack.getLayers();
+			size_t stackSize = localLayers.size();
+
 			if (!m_Minimized)
 			{
 				{
 					BT_PROFILE_SCOPE("LayerStack - OnUpdate");
-
-					for (Layer* layer : m_LayerStack)
-						layer->OnUpdate(timestep); 
+					int layerCount = 0;
+					//for (Layer* layer : m_LayerStack)
+					for (Layer* layer : localLayers)
+					{
+						layerCount++;
+						if(layerCount < stackSize)
+							layer->OnUpdate(timestep); 
+					}
 				}
 
 				m_ImGuiLayer->Begin();
 				{
 					BT_PROFILE_SCOPE("LayerStack OnImGuiRender");
 
-					for (Layer* layer : m_LayerStack)
+					//for (Layer* layer : m_LayerStack)
+					for (Layer* layer : localLayers)
 						layer->OnImGuiRender();
 				}
 				m_ImGuiLayer->End();

@@ -1,4 +1,4 @@
-#include "EditorLayer.h"
+#include "example2.h"
 #include "imgui/imgui.h"
 
 #include <glm/gtc/matrix_transform.hpp>
@@ -16,16 +16,15 @@
 
 // Temporary??
 #include "Becketron/Renderer/Texture.h"
-#include "examples/example1.h"
 
 namespace Becketron {
 
-	EditorLayer::EditorLayer()
-		: Layer("EditorLayer"), m_CameraController(1280.0f / 720.0f)
+	ExampleLayer2::ExampleLayer2()
+		: Layer("ExampleLayer2"), m_CameraController(1280.0f / 720.0f)
 	{
 	}
 
-	void EditorLayer::OnAttach()
+	void ExampleLayer2::OnAttach()
 	{
 		//Renderer3D::Init();
 		BT_PROFILE_FUNCTION();
@@ -40,20 +39,20 @@ namespace Becketron {
 
 		// Entity
 		auto square = m_ActiveScene->CreateEntity("Ground");
-		square.AddComponent<SpriteRendererComponent>(glm::vec4{ 0.0f, 1.0f, 1.0f, 0.5f });
+		square.AddComponent<SpriteRendererComponent>(glm::vec4{ 1.0f, 0.0f, 1.0f, 0.5f });
 		auto& tc = square.GetComponent<TransformComponent>();
 		tc.Translation = { 0.0f, -3.14f, 0.0f };
 		tc.Scale = { 50.0f, 50.0f, 0.0f };
 		tc.Rotation = { glm::radians(90.0f), 0.0f, 0.0f };
 
 		auto redSquare = m_ActiveScene->CreateEntity("Red Square");
-		redSquare.AddComponent<SpriteRendererComponent>(glm::vec4{ 1.0f, 0.0f, 0.0f, 1.0f });
+		redSquare.AddComponent<SpriteRendererComponent>(glm::vec4{ 1.0f, 0.5f, 0.5f, 1.0f });
 
 		auto blueCube = m_ActiveScene->CreateEntity("Blue Cube");
-		blueCube.AddComponent<CubeRendererComponent>(glm::vec4{ 0.0f, 0.4f, 1.0f, 1.0f });
+		blueCube.AddComponent<CubeRendererComponent>(glm::vec4{ 0.4f, 0.4f, 1.0f, 1.0f });
 
 		auto greenCube = m_ActiveScene->CreateEntity("Green Square");
-		greenCube.AddComponent<CubeRendererComponent>(glm::vec4{ 0.0f, 1.0f, 0.4f, 1.0f });
+		greenCube.AddComponent<CubeRendererComponent>(glm::vec4{ 1.0f, 0.5f, 0.4f, 1.0f });
 		auto& greenCube_tc = greenCube.GetComponent<TransformComponent>();
 		greenCube_tc.Translation = { 2.0f, 10.0f, 0.0f };
 		
@@ -61,7 +60,7 @@ namespace Becketron {
 		
 
 		auto redCube = m_ActiveScene->CreateEntity("Red Cube");
-		redCube.AddComponent<CubeRendererComponent>(glm::vec4{ 1.0f, 0.0f, 0.0f, 1.0f });
+		redCube.AddComponent<CubeRendererComponent>(glm::vec4{ 0.2f, 0.2f, 0.2f, 1.0f });
 
 		auto& red_rigid = redCube.AddComponent<PhysXRigidDynamicComponent>(0.5f, 0.5f, 0.1f, true);
 		redCube.AddComponent<NativeScriptComponent>().Bind<RigidbodyController>();
@@ -170,12 +169,12 @@ namespace Becketron {
 	//	BoundingSphere::Test();
 	}
 
-	void EditorLayer::OnDetach()
+	void ExampleLayer2::OnDetach()
 	{
 		BT_PROFILE_FUNCTION();
 	}
 
-	void EditorLayer::OnUpdate(Timestep ts)
+	void ExampleLayer2::OnUpdate(Timestep ts)
 	{
 		BT_PROFILE_FUNCTION();
 
@@ -211,118 +210,27 @@ namespace Becketron {
 		// std::dynamic_pointer_cast<OpenGLShader>(m_FlatColorShader)->UploadUniformFloat4("u_Color", m_SquareColor);
 	}
 
-	void EditorLayer::OnImGuiRender()
+	void ExampleLayer2::OnImGuiRender()
 	{
-		BT_PROFILE_FUNCTION();
+		m_SceneHierarchyPanel.OnImGuiRender();
 
-			static bool dockspaceOpen = true;
-			static bool opt_fullscreen_persistant = true;
-			bool opt_fullscreen = opt_fullscreen_persistant;
-			static ImGuiDockNodeFlags dockspace_flags = ImGuiDockNodeFlags_None;
+		ImGui::Begin("Viewport");
 
-			// Using the ImGUiWindowFLags_NoDocking falg to make the parent window not dockable into,
-			// since it could be confusing to have two docking targets within each others.
-			ImGuiWindowFlags window_flags = ImGuiWindowFlags_MenuBar | ImGuiWindowFlags_NoDocking;
-			if (opt_fullscreen)
-			{
-				ImGuiViewport* viewport = ImGui::GetMainViewport();
-				ImGui::SetNextWindowPos(viewport->Pos);
-				ImGui::SetNextWindowSize(viewport->Size);
-				ImGui::SetNextWindowViewport(viewport->ID);
-				ImGui::PushStyleVar(ImGuiStyleVar_WindowRounding, 0.0f);
-				ImGui::PushStyleVar(ImGuiStyleVar_WindowBorderSize, 0.0f);
-				window_flags |= ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove;
-				window_flags |= ImGuiWindowFlags_NoBringToFrontOnFocus | ImGuiWindowFlags_NoNavFocus;
-			}
+		m_ViewportFocused = ImGui::IsWindowFocused();
+		m_ViewportHovered = ImGui::IsWindowHovered();
+		Application::Get().GetImGuiLayer()->BlockEvents(!m_ViewportFocused || !m_ViewportHovered);
 
-			// When using ImGuiDockNodeFlags_PassthruCentralNode, DockSpace() will render our background and handle the pass-thru hole, so we ask Begin() to not render a background.
-			if (dockspace_flags & ImGuiDockNodeFlags_PassthruCentralNode)
-				window_flags |= ImGuiWindowFlags_NoBackground;
+		ImVec2 viewportPanelSize = ImGui::GetContentRegionAvail();
 
-			// Important: note that we proceed even if Begin() returns false (aka window is collapsed).
-			// This is because we want to keep our DockSpace() active. If a DockSpace() is inactive,
-			// all active  windows docked into it will lose their parent become undocked.
-			// We cannot preserve the docking relatioshoip between an active window and an inactive docking, otherwise
-			// any change of dockspace/setting would lead to widows being stuck in limbo and never being visible
-			ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0.0f, 0.0f));
-			ImGui::Begin("DockSpace Demo", &dockspaceOpen, window_flags);
-			ImGui::PopStyleVar();
+		m_ViewportSize = { viewportPanelSize.x, viewportPanelSize.y };
 
-			if (opt_fullscreen)
-				ImGui::PopStyleVar(2);
-
-			// Dockspace
-			ImGuiIO& io = ImGui::GetIO();
-			if (io.ConfigFlags & ImGuiConfigFlags_DockingEnable)
-			{
-				ImGuiID dockspace_id = ImGui::GetID("MyDockSpace");
-				ImGui::DockSpace(dockspace_id, ImVec2(0.0f, 0.0f), dockspace_flags);
-			}
-
-			if (ImGui::BeginMenuBar())
-			{
-				if (ImGui::BeginMenu("File"))
-				{
-					// Disabling fullscreen would allow the window to be moved to the front of other windows,
-					// whcihc we can't undo at the moment without finer window depth/z control.
-					// ImGui::MenuItem("Fullscreen", NULL, &opt_fullscreen_presistant);
-
-					if (ImGui::MenuItem("Exit")) Application::Get().Close();
-					ImGui::EndMenu();
-				}
-
-				ImGui::EndMenuBar();
-			}
-
-			m_SceneHierarchyPanel.OnImGuiRender();
-
-			ImGui::Begin("Stats");
-
-			auto stats = Renderer2D::GetStats();
-			ImGui::Text("Renderer2D Stats:");
-			ImGui::Text("Draw Calls: %d", stats.DrawCalls);
-			ImGui::Text("Quads: %d", stats.QuadCount);
-			ImGui::Text("Vertices: %d", stats.GetTotalVertexCount());
-			ImGui::Text("Indices: %d", stats.GetTotalIndexCount());
-
-			if (ImGui::TreeNode("Selection State: Single Selection"))
-			{
-				static int selected = -1;
-				for (int n = 0; n < 5; n++)
-				{
-					char buf[32];
-					sprintf(buf, "Object %d", n);
-					if (ImGui::Selectable(buf, selected == n))
-					{
-						Application::Get().PushOverlay(new ExampleLayer1);
-						selected = n;
-					}
-				}
-				ImGui::TreePop();
-			}
-
-			ImGui::End();
-
-			ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2{ 0, 0 });
-			ImGui::Begin("Viewport");
-
-			m_ViewportFocused = ImGui::IsWindowFocused();
-			m_ViewportHovered = ImGui::IsWindowHovered();
-			Application::Get().GetImGuiLayer()->BlockEvents(!m_ViewportFocused || !m_ViewportHovered);
-
-			ImVec2 viewportPanelSize = ImGui::GetContentRegionAvail();
-			
-			m_ViewportSize = { viewportPanelSize.x, viewportPanelSize.y };
-
-			uint32_t textureID = m_Framebuffer->GetColorAttachmentRendererID();
-			ImGui::Image((void*)textureID, ImVec2{ m_ViewportSize.x, m_ViewportSize.y }, ImVec2{ 0, 1 }, ImVec2{ 1, 0 });
-			ImGui::End();
-			ImGui::PopStyleVar();
-
-			ImGui::End();
+		uint32_t textureID = m_Framebuffer->GetColorAttachmentRendererID();
+		ImGui::Image((void*)textureID, ImVec2{ m_ViewportSize.x, m_ViewportSize.y }, ImVec2{ 0, 1 }, ImVec2{ 1, 0 });
+		ImGui::End();
+		//ImGui::PopStyleVar();
 	}
 
-	void EditorLayer::OnEvent(Event& e)
+	void ExampleLayer2::OnEvent(Event& e)
 	{
 		m_CameraController.OnEvent(e);
 	}
