@@ -28,4 +28,11 @@ namespace Becketron {
 		static Ref<Texture2D> Create(uint32_t width, uint32_t height);
 		static Ref<Texture2D> Create(const std::string& path);
 	};
+
+	class CubemapTex : public Texture
+	{
+	public:
+		static Ref<CubemapTex> Create(uint32_t width, uint32_t height);
+		static Ref<CubemapTex> Create(const std::vector<std::string>& faces);
+	};
 }

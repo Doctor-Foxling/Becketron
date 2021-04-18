@@ -22,6 +22,7 @@
 #include "Becketron/Renderer/Renderer.h"
 #include "Becketron/Renderer/Renderer2D.h"
 #include "Becketron/Renderer/Renderer3D.h"
+#include "Becketron/Renderer/Cubemap.h"
 #include "Becketron/Renderer/RenderCommand.h"
 
 #include "Becketron/Renderer/Buffer.h"

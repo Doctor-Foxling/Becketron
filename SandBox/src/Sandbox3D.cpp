@@ -40,9 +40,12 @@ void Sandbox3D::OnUpdate(Becketron::Timestep ts)
 	Becketron::Renderer3D::ResetStats();
 	{
 		BT_PROFILE_SCOPE("Renderer Prep");
-		Becketron::RenderCommand::SetClearColor({ 0.1f, 0.1f, 0.1f, 1 });
+		Becketron::RenderCommand::SetClearColor({ 0.1f, 0.1f, 0.5f, 1 });
 		Becketron::RenderCommand::Clear();
 	}
+
+	Becketron::Cubemap::RenderSkybox(m_CameraController.GetCamera());
+
 
 	{
 		static float rotation = 0.0f;
@@ -70,6 +73,7 @@ void Sandbox3D::OnUpdate(Becketron::Timestep ts)
 			* glm::scale(glm::mat4(1.0f), Scale);
 
 		Becketron::Renderer3D::DrawCube(Transform, m_CheckerboardTexture, 1.0f);
+
 		//Becketron::Renderer3D::DrawCube({ 0.5f, 0.7f, -5.0f }, { 1.0f, 1.0f, 1.0f }, m_CheckerboardTexture, 1.0f);
 
 
@@ -84,8 +88,9 @@ void Sandbox3D::OnUpdate(Becketron::Timestep ts)
 				Becketron::Renderer2D::DrawQuad({ x, y }, { 0.45f, 0.45f }, color);
 			}
 		}*/
-		Becketron::Renderer3D::EndScene();
 
+		Becketron::Renderer3D::EndScene();
+		
 		Becketron::Renderer3D::ShowLightCube(m_CameraController.GetCamera());
 
 		Becketron::Renderer2D::BeginScene(m_CameraController.GetCamera());
@@ -96,8 +101,8 @@ void Sandbox3D::OnUpdate(Becketron::Timestep ts)
 
 		Becketron::Renderer2D::EndScene();
 
-	}
 
+	}
 	// TODO:: Add these funs - Shader::SetMat4, Shader::SetFloat4
 	// std::dynamic_pointer_cast<Becketron::OpenGLShader>(m_FlatColorShader)->Bind();
 	// std::dynamic_pointer_cast<Becketron::OpenGLShader>(m_FlatColorShader)->UploadUniformFloat4("u_Color", m_SquareColor);

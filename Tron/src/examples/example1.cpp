@@ -93,6 +93,7 @@ namespace Becketron {
 		auto& cameraA = m_CameraEntity.AddComponent<CameraComponent>();
 		auto& camA_tc = m_CameraEntity.GetComponent<TransformComponent>();
 		camA_tc.Translation = { 0.0f, 5.0f, 40.0f };
+		//cameraA.Camera.
 
 		m_SecondCamera = m_ActiveScene->CreateEntity("Camera B");
 		auto& cc = m_SecondCamera.AddComponent<CameraComponent>();
@@ -114,7 +115,9 @@ namespace Becketron {
 			virtual void OnUpdate(Timestep ts) override
 			{
 				auto& translation = GetComponent<TransformComponent>().Translation;
+				auto& rotation = GetComponent<TransformComponent>().Rotation;
 				float speed = 5.0f;
+				float rotationSpeed = 0.01f;
 
 				if (Input::IsKeyPressed(BT_KEY_A))
 					translation.x -= speed * ts;
@@ -124,6 +127,16 @@ namespace Becketron {
 					translation.y += speed * ts;
 				if (Input::IsKeyPressed(BT_KEY_S))
 					translation.y -= speed * ts;
+
+				if (Input::IsMouseButtonPressed(BT_MOUSE_BUTTON_2))
+				{
+					rotation.x = Input::GetMouseY() * ts * rotationSpeed;
+					//rotation.x += Input::GetMouseY() * ts * rotationSpeed;
+					rotation.y = Input::GetMouseX() * ts * rotationSpeed;
+					//rotation.y -= Input::GetMouseX() * ts * rotationSpeed;
+				
+				}
+
 
 			}
 		};

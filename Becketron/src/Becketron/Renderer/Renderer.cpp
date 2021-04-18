@@ -3,6 +3,7 @@
 
 #include "Renderer2D.h"
 #include "Renderer3D.h"
+#include "Cubemap.h"
 
 namespace Becketron
 {
@@ -13,6 +14,7 @@ namespace Becketron
 		BT_PROFILE_FUNCTION();
 
 		RenderCommand::Init();
+		Cubemap::Init();
 		Renderer3D::Init();
 		Renderer2D::Init();
 	}

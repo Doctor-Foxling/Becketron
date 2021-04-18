@@ -2121,6 +2121,7 @@
     <ClInclude Include="src\Becketron\Physics\PhysX\PhysXManager.h" />
     <ClInclude Include="src\Becketron\Physics\PhysX\PhysXRigidbody.h" />
     <ClInclude Include="src\Becketron\Physics\PhysX\PxHelper.h" />
+    <ClInclude Include="src\Becketron\Renderer\Cubemap.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Becketron\Core\Application.cpp">
@@ -2252,6 +2253,7 @@
     <ClCompile Include="src\Becketron\Physics\PhysX\PhysXManager.cpp" />
     <ClCompile Include="src\Becketron\Physics\PhysX\PhysXRigidbody.cpp" />
     <ClCompile Include="src\Becketron\Physics\PhysX\PxHelper.cpp" />
+    <ClCompile Include="src\Becketron\Renderer\Cubemap.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="src\Becketron\Scene\Default_Items\TextureDef.jpg" />

@@ -116,7 +116,7 @@ namespace Becketron {
 			ImGui::Text("Vertices: %d", stats.GetTotalVertexCount());
 			ImGui::Text("Indices: %d", stats.GetTotalIndexCount());
 
-			if (ImGui::TreeNode("Selection State: Single Selection"))
+			if (ImGui::TreeNode("Examples"))
 			{
 				static int selected = -1;
 

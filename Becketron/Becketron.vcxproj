@@ -179,6 +179,7 @@
     <ClInclude Include="src\Becketron\Physics\PhysicsEngine.h" />
     <ClInclude Include="src\Becketron\Renderer\Buffer.h" />
     <ClInclude Include="src\Becketron\Renderer\Camera.h" />
+    <ClInclude Include="src\Becketron\Renderer\Cubemap.h" />
     <ClInclude Include="src\Becketron\Renderer\Framebuffer.h" />
     <ClInclude Include="src\Becketron\Renderer\GraphicsContext.h" />
     <ClInclude Include="src\Becketron\Renderer\RenderCommand.h" />
@@ -829,6 +830,7 @@
     <ClCompile Include="src\Becketron\Physics\PhysX_old\PhysicsEnginePhysX.cpp" />
     <ClCompile Include="src\Becketron\Renderer\Buffer.cpp" />
     <ClCompile Include="src\Becketron\Renderer\Camera.cpp" />
+    <ClCompile Include="src\Becketron\Renderer\Cubemap.cpp" />
     <ClCompile Include="src\Becketron\Renderer\Framebuffer.cpp" />
     <ClCompile Include="src\Becketron\Renderer\GraphicsContext.cpp" />
     <ClCompile Include="src\Becketron\Renderer\RenderCommand.cpp" />

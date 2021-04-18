@@ -4,6 +4,7 @@
 #include "Components.h"
 #include "Becketron/Renderer/Renderer2D.h"
 #include "Becketron/Renderer/Renderer3D.h"
+#include "Becketron/Renderer/Cubemap.h"
 
 #include <glm/glm.hpp>
 #include <glm/gtx/matrix_decompose.hpp>
@@ -349,10 +350,15 @@ namespace Becketron {
 			}
 		}
 
+		if (mainCamera)
+		{
+			Cubemap::RenderSkybox(*mainCamera, cameraTransform);
+		}
+
 		// Quad
 		if (mainCamera)
 		{
-		 	Renderer2D::BeginScene(mainCamera->GetProjection(), cameraTransform);
+		 	Renderer2D::BeginScene(*mainCamera, cameraTransform);
 
 			auto view = m_Registry.view<TransformComponent, SpriteRendererComponent>();
 			for (auto entity : view)
@@ -368,7 +374,7 @@ namespace Becketron {
 		// Normal Cube
 		if (mainCamera)
 		{
-			Renderer3D::BeginScene(mainCamera->GetProjection(), cameraTransform);
+			Renderer3D::BeginScene(*mainCamera, cameraTransform);
 
 			auto view = m_Registry.view<TransformComponent, CubeRendererComponent>();
 			for (auto entity : view)
@@ -385,7 +391,7 @@ namespace Becketron {
 		// Textured Cube
 		if (mainCamera)
 		{
-			Renderer3D::BeginScene(mainCamera->GetProjection(), cameraTransform);
+			Renderer3D::BeginScene(*mainCamera, cameraTransform);
 
 			auto view = m_Registry.view<TransformComponent, TexturedCubeComponent>();
 			for (auto entity : view)
