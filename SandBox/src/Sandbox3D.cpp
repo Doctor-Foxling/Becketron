@@ -44,6 +44,16 @@ void Sandbox3D::OnUpdate(Becketron::Timestep ts)
 		Becketron::RenderCommand::Clear();
 	}
 
+	std::vector<std::string> faces
+	{
+		"assets/textures/skybox2/right.png",
+		"assets/textures/skybox2/left.png",
+		"assets/textures/skybox2/top.png",
+		"assets/textures/skybox2/bottom.png",
+		"assets/textures/skybox2/front.png",
+		"assets/textures/skybox2/back.png"
+	};
+
 	Becketron::Cubemap::RenderSkybox(m_CameraController.GetCamera());
 
 

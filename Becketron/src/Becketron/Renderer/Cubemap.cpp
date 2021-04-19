@@ -106,12 +106,12 @@ namespace Becketron
 
         std::vector<std::string> faces
         {
-            "assets/textures/skybox/right.jpg",
-            "assets/textures/skybox/left.jpg",
-            "assets/textures/skybox/top.jpg",
-            "assets/textures/skybox/bottom.jpg",
-            "assets/textures/skybox/front.jpg",
-            "assets/textures/skybox/back.jpg"
+            "assets/textures/skybox2/right.png",
+            "assets/textures/skybox2/left.png",
+            "assets/textures/skybox2/top.png",
+            "assets/textures/skybox2/bottom.png",
+            "assets/textures/skybox2/front.png",
+            "assets/textures/skybox2/back.png"
         };
 
         m_Data.cubemapTexture = loadCubemap(faces);
@@ -164,6 +164,27 @@ namespace Becketron
         */
     }
 
+    void Cubemap::RenderSkybox(const PerspectiveCamera& camera, const std::vector<std::string>& faces)
+    {
+        BT_PROFILE_FUNCTION();
+
+        m_Data.cubemapTexture = loadCubemap(faces);
+
+        // draw skybox as last
+        glDepthFunc(GL_LEQUAL);  // change depth function so depth test passes when values are equal to depth buffer's content
+        m_Data.skyboxShader->Bind();
+        glm::mat4 view = glm::mat4(glm::mat3(camera.GetViewMatrix())); // remove translation from the view matrix
+        m_Data.skyboxShader->SetMat4("view", view);
+        m_Data.skyboxShader->SetMat4("projection", camera.GetProjectionMatrix());
+        // skybox cube
+        glBindVertexArray(m_Data.skyboxVAO);
+        glActiveTexture(GL_TEXTURE0);
+        glBindTexture(GL_TEXTURE_CUBE_MAP, m_Data.cubemapTexture);
+        glDrawArrays(GL_TRIANGLES, 0, 36);
+        glBindVertexArray(0);
+        glDepthFunc(GL_LESS); // set depth function back to default
+    }
+
     void Cubemap::RenderSkybox(const Camera& camera, const glm::mat4& transform)
     {
         BT_PROFILE_FUNCTION();
@@ -184,7 +205,14 @@ namespace Becketron
         glDepthFunc(GL_LESS); // set depth function back to default
     }
 
-    unsigned int Cubemap::loadCubemap(std::vector<std::string>& faces)
+    void Cubemap::ChangeSkybox(const std::vector<std::string>& faces)
+    {
+        BT_PROFILE_FUNCTION();
+
+        m_Data.cubemapTexture = loadCubemap(faces);
+    }
+
+    unsigned int Cubemap::loadCubemap(const std::vector<std::string>& faces)
     {
         unsigned int textureID;
         glGenTextures(1, &textureID);
@@ -193,6 +221,7 @@ namespace Becketron
         int width, height, nrChannels;
         for (unsigned int i = 0; i < faces.size(); i++)
         {
+            stbi_set_flip_vertically_on_load(0);
             unsigned char* data = stbi_load(faces[i].c_str(), &width, &height, &nrChannels, 0);
             if (data)
             {
@@ -214,3 +243,5 @@ namespace Becketron
         return textureID;
     }
 }
+
+// free Skyboxes: -https://opengameart.org/content/elyvisions-skyboxes

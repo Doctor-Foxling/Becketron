@@ -29,7 +29,8 @@ namespace Becketron {
 		Cam,
 		VisualA,
 		Physics,
-		Script
+		Script,
+		Cubemap
 	};
 	//
 
@@ -183,6 +184,18 @@ namespace Becketron {
 		LightCubeComponent(const LightCubeComponent&) = default;
 		LightCubeComponent(const glm::vec4& color)
 			: Color(color) {}
+	};
+
+	struct CubemapComponent
+	{
+		ComponentType type = ComponentType::Cubemap;
+		std::vector<std::string> Faces;
+		bool Changed = false;
+
+		CubemapComponent() = default;
+		CubemapComponent(const CubemapComponent&) = default;
+		CubemapComponent(const std::vector<std::string>& faces, bool changed = true)
+			: Faces(faces), Changed(changed) {}
 	};
 
 	struct CameraComponent

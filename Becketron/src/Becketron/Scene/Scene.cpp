@@ -350,9 +350,15 @@ namespace Becketron {
 			}
 		}
 
+		// Cubemap
 		if (mainCamera)
 		{
-			Cubemap::RenderSkybox(*mainCamera, cameraTransform);
+			auto view = m_Registry.view<CubemapComponent>();
+
+			for (auto entity : view)
+			{
+				Cubemap::RenderSkybox(*mainCamera, cameraTransform);
+			}
 		}
 
 		// Quad
@@ -477,6 +483,13 @@ namespace Becketron {
 	template<>
 	void Scene::OnComponentAdded<TagComponent>(Entity entity, TagComponent& component)
 	{
+	}
+
+	template<>
+	void Scene::OnComponentAdded<CubemapComponent>(Entity entity, CubemapComponent& component)
+	{
+		if (component.Changed)
+			Cubemap::ChangeSkybox(component.Faces);
 	}
 
 #ifdef USE_OLD_PHYSX

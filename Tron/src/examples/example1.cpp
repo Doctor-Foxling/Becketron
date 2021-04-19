@@ -12,6 +12,7 @@
 #include "Becketron/Physics/BT_Physics/PhysicsEngine.h"
 
 #include "PlayerScript.h"
+#include "CameraControllerScript.h"
 #include "RigidbodyController.h"
 
 // Temporary??
@@ -36,6 +37,21 @@ namespace Becketron {
 		m_Framebuffer = Framebuffer::Create(fbSpec);
 
 		m_ActiveScene = CreateRef<Scene>();
+
+		// Cubemap
+		std::vector<std::string> faces
+		{
+			"assets/textures/skybox/right.jpg",
+			"assets/textures/skybox/left.jpg",
+			"assets/textures/skybox/top.jpg",
+			"assets/textures/skybox/bottom.jpg",
+			"assets/textures/skybox/front.jpg",
+			"assets/textures/skybox/back.jpg"
+		};
+
+		auto cubeMap = m_ActiveScene->CreateEntity("Cubemap");
+		cubeMap.AddComponent<CubemapComponent>();
+		//cubeMap.AddComponent<CubemapComponent>(faces, true);
 
 		// Entity
 		auto square = m_ActiveScene->CreateEntity("Ground");
@@ -98,48 +114,6 @@ namespace Becketron {
 		m_SecondCamera = m_ActiveScene->CreateEntity("Camera B");
 		auto& cc = m_SecondCamera.AddComponent<CameraComponent>();
 		cc.Primary = false;
-
-		class CameraController : public ScriptableEntity
-		{
-		public:
-			virtual void OnCreate() override
-			{
-				//auto& translation = GetComponent<TransformComponent>().Translation;
-				//translation.x = rand() % 10 - 5.0f;
-			}
-
-			virtual void OnDestroy() override
-			{
-			}
-
-			virtual void OnUpdate(Timestep ts) override
-			{
-				auto& translation = GetComponent<TransformComponent>().Translation;
-				auto& rotation = GetComponent<TransformComponent>().Rotation;
-				float speed = 5.0f;
-				float rotationSpeed = 0.01f;
-
-				if (Input::IsKeyPressed(BT_KEY_A))
-					translation.x -= speed * ts;
-				if (Input::IsKeyPressed(BT_KEY_D))
-					translation.x += speed * ts;
-				if (Input::IsKeyPressed(BT_KEY_W))
-					translation.y += speed * ts;
-				if (Input::IsKeyPressed(BT_KEY_S))
-					translation.y -= speed * ts;
-
-				if (Input::IsMouseButtonPressed(BT_MOUSE_BUTTON_2))
-				{
-					rotation.x = Input::GetMouseY() * ts * rotationSpeed;
-					//rotation.x += Input::GetMouseY() * ts * rotationSpeed;
-					rotation.y = Input::GetMouseX() * ts * rotationSpeed;
-					//rotation.y -= Input::GetMouseX() * ts * rotationSpeed;
-				
-				}
-
-
-			}
-		};
 
 		//class RigidBody : public PhysicsEntity
 		//{
