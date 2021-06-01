@@ -29,3 +29,17 @@ To run and test the enginge, the following steps can be taken:
   <li><b>Set the startup project to Tron </b> (If not set already)</li> 
   <li><b>Ready to start debugging</b></li>
 </ul>
+
+## Future Work
+<ul>
+  <li><a href="https://www.vulkan.org/">Vulkan Graphics API</a></li>
+  <li>3D Model loading via <a href="https://www.assimp.org/">Assimp Library</a></li>
+  <li>In-built Asset Manager</li>
+  <li>Python/C# Scripting</li>
+  <li>Audio System</li>
+  <li>Multithreading</li>
+  <li>Scene Serealization</li>
+  <li>Better Memory management</li>
+  <li>...and so much more</li>
+</ul>
+
