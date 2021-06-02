@@ -1,4 +1,4 @@
-# Becketron
+# Becketron ![PRs Welcome](https://img.shields.io/badge/PRs-welcome-green.svg)
 
 <img src="https://github.com/Doctor-Foxling/Doctor-Foxling.github.io/blob/main/images/thumbs/Projects/Engine2.png">
 
