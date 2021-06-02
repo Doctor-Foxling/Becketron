@@ -1,4 +1,4 @@
-# Becketron ![PRs Welcome](https://img.shields.io/badge/PRs-welcome-green.svg) <a href="https://trello.com/b/XJkbZfAp/game-engine-btron"><img src="https://camo.githubusercontent.com/7ac5d3cdee334102901b70f018d38b77dc59a29f92dd392683dc01608aead0bc/68747470733a2f2f6564656e742e6769746875622e696f2f537570657254696e7949636f6e732f696d616765732f7376672f7472656c6c6f2e737667" height=2% width=2%></a>
+# Becketron ![PRs Welcome](https://img.shields.io/badge/PRs-welcome-green.svg) <a href="https://trello.com/b/XJkbZfAp/game-engine-btron"><img src="https://camo.githubusercontent.com/7ac5d3cdee334102901b70f018d38b77dc59a29f92dd392683dc01608aead0bc/68747470733a2f2f6564656e742e6769746875622e696f2f537570657254696e7949636f6e732f696d616765732f7376672f7472656c6c6f2e737667" height=2.1% width=2.1%></a>
 
 <img src="https://github.com/Doctor-Foxling/Doctor-Foxling.github.io/blob/main/images/thumbs/Projects/Engine2.png">
 
