@@ -53,3 +53,10 @@ To run and test the enginge, the following steps can be taken:
 - [EnTT](https://github.com/skypjack/entt) for Entity component system
 - [spdlog](https://github.com/gabime/spdlog) for fast Logging
 - [yaml-cpp] for scene serialization
+
+## Contributing [![GitHub contributors]
+
+- For contributing, fork this repository first.
+- Then make a feature branch in your fork and start adding stuff.
+- When you're ready with your feature, you can send a Pull Request(PR).
+- Then your code will be reviewed and if everything goes well, your commits will be mergerd!
