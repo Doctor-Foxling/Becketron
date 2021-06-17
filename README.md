@@ -43,3 +43,13 @@ To run and test the enginge, the following steps can be taken:
   <li>...and so much more</li>
 </ul>
 
+# Dependencies
+
+- **[DearImGui]** for Graphical User Interface
+- [GLFW] for Windowing
+- [Glad] OpenGL loader
+- [stb_image](https://github.com/nothings/stb/blob/master/stb_image.h) for image loading
+- [glm](https://github.com/g-truc/glm) used as Math Library
+- [EnTT](https://github.com/skypjack/entt) for Entity component system
+- [spdlog](https://github.com/gabime/spdlog) for fast Logging
+- [yaml-cpp] for scene serialization
