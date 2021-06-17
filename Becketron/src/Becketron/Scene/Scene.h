@@ -49,6 +49,7 @@ namespace Becketron {
 		friend class Entity;
 		friend class SceneHierarchyPanel;
 	};
+
 }
 
 
