@@ -52,4 +52,11 @@ namespace Becketron{
 	{
 		return std::make_shared<T>(std::forward<Args>(args)...);
 	}
+
+	enum class BT_axis
+	{
+		x = 0,
+		y,
+		z
+	};
 }

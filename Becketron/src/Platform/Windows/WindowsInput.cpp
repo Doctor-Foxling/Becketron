@@ -34,7 +34,7 @@ namespace Becketron {
 
 		return { (float)xPos, (float)yPos };
 	}
-	
+
 	float Input::GetMouseX()
 	{
 		auto [x, y] = GetMousePosition();

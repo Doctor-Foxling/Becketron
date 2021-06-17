@@ -5,9 +5,14 @@
 #include "Shader.h"
 #include "RenderCommand.h"
 
+// Maybe Temp
+#include "Becketron/Renderer/Renderer3D.h"
+
 #include <glm/gtc/matrix_transform.hpp>
 
 namespace Becketron {
+
+
 
 	struct QuadVertex
 	{
@@ -17,6 +22,8 @@ namespace Becketron {
 		// TODO: texid
 		float TexIndex;
 		float TilingFactor;
+		glm::vec3 Normal;
+		glm::mat4 ModelMat;
 	};
 
 	struct Renderer2DData
@@ -39,6 +46,7 @@ namespace Becketron {
 		uint32_t TextureSlotIndex = 1;
 
 		glm::vec4 QuadVertexPositions[4];
+		glm::vec3 QuadVertexNormal[4];
 
 		Renderer2D::Statistics Stats;
 	};
@@ -58,7 +66,9 @@ namespace Becketron {
 				{ShaderDataType::Float4, "a_Color" },
 				{ShaderDataType::Float2, "a_TexCoord"},
 				{ShaderDataType::Float, "a_TexIndex"},
-				{ShaderDataType::Float, "a_TilingFactor"}
+				{ShaderDataType::Float, "a_TilingFactor"},
+				{ShaderDataType::Float3, "a_Normal"},
+				{ShaderDataType::Mat4, "a_Model"}
 			});
 		s_Data.QuadVertexArray->AddVertexBuffer(s_Data.QuadVertexBuffer);
 
@@ -93,6 +103,7 @@ namespace Becketron {
 			samplers[i] = i;
 
 		s_Data.TextureShader = Shader::Create("assets/shaders/Texture.glsl");
+		//s_Data.TextureShader = Shader::Create("assets/shaders/VisionSystem.glsl");
 		s_Data.TextureShader->Bind();
 		s_Data.TextureShader->SetIntArray("u_Textures", samplers, s_Data.MaxTextureSlots);
 
@@ -103,6 +114,11 @@ namespace Becketron {
 		s_Data.QuadVertexPositions[1] = {  0.5f, -0.5f, 0.0f, 1.0f };
 		s_Data.QuadVertexPositions[2] = {  0.5f,  0.5f, 0.0f, 1.0f };
 		s_Data.QuadVertexPositions[3] = { -0.5f,  0.5f, 0.0f, 1.0f };
+
+		s_Data.QuadVertexNormal[0] = { 0.0f, 0.0f, 1.0f };
+		s_Data.QuadVertexNormal[1] = { 0.0f, 0.0f, 1.0f };
+		s_Data.QuadVertexNormal[2] = { 0.0f, 0.0f, 1.0f };
+		s_Data.QuadVertexNormal[3] = { 0.0f, 0.0f, 1.0f };
 
 	}
 
@@ -116,6 +132,12 @@ namespace Becketron {
 	void Renderer2D::BeginScene(const OrthographicCamera& camera)
 	{
 		BT_PROFILE_FUNCTION();
+
+		s_Data.QuadVertexArray->Bind();
+		s_Data.QuadVertexArray->GetIndexBuffer()->Bind();
+
+		glm::vec3 lightPos = Renderer3D::GetLightInformation().lightPos;
+		glm::vec4 lightColor = Renderer3D::GetLightInformation().lightColor;
 
 		s_Data.TextureShader->Bind();
 		s_Data.TextureShader->SetMat4("u_ViewProjection", camera.GetViewProjectionMatrix());
@@ -132,8 +154,37 @@ namespace Becketron {
 
 		glm::mat4 viewProj = camera.GetProjection() * glm::inverse(transform);
 
+		s_Data.QuadVertexArray->Bind();
+		s_Data.QuadVertexArray->GetIndexBuffer()->Bind();
+
+		glm::vec3 lightPos = Renderer3D::GetLightInformation().lightPos;
+		glm::vec4 lightColor = Renderer3D::GetLightInformation().lightColor;
+
 		s_Data.TextureShader->Bind();
 		s_Data.TextureShader->SetMat4("u_ViewProjection", viewProj);
+		s_Data.TextureShader->SetFloat3("lightPos", lightPos);
+		s_Data.TextureShader->SetFloat4("lightColor", lightColor);
+
+		s_Data.QuadIndexCount = 0;
+		s_Data.QuadVertexBufferPtr = s_Data.QuadVertexBufferBase;
+
+		s_Data.TextureSlotIndex = 1;
+	}
+
+	void Renderer2D::BeginScene(const PerspectiveCamera& camera)
+	{
+		BT_PROFILE_FUNCTION();
+
+		s_Data.QuadVertexArray->Bind();
+		s_Data.QuadVertexArray->GetIndexBuffer()->Bind();
+
+		glm::vec3 lightPos = Renderer3D::GetLightInformation().lightPos;
+		glm::vec4 lightColor = Renderer3D::GetLightInformation().lightColor;
+
+		s_Data.TextureShader->Bind();
+		s_Data.TextureShader->SetMat4("u_ViewProjection", camera.GetViewProjectionMatrix());
+		s_Data.TextureShader->SetFloat3("lightPos", lightPos);
+		s_Data.TextureShader->SetFloat4("lightColor", lightColor);
 
 		s_Data.QuadIndexCount = 0;
 		s_Data.QuadVertexBufferPtr = s_Data.QuadVertexBufferBase;
@@ -163,6 +214,9 @@ namespace Becketron {
 
 		RenderCommand::DrawIndexed(s_Data.QuadVertexArray, s_Data.QuadIndexCount);
 		s_Data.Stats.DrawCalls++;
+
+		s_Data.QuadVertexArray->Unbind();
+		s_Data.QuadVertexArray->GetIndexBuffer()->Unbind();
 	}
 
 	void Renderer2D::FlushAndReset()
@@ -190,6 +244,16 @@ namespace Becketron {
 		DrawQuad(transform, color);
 	}
 
+	void Renderer2D::DrawQuad(const glm::vec3& position, const glm::vec3& size, const glm::vec4& color)
+	{
+		BT_PROFILE_FUNCTION();
+
+		glm::mat4 transform = glm::translate(glm::mat4(1.0f), position)
+			* glm::scale(glm::mat4(1.0f), { size.x, size.y, size.z });
+
+		DrawQuad(transform, color);
+	}
+
 	void Renderer2D::DrawQuad(const glm::mat4& transform, const glm::vec4& color)
 	{
 		BT_PROFILE_FUNCTION();
@@ -209,6 +273,9 @@ namespace Becketron {
 			s_Data.QuadVertexBufferPtr->TexCoord = textureCoords[i];
 			s_Data.QuadVertexBufferPtr->TexIndex = textureIndex;
 			s_Data.QuadVertexBufferPtr->TilingFactor = tilingFactor;
+			s_Data.QuadVertexBufferPtr->Normal = s_Data.QuadVertexNormal[i];
+			s_Data.QuadVertexBufferPtr->ModelMat = transform;
+
 			s_Data.QuadVertexBufferPtr++;
 		}
 
@@ -228,6 +295,16 @@ namespace Becketron {
 
 		glm::mat4 transform = glm::translate(glm::mat4(1.0f), position)
 			* glm::scale(glm::mat4(1.0f), { size.x, size.y, 1.0f });
+
+		DrawQuad(transform, texture, tilingFactor);
+	}
+
+	void Renderer2D::DrawQuad(const glm::vec3& position, const glm::vec3& size, const Ref<Texture2D>& texture, float tilingFactor, const glm::vec4& tintColor)
+	{
+		BT_PROFILE_FUNCTION();
+
+		glm::mat4 transform = glm::translate(glm::mat4(1.0f), position)
+			* glm::scale(glm::mat4(1.0f), { size.x, size.y, size.z });
 
 		DrawQuad(transform, texture, tilingFactor);
 	}
@@ -271,6 +348,9 @@ namespace Becketron {
 			s_Data.QuadVertexBufferPtr->TexCoord = textureCoords[i];
 			s_Data.QuadVertexBufferPtr->TexIndex = textureIndex;
 			s_Data.QuadVertexBufferPtr->TilingFactor = tilingFactor;
+			s_Data.QuadVertexBufferPtr->Normal = s_Data.QuadVertexNormal[i];
+			s_Data.QuadVertexBufferPtr->ModelMat = transform;
+
 			s_Data.QuadVertexBufferPtr++;
 		}
 
@@ -294,6 +374,28 @@ namespace Becketron {
 
 		DrawQuad(transform, color);
 	}
+	
+	void Renderer2D::DrawRotatedQuad(const glm::vec3& position, const glm::vec3& size, float rotation, const glm::vec4& color, BT_axis rot_axis)
+	{
+		BT_PROFILE_FUNCTION();
+
+		glm::vec3 rotAxis;
+		switch (rot_axis)
+		{
+		case BT_axis::x:	rotAxis = { 1.0f, 0.0f, 0.0f };
+			break;
+		case BT_axis::y:	rotAxis = { 0.0f, 1.0f, 0.0f };
+			break;
+		case BT_axis::z:	rotAxis = { 0.0f, 0.0f, 1.0f };
+			break;
+		}
+
+		glm::mat4 transform = glm::translate(glm::mat4(1.0f), position)
+			* glm::rotate(glm::mat4(1.0f), glm::radians(rotation), rotAxis)
+			* glm::scale(glm::mat4(1.0f), { size.x, size.y, size.z });
+
+		DrawQuad(transform, color);
+	}
 
 	void Renderer2D::DrawRotatedQuad(const glm::vec2& position, const glm::vec2& size, float rotation, const Ref<Texture2D>& texture, float tilingFactor, const glm::vec4& tintColor)
 	{
@@ -307,6 +409,29 @@ namespace Becketron {
 		glm::mat4 transform = glm::translate(glm::mat4(1.0f), position)
 			* glm::rotate(glm::mat4(1.0f), glm::radians(rotation), { 0.0f, 0.0f, 1.0f })
 			* glm::scale(glm::mat4(1.0f), { size.x, size.y, 1.0f });
+
+		DrawQuad(transform, texture, tilingFactor, tintColor);
+
+	}
+	
+	void Renderer2D::DrawRotatedQuad(const glm::vec3& position, const glm::vec3& size, float rotation, const Ref<Texture2D>& texture, float tilingFactor, BT_axis rot_axis, const glm::vec4& tintColor)
+	{
+		BT_PROFILE_FUNCTION();
+
+		glm::vec3 rotAxis;
+		switch (rot_axis)
+		{
+		case BT_axis::x:	rotAxis = { 1.0f, 0.0f, 0.0f };
+			break;
+		case BT_axis::y:	rotAxis = { 0.0f, 1.0f, 0.0f };
+			break;
+		case BT_axis::z:	rotAxis = { 0.0f, 0.0f, 1.0f };
+			break;
+		}
+
+		glm::mat4 transform = glm::translate(glm::mat4(1.0f), position)
+			* glm::rotate(glm::mat4(1.0f), glm::radians(rotation), rotAxis)
+			* glm::scale(glm::mat4(1.0f), { size.x, size.y, size.z });
 
 		DrawQuad(transform, texture, tilingFactor, tintColor);
 

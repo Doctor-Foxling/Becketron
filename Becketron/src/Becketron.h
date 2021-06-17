@@ -21,6 +21,8 @@
 
 #include "Becketron/Renderer/Renderer.h"
 #include "Becketron/Renderer/Renderer2D.h"
+#include "Becketron/Renderer/Renderer3D.h"
+#include "Becketron/Renderer/Cubemap.h"
 #include "Becketron/Renderer/RenderCommand.h"
 
 #include "Becketron/Renderer/Buffer.h"
@@ -30,7 +32,8 @@
 #include "Becketron/Renderer/Texture.h"
 
 #include "Becketron/Renderer/Camera.h"
-
+// To Remove
+#include "Becketron/Scene/SceneCamera.h"
 
 // -- Input ----
 #include "Becketron/Core/Input.h"

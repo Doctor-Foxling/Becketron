@@ -6,7 +6,7 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
-#include "Sandbox2D.h"
+#include "Sandbox3D.h"
 #include "ExampleLayer.h"
 
 #include "Becketron/Renderer/Shader.h"
@@ -17,7 +17,7 @@ public:
 	Sandbox()
 	{
 		//PushLayer(new ExampleLayer());
-		PushLayer(new Sandbox2D());
+		PushLayer(new Sandbox3D());
 	}
 
 	~Sandbox()

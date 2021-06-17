@@ -5,6 +5,7 @@
 #include "Becketron/Core/Input.h"
 
 #include "Becketron/Renderer/Renderer.h"
+#include "Becketron/Physics/PhysX/PhysXManager.h"
 
 #include "Becketron/Core/KeyCodes.h"
 
@@ -20,7 +21,7 @@ namespace Becketron {
 		BT_PROFILE_FUNCTION();
 
 		BT_CORE_ASSERT(!s_Instance, "Application already exists!");
-		s_Instance = this;
+		s_Instance = this; // setting to the current instance of application
 
 		/*m_Window = std::unique_ptr<Window>(Window::Create());
 		m_Window->SetEventCallback(BIND_EVENT_FN(OnEvent));*/
@@ -28,18 +29,20 @@ namespace Becketron {
 		m_Window = Window::Create(WindowProps(name));
 		m_Window->SetEventCallback(BT_BIND_EVENT_FN(Application::OnEvent));
 
+		// Initializing the Renderer
 		Renderer::Init();
+		PhysXManager::Init();
 
+		// Creating the main GUI layer and pushing it as an overlay
 		m_ImGuiLayer = new ImGuiLayer();
 		PushOverlay(m_ImGuiLayer);
-
-		
 	}
 
 	Application::~Application()
 	{
 		BT_PROFILE_FUNCTION();
 
+		PhysXManager::Shutdown();
 		//Renderer::Shutdown();
 	}
 
@@ -51,12 +54,26 @@ namespace Becketron {
 		layer->OnAttach();
 	}
 
+	void Application::PopLayer(Layer* layer)
+	{
+		BT_PROFILE_FUNCTION();
+
+		m_LayerStack.PopLayer(layer);
+	}
+
 	void Application::PushOverlay(Layer* layer)
 	{
 		BT_PROFILE_FUNCTION();
 
 		m_LayerStack.PushOverlay(layer);
 		layer->OnAttach();
+	}
+
+	void Application::PopOverlay(Layer* layer)
+	{
+		BT_PROFILE_FUNCTION();
+
+		m_LayerStack.PopOverlay(layer);
 	}
 
 	void Application::Close()
@@ -96,20 +113,31 @@ namespace Becketron {
 			Timestep timestep = time - m_LastFrameTime;
 			m_LastFrameTime = time;
 
+			/* Creating a copy because the using the erase function (see layerStack) on a given vector 
+			   invalidates the iterators, so using the vetor object directly to iterate over doesn't work */ 
+			std::vector<Layer*>& localLayers = m_LayerStack.getLayers();
+			size_t stackSize = localLayers.size();
+
 			if (!m_Minimized)
 			{
 				{
 					BT_PROFILE_SCOPE("LayerStack - OnUpdate");
-
-					for (Layer* layer : m_LayerStack)
-						layer->OnUpdate(timestep); 
+					int layerCount = 0;
+					//for (Layer* layer : m_LayerStack)
+					for (Layer* layer : localLayers)
+					{
+						layerCount++;
+						if(layerCount < stackSize)
+							layer->OnUpdate(timestep); 
+					}
 				}
 
 				m_ImGuiLayer->Begin();
 				{
 					BT_PROFILE_SCOPE("LayerStack OnImGuiRender");
 
-					for (Layer* layer : m_LayerStack)
+					//for (Layer* layer : m_LayerStack)
+					for (Layer* layer : localLayers)
 						layer->OnImGuiRender();
 				}
 				m_ImGuiLayer->End();

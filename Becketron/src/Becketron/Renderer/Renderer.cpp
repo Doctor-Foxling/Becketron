@@ -2,6 +2,8 @@
 #include "Renderer.h"
 
 #include "Renderer2D.h"
+#include "Renderer3D.h"
+#include "Cubemap.h"
 
 namespace Becketron
 {
@@ -12,6 +14,8 @@ namespace Becketron
 		BT_PROFILE_FUNCTION();
 
 		RenderCommand::Init();
+		Cubemap::Init();
+		Renderer3D::Init();
 		Renderer2D::Init();
 	}
 
@@ -32,6 +36,7 @@ namespace Becketron
 	void Renderer::EndScene()
 	{
 	}
+
 	void Renderer::Submit(const Ref<Shader>& shader, const Ref<VertexArray>& vertexArray, const glm::mat4& transform)
 	{
 		shader->Bind();

@@ -21,11 +21,11 @@ namespace Becketron {
 	enum EventCategory
 	{
 		None = 0,
-		EventCategoryApplication = BIT(0),
-		EventCategoryInput		 = BIT(1),
-		EventCategoryKeyboard	 = BIT(2),
-		EventCategoryMouse		 = BIT(3),
-		EventCategoryMouseButton = BIT(4)
+		EventCategoryApplication = BIT(0), // 00000000
+		EventCategoryInput		 = BIT(1), // 00000001
+		EventCategoryKeyboard	 = BIT(2), // 00000010
+		EventCategoryMouse		 = BIT(3), // 00000100
+		EventCategoryMouseButton = BIT(4)  // 00001000
 	};
 
 #define EVENT_CLASS_TYPE(type) static EventType GetStaticType() { return EventType::type; }\

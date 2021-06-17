@@ -31,6 +31,17 @@ namespace Becketron {
 		{
 			s_RendererAPI->DrawIndexed(vertexArray, count);
 		}
+
+		inline static void DrawCubemap()
+		{
+			s_RendererAPI->DrawCubemap();
+		}
+
+		inline static void SetDepthMask(bool depthOn)
+		{
+			s_RendererAPI->SetDepthMask(depthOn);
+		}
+
 	private:
 		static Scope<RendererAPI> s_RendererAPI;
 	};

@@ -9,6 +9,9 @@
 
 #include "Becketron/Scene/Components.h"
 
+#include "ImFileBrowser/imfilebrowser.h"
+#include "Becketron/Renderer/Texture.h"
+
 namespace Becketron {
 
 	SceneHierarchyPanel::SceneHierarchyPanel(const Ref<Scene>& context)
@@ -43,7 +46,7 @@ namespace Becketron {
 
 			ImGui::EndPopup();
 		}
-
+		
 		ImGui::End();
 
 		ImGui::Begin("Properties");
@@ -62,9 +65,26 @@ namespace Becketron {
 					ImGui::CloseCurrentPopup();
 				}
 
-				if (ImGui::MenuItem("Sprite Renderer"))
+				// TODO: Need to find a better solution than just checking against every component
+
+				/*if (!m_SelectionContext.HasComponent<CubeRendererComponent>() &&
+					!m_SelectionContext.HasComponent<SpriteRendererComponent>() 
+					&& ImGui::MenuItem("Sprite Renderer"))*/
+				if (!EntityHasComponentType(m_SelectionContext, ComponentType::VisualA) && ImGui::MenuItem("Sprite Renderer"))
 				{
 					m_SelectionContext.AddComponent<SpriteRendererComponent>();
+					ImGui::CloseCurrentPopup();
+				}
+
+				if (!EntityHasComponentType(m_SelectionContext, ComponentType::VisualA) && ImGui::MenuItem("3D Cube"))
+				{
+					m_SelectionContext.AddComponent<CubeRendererComponent>();
+					ImGui::CloseCurrentPopup();
+				}
+
+				if (!EntityHasComponentType(m_SelectionContext, ComponentType::VisualA) &&  ImGui::MenuItem("3DTextured Cube"))
+				{
+					m_SelectionContext.AddComponent<TexturedCubeComponent>();
 					ImGui::CloseCurrentPopup();
 				}
 
@@ -72,6 +92,93 @@ namespace Becketron {
 			}
 		}
 		ImGui::End();
+
+		ImGui::Begin("Scene Options");
+		/*if (ImGui::BeginTabBar("Scene options"))
+		{*/
+			SceneOptions();
+			//ImGui::EndTabBar();
+		//}
+		ImGui::End();
+	}
+
+	void SceneHierarchyPanel::SceneOptions()
+	{
+			ImGui::PushItemWidth(-ImGui::GetFontSize() * 15);
+			ImDrawList* draw_list = ImGui::GetWindowDrawList();
+
+			static float sz = 36.0f;
+			static float thickness = 6.0f;
+			static int ngon_sides = 3;
+			
+			const ImVec2 p = ImGui::GetCursorScreenPos();
+			const ImU32 col = ImColor({0.1f, 1.0f, 1.0f, 1.0f});
+			const float spacing = 10.0f;
+		//	const ImDrawCornerFlags corners_none = 0;
+		//	const ImDrawCornerFlags corners_all = ImDrawCornerFlags_All;
+		//	const ImDrawCornerFlags corners_tl_br = ImDrawCornerFlags_TopLeft | ImDrawCornerFlags_BotRight;
+		//	const int circle_segments = 0;
+		//	const int curve_segments = 0;
+			float x = p.x + 4.0f;
+			float y = p.y + 0.0f;
+			
+			// center, radius, col, num segments
+			draw_list->AddNgonFilled(ImVec2(x + sz * 0.5f, y + sz * 0.4f), sz * 0.4f, col, ngon_sides);               x += sz + spacing * 2.5f;  // N-gon
+			draw_list->AddRectFilled(ImVec2(x, y + 5.0f), ImVec2(x + thickness, y + sz * 0.75f), col);                             x += spacing * 1.5f;
+			draw_list->AddRectFilled(ImVec2(x, y + 5.0f), ImVec2(x + thickness, y + sz * 0.75f), col);                             x += spacing * 2.0f;
+			//ImGui::SameLine();
+
+			ImGui::PushID(0);
+			ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(7.0f, 0.6f, 0.6f, 0.0f));
+			ImGui::PushStyleColor(ImGuiCol_ButtonHovered, (ImVec4)ImColor::HSV(7.0f, 0.7f, 0.7f, 0.4f));
+			ImGui::PushStyleColor(ImGuiCol_ButtonActive, (ImVec4)ImColor::HSV(7.0f, 0.8f, 0.8f, 0.7f));
+			if (ImGui::Button("", { 45.0f, 30.0f }))
+			{
+				if (m_Context->m_ScenePlay)
+					m_Context->m_ScenePlay = false;
+				else
+					m_Context->m_ScenePlay = true;
+			}
+			ImGui::PopStyleColor(3);
+			ImGui::PopID();
+
+			// restart button
+			ImGui::SameLine();
+			ImGui::PushID(1);
+			ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(7.0f, 0.6f, 0.6f, 0.0f));
+			ImGui::PushStyleColor(ImGuiCol_ButtonHovered, (ImVec4)ImColor::HSV(7.0f, 0.7f, 0.7f, 0.4f));
+			ImGui::PushStyleColor(ImGuiCol_ButtonActive, (ImVec4)ImColor::HSV(7.0f, 0.8f, 0.8f, 0.7f));
+			
+			if (ImGui::Button("", { 45.0f, 30.0f }))
+			{
+				m_Context->m_SceneFirstStart = true;
+				if (m_Context->m_SceneRestart) // && !m_Context->m_ScenePlay)
+				{
+					m_Context->m_SceneRestart = false;
+				}
+				else
+					m_Context->m_SceneRestart = true;
+			}
+
+			ImGui::PopStyleColor(3);
+			ImGui::PopID();
+			//ImGui::Dummy(ImVec2((sz + spacing) * 10.2f, (sz + spacing) * 3.0f));
+			ImGui::PopItemWidth();
+			
+			//ImGui::AlignTextToFramePadding();
+			if (m_Context->m_ScenePlay)
+				ImGui::Text(" Pause");
+			else
+				ImGui::Text(" Play");
+			ImGui::SameLine();
+
+			if (m_Context->m_ScenePlay)
+				ImGui::Text("Restart");
+			else
+				ImGui::Text(" Restart");
+
+
+
 	}
 
 	void SceneHierarchyPanel::DrawEntityNode(Entity entity)
@@ -112,7 +219,32 @@ namespace Becketron {
 		}
 	}
 
-	static void DrawVec3Control(const std::string& label, glm::vec3& values, float resetValue = 0.0f, float columnWidth = 100.0f)
+	static void DrawFloatControl(const std::string& label, float& value, const std::string& unit, float resetValue = 0.0f,
+		float min= 0.0f, float max = 1.0f, float columnWidth = 100.0f)
+	{
+		ImGui::PushID(label.c_str());
+		ImGui::Text(label.c_str());
+
+		float lineHeight = GImGui->Font->FontSize + GImGui->Style.FramePadding.y * 2.0f;
+		ImVec2 buttonSize = { lineHeight + 3.0f, lineHeight };
+
+		ImGui::PushStyleColor(ImGuiCol_Button, ImVec4{ 0.2f, 0.1f, 0.4f, 1.0f });
+		ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4{ 0.3f, 0.2f, 0.5f, 1.0f });
+		ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4{ 0.2f, 0.1f, 0.4f, 1.0f });
+		if (ImGui::Button(unit.c_str(), buttonSize))
+			value = resetValue;
+		ImGui::PopStyleColor(3);
+
+		ImGui::SameLine();
+		ImGui::DragFloat("##X", &value, 0.1f, min, max, "%.2f");
+		//ImGui::PopItemWidth();
+
+		ImGui::PopID();
+	}
+
+	static void DrawVec3Control(const std::string& label, glm::vec3& values, float resetValue = 0.0f,
+		float min = 0.0f, float max = 1.0f, const char* X_val = "X", const char* Y_val = "Y", 
+		const char* Z_val = "Z", float columnWidth = 100.0f)
 	{
 		ImGui::PushID(label.c_str());
 
@@ -130,36 +262,36 @@ namespace Becketron {
 		ImGui::PushStyleColor(ImGuiCol_Button, ImVec4{ 0.8f, 0.1f, 0.15f, 1.0f });
 		ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4{ 0.9f, 0.2f, 0.2f, 1.0f });
 		ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4{ 0.8f, 0.1f, 0.15f, 1.0f });
-		if (ImGui::Button("X", buttonSize))
+		if (ImGui::Button(X_val, buttonSize))
 			values.x = resetValue;
 		ImGui::PopStyleColor(3);
 
 		ImGui::SameLine();
-		ImGui::DragFloat("##X", &values.x, 0.1f, 0.0f, 0.0f, "%.2f");
+		ImGui::DragFloat("##X", &values.x, 0.1f, min, max, "%.2f");
 		ImGui::PopItemWidth();
 		ImGui::SameLine();
 
 		ImGui::PushStyleColor(ImGuiCol_Button, ImVec4{ 0.2f, 0.7f, 0.2f, 1.0f });
 		ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4{ 0.3f, 0.8f, 0.3f, 1.0f });
 		ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4{ 0.2f, 0.7f, 0.2f, 1.0f });
-		if (ImGui::Button("Y", buttonSize))
+		if (ImGui::Button(Y_val, buttonSize))
 			values.y = resetValue;
 		ImGui::PopStyleColor(3);
 
 		ImGui::SameLine();
-		ImGui::DragFloat("##Y", &values.y, 0.1f, 0.0f, 0.0f, "%.2f");
+		ImGui::DragFloat("##Y", &values.y, 0.1f, min, max, "%.2f");
 		ImGui::PopItemWidth();
 		ImGui::SameLine();
 
 		ImGui::PushStyleColor(ImGuiCol_Button, ImVec4{ 0.1f, 0.25f, 0.8f, 1.0f });
 		ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4{ 0.2f, 0.35f, 0.9f, 1.0f });
 		ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4{ 0.1f, 0.25f, 0.8f, 1.0f });
-		if (ImGui::Button("Z", buttonSize))
+		if (ImGui::Button(Z_val, buttonSize))
 			values.z = resetValue;
 		ImGui::PopStyleColor(3);
 
 		ImGui::SameLine();
-		ImGui::DragFloat("##Z", &values.z, 0.1f, 0.0f, 0.0f, "%.2f");
+		ImGui::DragFloat("##Z", &values.z, 0.1f, min, max, "%.2f");
 		ImGui::PopItemWidth();
 
 		ImGui::PopStyleVar();
@@ -167,6 +299,63 @@ namespace Becketron {
 		ImGui::Columns(1);
 
 		ImGui::PopID();
+	}
+
+	template <typename T>
+	static void AddComponentProps(Entity entity, ImGuiTreeNodeFlags treeNodeFlags, const char* propName) 
+	{
+		ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2{ 4, 4 });
+		bool open = ImGui::TreeNodeEx((void*)typeid(T).hash_code(), treeNodeFlags, propName);
+		ImGui::SameLine(ImGui::GetWindowWidth() - 25.0f);
+
+		if (ImGui::Button("+", ImVec2{ 20, 20 }))
+		{
+			ImGui::OpenPopup("ComponentSettings");
+		}
+		ImGui::PopStyleVar();
+
+		bool removeComponent = false;
+		if (ImGui::BeginPopup("ComponentSettings"))
+		{
+			if (ImGui::MenuItem("Remove component"))
+				removeComponent = true;
+
+			ImGui::EndPopup();
+		}
+
+		if (open)
+		{
+			auto& src = entity.GetComponent<T>();
+			ImGui::ColorEdit4("Color", glm::value_ptr(src.Color));
+			ImGui::TreePop();
+		}
+
+		if (entity.HasComponent<TexturedCubeComponent>())
+		{
+			static ImGui::FileBrowser fileDialog;
+
+			fileDialog.SetTitle("Select Texture");
+			fileDialog.SetTypeFilters({ ".jpg", ".PNG" });
+
+			if (ImGui::Button("Select Texture"))
+				fileDialog.Open();
+
+			fileDialog.Display();
+
+			if (fileDialog.HasSelected())
+			{
+				Ref<Texture2D> newTex = Texture2D::Create(fileDialog.GetSelected().string());
+				auto& src = entity.GetComponent<TexturedCubeComponent>();
+				src.texture = newTex;
+				BT_TRACE("Image Relative Path: {0}", (fileDialog.GetSelected().relative_path().string()));
+				fileDialog.ClearSelected();
+			}
+		}
+
+		if (removeComponent)
+		{
+			entity.RemoveComponent<T>();
+		}
 	}
 
 	void SceneHierarchyPanel::DrawComponents(Entity entity)
@@ -194,11 +383,11 @@ namespace Becketron {
 			if (open)
 			{
 				auto& tc = entity.GetComponent<TransformComponent>();
-				DrawVec3Control("Translation", tc.Translation);
+				DrawVec3Control("Translation", tc.Translation, 0.0f, 500.0f, 500.0f);
 				glm::vec3 rotation = glm::degrees(tc.Rotation);
-				DrawVec3Control("Rotation", rotation);
+				DrawVec3Control("Rotation", rotation, 0.0f, -720.0f, 720.0f);
 				tc.Rotation = glm::radians(rotation);
-				DrawVec3Control("Scale", tc.Scale, 1.0f);
+				DrawVec3Control("Scale", tc.Scale, 1.0f, 0.5f, 200.0f);
 
 				ImGui::TreePop();
 			}
@@ -272,35 +461,83 @@ namespace Becketron {
 
 		if (entity.HasComponent<SpriteRendererComponent>())
 		{
-			ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2{ 4, 4 });
-			bool open = ImGui::TreeNodeEx((void*)typeid(SpriteRendererComponent).hash_code(), treeNodeFlags, "Sprite Renderer");
-			ImGui::SameLine(ImGui::GetWindowWidth() - 25.0f);
-
-			if (ImGui::Button("+", ImVec2{ 20, 20 }))
-			{
-				ImGui::OpenPopup("ComponentSettings");
-			}
-			ImGui::PopStyleVar();
-
-			bool removeComponent = false;
-			if (ImGui::BeginPopup("ComponentSettings"))
-			{
-				if (ImGui::MenuItem("Remove component"))
-					removeComponent = true;
-
-				ImGui::EndPopup();
-			}
-
-			if (open)
-			{
-				auto& src = entity.GetComponent<SpriteRendererComponent>();
-				ImGui::ColorEdit4("Color", glm::value_ptr(src.Color));
-				ImGui::TreePop();
-			}
-
-			if (removeComponent)
-				entity.RemoveComponent<SpriteRendererComponent>();
+			AddComponentProps<SpriteRendererComponent>(entity, treeNodeFlags, "Sprite Renderer");
 		}
+
+		if (entity.HasComponent<CubeRendererComponent>())
+		{
+			AddComponentProps<CubeRendererComponent>(entity, treeNodeFlags, "Cube Renderer");
+		}
+
+		if (entity.HasComponent<TexturedCubeComponent>())
+		{
+			AddComponentProps<TexturedCubeComponent>(entity, treeNodeFlags, "Textured Cube");
+		}
+
+		if (entity.HasComponent<LightCubeComponent>())
+		{
+			AddComponentProps<LightCubeComponent>(entity, treeNodeFlags, "Light cube");
+		}
+
+		if (entity.HasComponent<TexturedSpriteComponent>())
+		{
+			AddComponentProps<TexturedSpriteComponent>(entity, treeNodeFlags, "Textured Sprite");
+			auto& sprite = entity.GetComponent<TexturedSpriteComponent>();
+
+			DrawFloatControl("Tiling Factor", sprite.TilingFactor, "_", 1.0f, 1.0f, 20.0f);
+		}
+
+		if (entity.HasComponent<PhysXRigidDynamicComponent>())
+		{
+			auto& r_body = entity.GetComponent<PhysXRigidDynamicComponent>();
+			DrawFloatControl("Mass", r_body.mass, "Kg", 1.0f, 0.1f, 20.0f);
+
+			DrawFloatControl("Static Friction", r_body.staticFriction, "N", 0.5f, 0.0f, 100.0f);
+			DrawFloatControl("Dynamic Friction", r_body.dynamicFriction, "N", 0.5f, 0.0f, 1.0f);
+			DrawFloatControl("Restitution", r_body.restitution, "_", 0.5f, 0.0f, 1.0f);
+			DrawFloatControl("Density", r_body.density, "_", 0.5f, 0.1f, 50.0f);
+			DrawVec3Control("Linear Velocity", r_body.linearVelocity, 0.0f, -100.0f, 100.0f);
+			DrawVec3Control("Angular Velocity", r_body.angularVelocity, 0.0f, -100.0f, 100.0f);
+			ImGui::Checkbox("Toggle Gravity", &r_body.gravity_effect);
+		}
+
+	}
+
+	bool SceneHierarchyPanel::EntityHasComponentType(Entity entity, ComponentType type)
+	{
+		if (type == ComponentType::Basic)
+		{
+			if (entity.HasComponent<TagComponent>() ||
+				entity.HasComponent<TransformComponent>())
+				return true;
+		}
+		else if (type == ComponentType::Cam)
+		{
+			if (entity.HasComponent<CameraComponent>())
+				return true;
+		}
+		else if (type == ComponentType::VisualA)
+		{
+			if (entity.HasComponent<CubeRendererComponent>() ||
+				entity.HasComponent<SpriteRendererComponent>() ||
+				entity.HasComponent<TexturedCubeComponent>() ||
+				entity.HasComponent<LightCubeComponent>())
+				return true;
+		}
+		else if (type == ComponentType::Physics)
+		{
+			if (entity.HasComponent<PhysXRigidDynamicComponent>())
+				//	|| entity.HasComponent<PhysicsComponent>())
+				return true;
+		}
+		else if (type == ComponentType::Script)
+		{
+			if (entity.HasComponent<NativeScriptComponent>())
+				return true;
+		}
+		else
+			return false;
+	
 	}
 
 }

@@ -60,4 +60,15 @@ namespace Becketron {
 		glDrawElements(GL_TRIANGLES, count, GL_UNSIGNED_INT, nullptr);
 		glBindTexture(GL_TEXTURE_2D, 0);
 	}
+
+	void OpenGLRendererAPI::DrawCubemap()
+	{
+		glDrawArrays(GL_TRIANGLES, 0, 36);
+		//glBindTexture(GL_TEXTURE_CUBE_MAP, 0);
+	}
+
+	void OpenGLRendererAPI::SetDepthMask(bool depthOn)
+	{
+		glDepthMask(depthOn);
+	}
 }
