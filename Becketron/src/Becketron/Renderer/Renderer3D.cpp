@@ -226,6 +226,7 @@ namespace Becketron {
 			samplers[i] = i;
 
 		s_Data3D.TextureShader = Shader::Create("assets/shaders/Texture.glsl");
+		//s_Data3D.TextureShader = Shader::Create("assets/shaders/VisionSystem.glsl");
 		s_Data3D.TextureShader->Bind();
 		s_Data3D.TextureShader->SetIntArray("u_Textures", samplers, s_Data3D.MaxTextureSlots);
 		s_Data3D.TextureShader->SetFloat4("lightColor", s_Data3D.lightColor);
@@ -532,8 +533,8 @@ namespace Becketron {
 		s_Data3D.lightVertexArray->Bind();
 		s_Data3D.lightVertexArray->GetIndexBuffer()->Bind();
 
-		s_Data3D.lightPos.x = sin(glfwGetTime()) * 50;
-		//s_Data3D.lightPos = glm::vec3(1.0f, 3.0f, 10.0f);
+		//s_Data3D.lightPos.x = sin(glfwGetTime()) * 50;
+		s_Data3D.lightPos = glm::vec3(1.0f, 3.0f, 10.0f);
 		//s_Data3D.lightColor.r = cos(glfwGetTime());
 		//s_Data3D.lightColor.g = sin(glfwGetTime());
 		DrawLightCube(s_Data3D.lightPos, glm::vec3(2.0f), s_Data3D.lightColor, camera);

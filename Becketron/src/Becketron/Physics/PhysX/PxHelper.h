@@ -13,5 +13,7 @@ namespace Becketron
 
 		static std::tuple<glm::vec3, glm::quat, glm::vec3>GetTransformDecomposition(
 			const glm::mat4& transform);
+
+		static physx::PxVec3 Vec3_glmToPx(const glm::vec3& value, float ts = 1.0f);
 	};
 }

@@ -2255,8 +2255,4 @@
     <ClCompile Include="src\Becketron\Physics\PhysX\PxHelper.cpp" />
     <ClCompile Include="src\Becketron\Renderer\Cubemap.cpp" />
   </ItemGroup>
-  <ItemGroup>
-    <Image Include="src\Becketron\Scene\Default_Items\TextureDef.jpg" />
-    <Image Include="src\Becketron\Scene\chess_board.jpg" />
-  </ItemGroup>
 </Project>

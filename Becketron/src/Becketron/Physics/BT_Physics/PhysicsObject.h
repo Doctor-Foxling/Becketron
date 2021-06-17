@@ -7,12 +7,13 @@
 class PhysicsObject
 {
 public:
+	// takes an parameters as r value
 	PhysicsObject(glm::vec3&& position, glm::vec3&& velocity, float radius) :
 		m_position(position), m_InitialPosition(position),
 		m_velocity(velocity), m_InitialVelocity(velocity),
 		m_radius(radius), m_InitialRadius(radius) {}
 
-
+	// takes parameter as L value
 	PhysicsObject(glm::vec3& position, glm::vec3& velocity, float radius) :
 		m_position(position), m_InitialPosition(position),
 		m_velocity(velocity), m_InitialVelocity(velocity),

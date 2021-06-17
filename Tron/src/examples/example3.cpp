@@ -1,4 +1,4 @@
-#include "example2.h"
+#include "example3.h"
 #include "imgui/imgui.h"
 
 #include <glm/gtc/matrix_transform.hpp>
@@ -20,17 +20,16 @@
 
 namespace Becketron {
 
-	ExampleLayer2::ExampleLayer2()
-		: Layer("ExampleLayer2"), m_CameraController(1280.0f / 720.0f)
+	ExampleLayer3::ExampleLayer3()
+		: Layer("ExampleLayer3"), m_CameraController(1280.0f / 720.0f)
 	{
 	}
 
-	void ExampleLayer2::OnAttach()
+	void ExampleLayer3::OnAttach()
 	{
 		//Renderer3D::Init();
 		BT_PROFILE_FUNCTION();
-		m_CheckerboardTexture = Texture2D::Create("assets/textures/wood4.jpg");
-		m_GroundTexture = Texture2D::Create("assets/textures/wood3.jpg");
+		m_CheckerboardTexture = Texture2D::Create("assets/textures/Chess_board.jpg");
 
 		FramebufferSpecification fbSpec;
 		fbSpec.Width = 1280;
@@ -39,22 +38,24 @@ namespace Becketron {
 
 		m_ActiveScene = CreateRef<Scene>();
 
+
 		std::vector<std::string> faces
 		{
-			"assets/textures/skybox/right.jpg",
-			"assets/textures/skybox/left.jpg",
-			"assets/textures/skybox/top.jpg",
-			"assets/textures/skybox/bottom.jpg",
-			"assets/textures/skybox/front.jpg",
-			"assets/textures/skybox/back.jpg"
+			"assets/textures/skybox7/right.png",
+			"assets/textures/skybox7/left.png",
+			"assets/textures/skybox7/top.png",
+			"assets/textures/skybox7/bottom.png",
+			"assets/textures/skybox7/front.png",
+			"assets/textures/skybox7/back.png"
 		};
+
 
 		auto cubeMap = m_ActiveScene->CreateEntity("Cubemap");
 		cubeMap.AddComponent<CubemapComponent>(faces, true);
 
 		// Entity
 		auto square = m_ActiveScene->CreateEntity("Ground");
-		square.AddComponent<TexturedSpriteComponent>(m_GroundTexture, 1.0f, glm::vec4{ 1.0f, 1.0f, 1.0f, 0.8f });
+		square.AddComponent<SpriteRendererComponent>(glm::vec4{ 1.0f, 0.0f, 1.0f, 0.5f });
 		auto& tc = square.GetComponent<TransformComponent>();
 		tc.Translation = { 0.0f, -3.14f, 0.0f };
 		tc.Scale = { 50.0f, 50.0f, 0.0f };
@@ -84,7 +85,7 @@ namespace Becketron {
 		auto mainLight = m_ActiveScene->CreateEntity("Main Light");
 		mainLight.AddComponent<LightCubeComponent>(glm::vec4{ 1.0f, 1.0f, 1.0f, 1.0f });
 		auto& mainLight_tc = mainLight.GetComponent<TransformComponent>();
-		mainLight_tc.Translation = { 5.0f, 4.0f, 41.0f };
+		mainLight_tc.Translation = { 5.0f, 4.0f, 21.0f };
 
 		//Ref<Texture2D> checkerboardTex = Texture2D::Create("assets/textures/Chess_board.jpg");
 		
@@ -93,7 +94,7 @@ namespace Becketron {
 			if (i / 5 == 0)
 			{
 			auto texCube = m_ActiveScene->CreateEntity("Tex Cube"+i);
-			texCube.AddComponent<TexturedCubeComponent>(m_CheckerboardTexture, 1.0f, glm::vec4{ 1.0f, (1.0f+i)/(i*1.2), 1.0f, 1.0f });
+			texCube.AddComponent<TexturedCubeComponent>(m_CheckerboardTexture, 1.0f, glm::vec4{ 1.0f, (1.0f+i)/i, 1.0f, 1.0f });
 			auto& texCube_tc = texCube.GetComponent<TransformComponent>();
 			texCube_tc.Translation = { (2.0f+i+i+i+i)/i, 10.0f+ 5.0f * i, 0.0f };
 			texCube_tc.Scale = { 1.0f+i, (2.0f+i)/i, 3.0f };
@@ -154,12 +155,12 @@ namespace Becketron {
 	//	BoundingSphere::Test();
 	}
 
-	void ExampleLayer2::OnDetach()
+	void ExampleLayer3::OnDetach()
 	{
 		BT_PROFILE_FUNCTION();
 	}
 
-	void ExampleLayer2::OnUpdate(Timestep ts)
+	void ExampleLayer3::OnUpdate(Timestep ts)
 	{
 		BT_PROFILE_FUNCTION();
 
@@ -195,7 +196,7 @@ namespace Becketron {
 		// std::dynamic_pointer_cast<OpenGLShader>(m_FlatColorShader)->UploadUniformFloat4("u_Color", m_SquareColor);
 	}
 
-	void ExampleLayer2::OnImGuiRender()
+	void ExampleLayer3::OnImGuiRender()
 	{
 		m_SceneHierarchyPanel.OnImGuiRender();
 
@@ -215,7 +216,7 @@ namespace Becketron {
 		//ImGui::PopStyleVar();
 	}
 
-	void ExampleLayer2::OnEvent(Event& e)
+	void ExampleLayer3::OnEvent(Event& e)
 	{
 		m_CameraController.OnEvent(e);
 	}

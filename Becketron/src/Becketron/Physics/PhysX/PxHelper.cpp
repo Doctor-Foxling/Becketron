@@ -36,4 +36,15 @@ namespace Becketron
 		return { translation, orientation, scale };
 	}
 
+	physx::PxVec3 PxHelper::Vec3_glmToPx(const glm::vec3& value, float ts)
+	{
+		// ts here is optional, in case we are passing in timestep as well
+		float x = value.x * ts;
+		float y = value.y * ts;
+		float z = value.z * ts;
+		physx::PxVec3 vel = physx::PxVec3(x, y, z);
+
+		return vel;
+	}
+
 }

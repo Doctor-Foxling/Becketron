@@ -92,6 +92,7 @@ namespace Becketron {
 	{
 		ComponentType type = ComponentType::Physics;
 		bool isKinematic;
+		bool gravity_effect = true;
 
 		// Testing
 		//physx::PxTransform m_Transform;
@@ -102,8 +103,8 @@ namespace Becketron {
 		
 		float mass = 1.0f;
 		float density = 1.0f;
-		float linearVelocity = 0.0f;
-		float angularVelocity = 0.0f;
+		glm::vec3 linearVelocity = glm::vec3(0.0f);
+		glm::vec3 angularVelocity = glm::vec3(0.0f);
 		float linearDamping = 0.0f;
 		float angularDamping = 0.0f;
 
@@ -118,8 +119,6 @@ namespace Becketron {
 		float old_restitution = 0.5f;
 		float old_mass = 1.0f;
 		float old_density = 1.0f;
-		float old_linearVelocity = 0.0f;
-		float old_angularVelocity = 0.0f;
 		float old_linearDamping = 0.0f;
 		float old_angularDamping = 0.0f;
 
@@ -149,6 +148,19 @@ namespace Becketron {
 		SpriteRendererComponent(const SpriteRendererComponent&) = default;
 		SpriteRendererComponent(const glm::vec4& color)
 			: Color(color) {}
+	};
+
+	struct TexturedSpriteComponent
+	{
+		ComponentType type = ComponentType::VisualA;
+		glm::vec4 Color{ 1.0f, 1.0f, 1.0f, 1.0f };
+		Ref<Texture2D> Texture;
+		float TilingFactor = 1.0f;
+
+		TexturedSpriteComponent() = default;
+		TexturedSpriteComponent(const TexturedSpriteComponent&) = default;
+		TexturedSpriteComponent(Ref<Texture2D> texture, float tilingFactor, const glm::vec4& tintColor)
+			: Texture(texture), TilingFactor(tilingFactor), Color(tintColor) {}
 	};
 
 	struct CubeRendererComponent

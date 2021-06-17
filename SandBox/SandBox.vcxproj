@@ -152,6 +152,8 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="assets\shaders\Skybox.glsl" />
+    <None Include="assets\shaders\VisionSystem.glsl" />
+    <None Include="assets\shaders\VisionSystem2.glsl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

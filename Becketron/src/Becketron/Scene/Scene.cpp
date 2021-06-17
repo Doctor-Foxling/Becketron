@@ -267,7 +267,8 @@ namespace Becketron {
 				auto view = m_Registry.view<TransformComponent, PhysXRigidDynamicComponent>();
 				for (auto entity : view)
 				{
-					auto [transform, physX_body] = view.get<TransformComponent, PhysXRigidDynamicComponent>(entity);
+					auto [transform, physX_body] = view.get<TransformComponent, 
+														PhysXRigidDynamicComponent>(entity);
 					
 					glm::quat q = physX_body.rigidbody->GetRot();
 					glm::vec3 euler = glm::eulerAngles(q);
@@ -277,8 +278,6 @@ namespace Becketron {
 					
 					transform.Translation = physX_body.rigidbody->GetPos();
 					transform.Rotation = euler;
-
-
 
 					// Update rigidbody prperties 
 					auto& rb = physX_body.rigidbody;
@@ -311,16 +310,37 @@ namespace Becketron {
 
 					if (physX_body.old_density != physX_body.density)
 					{
+
 						rb->SetDensity(physX_body.density);
 						physX_body.old_density = physX_body.density;
 					}
 
-					if (physX_body.old_linearVelocity != physX_body.linearVelocity)
+					/*if (physX_body.old_linearVelocity != physX_body.linearVelocity)
 					{
-						//rb->SetLinearVelocity(physX_body.linearVelocity);
-						//physX_body.old_linearVelocity = physX_body.linearVelocity;
+						physx::PxVec3 vel = PxHelper::Vec3_glmToPx(physX_body.linearVelocity, ts);
+
+						rb->SetLinearVelocity(vel);
+						physX_body.old_linearVelocity = physX_body.linearVelocity;
+					}*/
+
+
+					// Update linear velocity
+					if (physX_body.linearVelocity != glm::vec3(0.0f))
+					{
+						rb->SetLinearVelocity(PxHelper::Vec3_glmToPx(physX_body.linearVelocity));
 					}
-					//rb->
+					
+					// Update angular velocity
+					if (physX_body.angularVelocity != glm::vec3(0.0f))
+					{
+						rb->SetAngularVelocity(PxHelper::Vec3_glmToPx(physX_body.angularVelocity));
+					}
+
+					if (physX_body.gravity_effect)
+						rb->EnableGravity(false);
+					else
+						rb->EnableGravity(true);
+
 				}
 
 				// If reset button was pressed, set back to inactive
@@ -410,6 +430,23 @@ namespace Becketron {
 			Renderer3D::EndScene();
 		}
 
+		// Textured Sprite
+				// Textured Cube
+		if (mainCamera)
+		{
+			Renderer2D::BeginScene(*mainCamera, cameraTransform);
+
+			auto view = m_Registry.view<TransformComponent, TexturedSpriteComponent>();
+			for (auto entity : view)
+			{
+				auto [transform, texSprite] = view.get<TransformComponent, TexturedSpriteComponent>(entity);
+
+				Renderer2D::DrawQuad(transform.GetTransform(), texSprite.Texture, texSprite.TilingFactor, texSprite.Color);
+			}
+
+			Renderer2D::EndScene();
+		}
+
 		// Light Cube
 		if (mainCamera)
 		{
@@ -471,7 +508,16 @@ namespace Becketron {
 	{
 		if (component.texture == nullptr)
 		{
-			component.texture = Texture2D::Create("c:/Devz/BT_3D/Becketron/src/Becketron/Scene/Chess_board.jpg");
+			component.texture = Texture2D::Create("assets/textures/Chess_board.jpg");
+		}
+	}
+
+	template<>
+	void Scene::OnComponentAdded<TexturedSpriteComponent>(Entity entity, TexturedSpriteComponent& component)
+	{
+		if (component.Texture == nullptr)
+		{
+			component.Texture = Texture2D::Create("assets/textures/Rock1.jpg");
 		}
 	}
 
@@ -491,6 +537,7 @@ namespace Becketron {
 		if (component.Changed)
 			Cubemap::ChangeSkybox(component.Faces);
 	}
+
 
 #ifdef USE_OLD_PHYSX
 	template<>

@@ -8,11 +8,11 @@ namespace Becketron
 	extern physx::PxTransform glmToPhysxTransform(const glm::mat4& transform);
 	extern physx::PxRigidDynamic* CreateRigidDynamic(physx::PxTransform trans);
 
-	class ExampleLayer2 : public Layer
+	class ExampleLayer3 : public Layer
 	{
 	public:
-		ExampleLayer2();
-		virtual ~ExampleLayer2() = default;
+		ExampleLayer3();
+		virtual ~ExampleLayer3() = default;
 
 		virtual void OnAttach() override;
 		virtual void OnDetach() override;
@@ -36,7 +36,6 @@ namespace Becketron
 		bool m_PrimaryCamera = true;
 
 		Ref<Texture2D> m_CheckerboardTexture;
-		Ref<Texture2D> m_GroundTexture;
 
 		bool m_ViewportFocused = false, m_ViewportHovered = false;
 		glm::vec2 m_ViewportSize = { 0.0f, 0.0f };

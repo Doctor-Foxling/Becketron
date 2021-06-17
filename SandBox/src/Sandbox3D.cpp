@@ -20,6 +20,7 @@ void Sandbox3D::OnAttach()
 {
 	BT_PROFILE_FUNCTION();
 	m_CheckerboardTexture = Becketron::Texture2D::Create("assets/textures/Chess_board.jpg");
+	m_GroundTexture = Becketron::Texture2D::Create("assets/textures/wood1.jpg");
 	//static physx::PxPhysics* phys;
 
 }
@@ -61,8 +62,9 @@ void Sandbox3D::OnUpdate(Becketron::Timestep ts)
 		static float rotation = 0.0f;
 		rotation += ts * 50.0f;
 
-		BT_PROFILE_SCOPE("Renderer Draw");
-
+		
+		("Renderer Draw");
+		
 		Becketron::Renderer3D::BeginScene(m_CameraController.GetCamera());
 		//Becketron::Renderer3D::DrawRotatedQuad({ -1.0f, 0.0f }, { 0.8f, 1.0f }, -45.0f, m_SquareColor);
 		//m_CameraController.GetCamera().SetPosition(m_camPos);
@@ -83,6 +85,7 @@ void Sandbox3D::OnUpdate(Becketron::Timestep ts)
 			* glm::scale(glm::mat4(1.0f), Scale);
 
 		Becketron::Renderer3D::DrawCube(Transform, m_CheckerboardTexture, 1.0f);
+	
 
 		//Becketron::Renderer3D::DrawCube({ 0.5f, 0.7f, -5.0f }, { 1.0f, 1.0f, 1.0f }, m_CheckerboardTexture, 1.0f);
 
@@ -105,7 +108,9 @@ void Sandbox3D::OnUpdate(Becketron::Timestep ts)
 
 		Becketron::Renderer2D::BeginScene(m_CameraController.GetCamera());
 		Becketron::Renderer2D::DrawQuad({ -0.75f, -0.25f, -7.0f }, { 0.5f, 0.5f, 5.0f }, m_SquareColor);
-		Becketron::Renderer2D::DrawRotatedQuad({ 0.0f, -0.8f, -4.0f }, { 1.0f, 1.0f, 10.f }, rotation, m_CheckerboardTexture, 0.5f, Becketron::BT_axis::x);
+		//Becketron::Renderer2D::DrawRotatedQuad({ 0.0f, -0.8f, -4.0f }, { 1.0f, 1.0f, 10.f }, rotation, m_CheckerboardTexture, 0.5f, Becketron::BT_axis::x);
+		Becketron::Renderer2D::DrawRotatedQuad({ 0.0f, -0.8f, -4.0f }, { 20.0f, 20.0f, 1.0f }, 90.0f , m_GroundTexture, 0.5f, Becketron::BT_axis::x);
+		Becketron::Renderer2D::DrawQuad({ 1.5f, 0.8f, -4.0f }, { 1.0f, 2.0f, 10.f }, m_CheckerboardTexture, 0.5f);
 
 		//m_lightColor = Becketron::Renderer3D::GetDataByRef();
 

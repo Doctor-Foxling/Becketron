@@ -18,6 +18,7 @@
 #include "Becketron/Renderer/Texture.h"
 #include "examples/example1.h"
 #include "examples/example2.h"
+#include "examples/example3.h"
 
 namespace Becketron {
 
@@ -136,6 +137,15 @@ namespace Becketron {
 					m_CurrentLayer = new ExampleLayer2;
 					Application::Get().PushLayer(m_CurrentLayer);
 					m_LayerNumber = 2;
+				}
+				
+				if (m_LayerNumber != 3 && ImGui::Selectable("Example 3", true))
+				{
+					Application::Get().PopLayer(m_CurrentLayer);
+					delete m_CurrentLayer;
+					m_CurrentLayer = new ExampleLayer3;
+					Application::Get().PushLayer(m_CurrentLayer);
+					m_LayerNumber = 3;
 				}
 			
 				ImGui::TreePop();

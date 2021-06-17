@@ -24,6 +24,7 @@ private:
 	Becketron::Ref<Becketron::Shader> m_FlatColorShader;
 
 	Becketron::Ref<Becketron::Texture2D> m_CheckerboardTexture;
+	Becketron::Ref<Becketron::Texture2D> m_GroundTexture;
 
 	struct ProfileResult
 	{
@@ -33,5 +34,5 @@ private:
 
 	std::vector<ProfileResult> m_ProfileResults;
 
-	glm::vec4 m_SquareColor = { 0.2f, 0.3f, 0.8f, 1.0f };
+	glm::vec4 m_SquareColor = { 0.2f, 0.5f, 0.5f, 1.0f };
 };

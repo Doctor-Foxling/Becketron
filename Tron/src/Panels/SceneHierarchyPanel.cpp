@@ -479,6 +479,14 @@ namespace Becketron {
 			AddComponentProps<LightCubeComponent>(entity, treeNodeFlags, "Light cube");
 		}
 
+		if (entity.HasComponent<TexturedSpriteComponent>())
+		{
+			AddComponentProps<TexturedSpriteComponent>(entity, treeNodeFlags, "Textured Sprite");
+			auto& sprite = entity.GetComponent<TexturedSpriteComponent>();
+
+			DrawFloatControl("Tiling Factor", sprite.TilingFactor, "_", 1.0f, 1.0f, 20.0f);
+		}
+
 		if (entity.HasComponent<PhysXRigidDynamicComponent>())
 		{
 			auto& r_body = entity.GetComponent<PhysXRigidDynamicComponent>();
@@ -488,7 +496,11 @@ namespace Becketron {
 			DrawFloatControl("Dynamic Friction", r_body.dynamicFriction, "N", 0.5f, 0.0f, 1.0f);
 			DrawFloatControl("Restitution", r_body.restitution, "_", 0.5f, 0.0f, 1.0f);
 			DrawFloatControl("Density", r_body.density, "_", 0.5f, 0.1f, 50.0f);
+			DrawVec3Control("Linear Velocity", r_body.linearVelocity, 0.0f, -100.0f, 100.0f);
+			DrawVec3Control("Angular Velocity", r_body.angularVelocity, 0.0f, -100.0f, 100.0f);
+			ImGui::Checkbox("Toggle Gravity", &r_body.gravity_effect);
 		}
+
 	}
 
 	bool SceneHierarchyPanel::EntityHasComponentType(Entity entity, ComponentType type)
