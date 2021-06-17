@@ -54,7 +54,7 @@ To run and test the enginge, the following steps can be taken:
 - [spdlog](https://github.com/gabime/spdlog) for fast Logging
 - [yaml-cpp] for scene serialization
 
-## Contributing [![GitHub contributors]
+## Contributing [GitHub contributors]
 
 - For contributing, fork this repository first.
 - Then make a feature branch in your fork and start adding stuff.
