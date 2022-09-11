@@ -168,9 +168,9 @@
     <ClInclude Include="src\Becketron\Physics\BT_Physics\PhysicsObject.h" />
     <ClInclude Include="src\Becketron\Physics\BT_Physics\Plane.h" />
     <ClInclude Include="src\Becketron\Physics\BT_Physics\aabb.h" />
-    <ClInclude Include="src\Becketron\Physics\PhysX\PxHelper.h" />
     <ClInclude Include="src\Becketron\Physics\PhysX\PhysXManager.h" />
     <ClInclude Include="src\Becketron\Physics\PhysX\PhysXRigidbody.h" />
+    <ClInclude Include="src\Becketron\Physics\PhysX\PxHelper.h" />
     <ClInclude Include="src\Becketron\Physics\PhysX_old\AllocatorCallback.h" />
     <ClInclude Include="src\Becketron\Physics\PhysX_old\ErrorCallback.h" />
     <ClInclude Include="src\Becketron\Physics\PhysX_old\PhysXRigidbody.h" />
@@ -822,10 +822,12 @@
     <ClCompile Include="src\Becketron\Physics\BT_Physics\PhysicsObject.cpp" />
     <ClCompile Include="src\Becketron\Physics\BT_Physics\Plane.cpp" />
     <ClCompile Include="src\Becketron\Physics\BT_Physics\aabb.cpp" />
-    <ClCompile Include="src\Becketron\Physics\PhysX\PxHelper.cpp" />
     <ClCompile Include="src\Becketron\Physics\PhysX\PhysXManager.cpp" />
     <ClCompile Include="src\Becketron\Physics\PhysX\PhysXRigidbody.cpp" />
-    <ClCompile Include="src\Becketron\Physics\PhysX_old\PhysXRigidbody.cpp" />
+    <ClCompile Include="src\Becketron\Physics\PhysX\PxHelper.cpp" />
+    <ClCompile Include="src\Becketron\Physics\PhysX_old\PhysXRigidbody.cpp">
+      <ObjectFileName>$(IntDir)\PhysXRigidbody1.obj</ObjectFileName>
+    </ClCompile>
     <ClCompile Include="src\Becketron\Physics\PhysX_old\PhysXScene.cpp" />
     <ClCompile Include="src\Becketron\Physics\PhysX_old\PhysicsEnginePhysX.cpp" />
     <ClCompile Include="src\Becketron\Renderer\Buffer.cpp" />
