@@ -4,7 +4,7 @@
 	branch = v1.x
 [submodule "Becketron/vendor/GLFW"]
 	path = Becketron/vendor/GLFW
-	url = https://github.com/Doctor-Foxling/glfw
+	url = https://github.com/TheCherno/glfw
 	branch = master
 [submodule "Becketron/vendor/imgui"]
 	path = Becketron/vendor/imgui
